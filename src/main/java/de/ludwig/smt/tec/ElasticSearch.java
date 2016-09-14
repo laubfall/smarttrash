@@ -1,5 +1,7 @@
 package de.ludwig.smt.tec;
 
+import java.io.File;
+
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -19,15 +21,18 @@ import jodd.petite.meta.PetiteBean;
 public class ElasticSearch {
 	private static final Logger LOG = LoggerFactory.getLogger(ElasticSearch.class);
 
-	private Node node;
+	private Node node = null;
 
 	public final void startElasticsearch() {
-		node = NodeBuilder.nodeBuilder()
+		node = nodeBuilder().build();
+		node.start();
+	}
+
+	private NodeBuilder nodeBuilder() {
+		return NodeBuilder.nodeBuilder()
 				.settings(NodeBuilder.nodeBuilder().getSettings().loadFromStream("ONLY-THE-EXT-MATTERS.json",
 						getClass().getResourceAsStream(
-								JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName()))))
-				.build();
-		node.start();
+								JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName()))));
 	}
 
 	/**
@@ -47,5 +52,15 @@ public class ElasticSearch {
 		// IndexRequest request = new IndexRequest();
 		// esClient().index(request);
 		// esClient().
+	}
+
+	public File pathHome() {
+		String pathHome;
+		if (node == null) {
+			pathHome = nodeBuilder().getSettings().get("path.home");
+		} else {
+			pathHome = node.client().settings().get("path.home");
+		}
+		return new File(pathHome);
 	}
 }

@@ -1,12 +1,10 @@
 package de.ludwig.smt.app;
 
-import org.junit.Before;
+import static de.ludwig.smt.jodd.JoddPowered.petite;
+
 import org.junit.Test;
 
 import de.ludwig.smt.app.data.Flow;
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.PropsProfiles;
-import de.ludwig.smt.tec.ElasticSearch;
 
 /**
  * BFlow Test.
@@ -14,26 +12,19 @@ import de.ludwig.smt.tec.ElasticSearch;
  * @author daniel
  *
  */
-public class BFlowTest extends JoddPowered {
+public class BFlowTest extends ElasticSearchTest {
 	private BFlow bFlow;
-
-	@Before
-	public void setup() {
-		initPetite();
-		initProps();
-		settings.setActiveProfiles(PropsProfiles.JUNIT.getProfileName());
-		
-		bFlow = petite.getBean(BFlow.class);
-		
-		petite.getBean(ElasticSearch.class).startElasticsearch();
-		
-	}
 
 	@Test
 	public void createAndLoadFlow() {
-		final Flow flow = new Flow("craeteAndLoadFlow");
-		
+		final Flow flow = new Flow("createAndLoadFlow");
+
 		bFlow.createFlow(flow);
 		bFlow.loadFlows();
+	}
+
+	@Override
+	void setup() {
+		bFlow = petite.getBean(BFlow.class);
 	}
 }

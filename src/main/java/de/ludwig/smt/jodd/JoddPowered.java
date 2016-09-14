@@ -18,7 +18,7 @@ public abstract class JoddPowered {
 	
 	public static Props settings;
 	
-	protected static void initProps(){
+	public static void initProps(){
 		settings = new Props();
 		try {
 			settings.load(JoddPowered.class.getResourceAsStream("/settings.properties"));
@@ -27,7 +27,7 @@ public abstract class JoddPowered {
 		}
 	}
 	
-	protected static void initPetite(){
+	public static void initPetite(){
 		petite = new ProxettaPetiteContainer();
 	    AutomagicPetiteConfigurator petiteConfigurator =
 	        new AutomagicPetiteConfigurator();
