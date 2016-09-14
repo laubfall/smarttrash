@@ -1,4 +1,4 @@
-package de.ludwig.smt;
+package de.ludwig.smt.jodd;
 
 import java.util.HashMap;
 import java.util.Map;
