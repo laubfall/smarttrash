@@ -6,6 +6,8 @@ import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.ludwig.smt.jodd.JoddPowered;
+import de.ludwig.smt.jodd.PropsElasticsearchProps;
 import jodd.petite.meta.PetiteBean;
 
 /**
@@ -20,9 +22,10 @@ public class ElasticSearch {
 	private Node node;
 
 	public final void startElasticsearch() {
-		node = NodeBuilder
-				.nodeBuilder().settings(NodeBuilder.nodeBuilder().getSettings()
-						.loadFromStream("ONLY-THE-EXT-MATTERS.json", getClass().getResourceAsStream("/es-config.json")))
+		node = NodeBuilder.nodeBuilder()
+				.settings(NodeBuilder.nodeBuilder().getSettings().loadFromStream("ONLY-THE-EXT-MATTERS.json",
+						getClass().getResourceAsStream(
+								JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName()))))
 				.build();
 		node.start();
 	}
@@ -39,10 +42,10 @@ public class ElasticSearch {
 
 		return node.client();
 	}
-	
-	public final void saveDocument(){
-//		IndexRequest request = new IndexRequest();
-//		esClient().index(request);
-//		esClient().
+
+	public final void saveDocument() {
+		// IndexRequest request = new IndexRequest();
+		// esClient().index(request);
+		// esClient().
 	}
 }

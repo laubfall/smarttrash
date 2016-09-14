@@ -14,9 +14,9 @@ import jodd.props.Props;
  *
  */
 public abstract class JoddPowered {
-	protected static PetiteContainer petite;
+	public static PetiteContainer petite;
 	
-	protected static Props settings;
+	public static Props settings;
 	
 	protected static void initProps(){
 		settings = new Props();

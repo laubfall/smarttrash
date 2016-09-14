@@ -9,6 +9,11 @@ import jodd.proxetta.ProxyAspect;
 import jodd.proxetta.impl.ProxyProxetta;
 import jodd.proxetta.impl.ProxyProxettaBuilder;
 
+/**
+ * Petite Container with Proxetta Support.
+ * @author daniel
+ *
+ */
 public class ProxettaPetiteContainer extends PetiteContainer {
 
 	private ProxyProxetta proxetta;
