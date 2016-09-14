@@ -1,0 +1,10 @@
+{
+    "network" : {
+        "host" : "localhost"
+    },
+    "path" : {
+    	"home" : "./target",
+    	"data" : "${path.home}/data",
+    	"logs" : "${path.home}/logs"
+    }
+}
