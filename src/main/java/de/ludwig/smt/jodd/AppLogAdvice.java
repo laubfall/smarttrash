@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import jodd.proxetta.ProxyAdvice;
 import jodd.proxetta.ProxyTarget;
+import jodd.util.StringUtil;
 
 /**
  * Advice that logs all actions that are requirements.
@@ -25,7 +26,9 @@ public class AppLogAdvice implements ProxyAdvice {
 		
 		try {
 			Object result = ProxyTarget.invoke();
-			log.info(methodName + " executed"); // TODO log parameters and result.
+			final int argCnt = ProxyTarget.argumentsCount();
+			final Object[] args = ProxyTarget.createArgumentsArray();
+			log.info(methodName + " executed with params: " + paramLog(argCnt,args));
 			return result;
 		} catch (Exception e){
 			log.error("execution of requirement method " + methodName + " failed", e);
@@ -33,6 +36,15 @@ public class AppLogAdvice implements ProxyAdvice {
 		}
 	}
 
+	private String paramLog(int argCnt, Object[] args) {
+		if(argCnt == 0){
+			return "no params";
+		}
+		
+		final String result = StringUtil.join(args, "\n");
+		return result;
+	}
+	
 	private Logger nullSafeGetLogger(Class<?> classToLog){
 		if(loggers.containsKey(classToLog) == false){
 			loggers.put(classToLog, LoggerFactory.getLogger(classToLog));
