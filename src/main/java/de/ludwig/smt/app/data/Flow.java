@@ -1,14 +1,13 @@
 package de.ludwig.smt.app.data;
 
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+
 import java.io.IOException;
-import java.util.Date;
 
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import de.ludwig.smt.SmartTrashException;
-
-import static org.elasticsearch.common.xcontent.XContentFactory.*;
 
 /**
  * A Flow.
@@ -18,7 +17,11 @@ import static org.elasticsearch.common.xcontent.XContentFactory.*;
  */
 public class Flow {
 
-	private final String name;
+	private String name;
+	
+	public Flow(){
+		
+	}
 	
 	public Flow(String name) {
 		this.name = name;
@@ -26,6 +29,10 @@ public class Flow {
 
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public BytesReference toElasticSearch(){

@@ -48,12 +48,6 @@ public class ElasticSearch {
 		return node.client();
 	}
 
-	public final void saveDocument() {
-		// IndexRequest request = new IndexRequest();
-		// esClient().index(request);
-		// esClient().
-	}
-
 	public File pathHome() {
 		String pathHome;
 		if (node == null) {
