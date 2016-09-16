@@ -1,5 +1,7 @@
 package de.ludwig.smt.app;
 
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -17,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementExecutionException;
+import de.ludwig.smt.SmartTrashException;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.jodd.JoddPowered;
@@ -61,7 +65,7 @@ public class BFlow {
 
 	public String createFlow(final Flow flow) {
 
-		final IndexRequest request = es.esClient().prepareIndex(indexName, "flow").setSource(flow.toElasticSearch())
+		final IndexRequest request = es.esClient().prepareIndex(indexName, "flow").setSource(toElasticSearch(flow))
 				.request() //
 				.refresh(true); // in case of an immediately call to loadFlows,
 								// otherwise we will not find any result.
@@ -73,6 +77,10 @@ public class BFlow {
 			throw new RequirementExecutionException(e);
 		}
 	}
+	
+	public void updateFlow(final Flow flow){
+		
+	}
 
 	private Flow fromElasticSearch(BytesReference ref) throws JsonParseException, JsonMappingException, IOException {
 		// ObjectMapper om = new ObjectMapper();
@@ -81,5 +89,18 @@ public class BFlow {
 		Flow readValue = om.readValue(ref.toBytes(), Flow.class);
 		return readValue;
 
+	}
+	
+	private BytesReference toElasticSearch(final Flow flow){
+
+		try {
+			XContentBuilder builder = jsonBuilder()
+			    .startObject()
+			        .field("name", flow.getName())
+			    .endObject();
+			return builder.bytes();
+		} catch (IOException e) {
+			throw new SmartTrashException(e);
+		}
 	}
 }
