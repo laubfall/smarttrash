@@ -43,4 +43,8 @@ public class Config implements Serializable {
 
 		return null;
 	}
+
+	public List<ConfiguredFlow> getFlows() {
+		return flows;
+	}
 }

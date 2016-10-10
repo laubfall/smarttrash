@@ -4,6 +4,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Load all elasticsearch properties and validate if there is a value.
+ * @author Daniel
+ *
+ */
 public class PropsElasticsearchPropsTest extends JoddPowered{
 	@Before
 	public void init(){
@@ -15,7 +20,7 @@ public class PropsElasticsearchPropsTest extends JoddPowered{
 		for (PropsProfiles propsProfiles : PropsProfiles.values()) {
 			settings.setActiveProfiles(propsProfiles.getProfileName());
 			for (PropsElasticsearchProps propsElasticsearchProps : PropsElasticsearchProps.values()) {
-				if(propsElasticsearchProps.isSection()){
+				if (propsElasticsearchProps.isSection()){
 					continue;
 				}
 				String value = settings.getValue(propsElasticsearchProps.getPropertyName());

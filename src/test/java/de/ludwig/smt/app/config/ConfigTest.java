@@ -2,6 +2,7 @@ package de.ludwig.smt.app.config;
 
 import org.junit.Test;
 
+// TODO implement this test. Actually it does nothing.
 public class ConfigTest {
 	@Test
 	public void createConfig() {
