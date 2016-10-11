@@ -37,7 +37,7 @@ public class BFlowTest extends ElasticSearchTest {
 	}
 
 	@Override
-	void setup() {
+	public void setup() {
 		bFlow = petite.getBean(BFlow.class);
 	}
 }

@@ -6,6 +6,7 @@ import org.junit.Test;
 import de.ludwig.smt.app.config.Config;
 import de.ludwig.smt.app.config.ConfiguredFlow;
 import de.ludwig.smt.jodd.JoddPowered;
+import de.ludwig.smt.jodd.JoddPoweredTest;
 
 
 /**
@@ -14,11 +15,11 @@ import de.ludwig.smt.jodd.JoddPowered;
  * @author Daniel
  *
  */
-public class FlowConfigServiceTest extends JoddPowered {
+public class FlowConfigServiceTest extends JoddPoweredTest {
 
 	@Test
 	public void saveAndLoad() {
-		final FlowConfigService configService = petite.getBean(FlowConfigService.class);
+		final FlowConfigService configService = JoddPowered.petite.getBean(FlowConfigService.class);
 		Config flowConfig = configService.loadFlowConfig();
 		Assert.assertNotNull(flowConfig);
 		Assert.assertEquals(0, flowConfig.getFlows().size());
@@ -30,5 +31,10 @@ public class FlowConfigServiceTest extends JoddPowered {
 		flowConfig = configService.loadFlowConfig();
 		Assert.assertNotNull(flowConfig);
 		Assert.assertEquals(1, flowConfig.getFlows().size());
+	}
+
+	@Override
+	public void setup() throws Exception {
+		// NOOP
 	}
 }
