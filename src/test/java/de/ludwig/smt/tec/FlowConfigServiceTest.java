@@ -28,6 +28,7 @@ public class FlowConfigServiceTest extends JoddPoweredTest {
 		flowConfig.addParentFlow(flow);
 		configService.saveFlowConfig(flowConfig);
 		
+		
 		flowConfig = configService.loadFlowConfig();
 		Assert.assertNotNull(flowConfig);
 		Assert.assertEquals(1, flowConfig.getFlows().size());

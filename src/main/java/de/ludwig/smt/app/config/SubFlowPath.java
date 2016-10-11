@@ -2,14 +2,16 @@ package de.ludwig.smt.app.config;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Describes the child-parent relations of Flows.
  * 
  * @author Daniel
  *
  */
-public class SubFlowPath implements Serializable {
+public class SubFlowPath implements Serializable, Iterable<FlowId>{
 	/**
 	 * The serial version uid.
 	 */
@@ -52,6 +54,14 @@ public class SubFlowPath implements Serializable {
 		} else if (!path.equals(other.path))
 			return false;
 		return true;
+	}
+
+	/**
+	 * TODO really required?
+	 */
+	@Override
+	public Iterator<FlowId> iterator() {
+		return path.iterator();
 	}
 
 }

@@ -5,21 +5,27 @@ import java.io.Serializable;
 import jodd.util.RandomString;
 
 /**
+ * A flow ID is a "unique" identifier for a flow. This id is used to create a
+ * relationship between Flows stored inside the config and flows stored inside
+ * Elasticsearch.
+ * 
+ * Remember: actually there is no unique key authority that ensures the
+ * uniqueness of the generated id.
  * 
  * @author Daniel
  *
  */
-public final class FlowId implements Serializable{
+public final class FlowId implements Serializable {
 	/**
 	 * The serial version uid.
 	 */
 	private static final long serialVersionUID = 7660173547699807213L;
-	
+
 	/**
 	 * Random-ID.
 	 */
 	private String id = RandomString.getInstance().randomAlphaNumeric(10);
-	
+
 	public FlowId() {
 
 	}
