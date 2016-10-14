@@ -8,12 +8,13 @@ import java.io.Serializable;
  * @author Daniel
  *
  */
-public class FlowBase implements Serializable {
+public class FlowBase implements Serializable
+{
 	/**
 	 * The serial version uuid.
 	 */
 	private static final long serialVersionUID = 7109349041263465844L;
-	
+
 	/**
 	 * Unique identifier of this flow.
 	 */
@@ -21,9 +22,11 @@ public class FlowBase implements Serializable {
 
 	/**
 	 * Getter.
+	 * 
 	 * @return the unique identifier, never null.
 	 */
-	public FlowId getId() {
+	public FlowId getId()
+	{
 		return id;
 	}
 }

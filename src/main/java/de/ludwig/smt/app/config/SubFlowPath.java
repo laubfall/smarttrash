@@ -12,7 +12,8 @@ import java.util.List;
  * @author Daniel
  *
  */
-public class SubFlowPath implements Serializable {
+public class SubFlowPath implements Serializable
+{
 	/**
 	 * The serial version uid.
 	 */
@@ -25,12 +26,13 @@ public class SubFlowPath implements Serializable {
 
 	/**
 	 * Constructor used in case there is no other subflow where we want to add the new subflow.
+	 * 
 	 * @param id id of the new sublfow.
 	 */
 	public SubFlowPath(FlowId id) {
 		this.path.add(id);
 	}
-	
+
 	public SubFlowPath(SubFlowPath parent, FlowId id) {
 		this.path = new ArrayList<>(parent.path);
 		this.path.add(id);
@@ -38,18 +40,21 @@ public class SubFlowPath implements Serializable {
 
 	/**
 	 * Ad-hoc constructor. Internal use only.
+	 * 
 	 * @param ids
 	 */
 	SubFlowPath(Collection<FlowId> ids) {
 		path.addAll(ids);
 	}
-	
-	public LinkedList<FlowId> currentPath() {
+
+	public LinkedList<FlowId> currentPath()
+	{
 		return new LinkedList<>(path);
 	}
-	
+
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((path == null) ? 0 : path.hashCode());
@@ -57,7 +62,8 @@ public class SubFlowPath implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)

@@ -23,12 +23,16 @@ import jodd.petite.meta.PetiteBean;
 @PetiteBean
 @Requirement // TODO provide specifiation for this requirement
 // TODO is that package a good place for this class? Ok, it's a technical one, but annotated with @Requirement.
-public class FlowConfigService {
+public class FlowConfigService
+{
 	/**
-	 * Save a flow config. Place and config name is defined in the jodd settings file, Properties are here: {@link PropsFlowConfig}.
+	 * Save a flow config. Place and config name is defined in the jodd settings file, Properties are here:
+	 * {@link PropsFlowConfig}.
+	 * 
 	 * @param config config to save.
 	 */
-	public void saveFlowConfig(final Config config) {
+	public void saveFlowConfig(final Config config)
+	{
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(configFile()))) {
 			oos.writeObject(config);
 		} catch (IOException e) {
@@ -38,15 +42,17 @@ public class FlowConfigService {
 
 	/**
 	 * Loads a config file. Does a check if there is any config file. If not this method returns an empty config object.
+	 * 
 	 * @return see description.
 	 */
-	public Config loadFlowConfig() {
+	public Config loadFlowConfig()
+	{
 		File configFile = configFile();
-		if(configFile.exists() == false) {
+		if (configFile.exists() == false) {
 			return new Config();
 		}
-		
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(configFile()))){
+
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(configFile()))) {
 			Object readObject = ois.readObject();
 			return (Config) readObject;
 		} catch (IOException | ClassNotFoundException e) {
@@ -54,11 +60,13 @@ public class FlowConfigService {
 		}
 	}
 
-	boolean deleteFlowConfig() {
+	boolean deleteFlowConfig()
+	{
 		return configFile().delete();
 	}
-	
-	private File configFile() {
+
+	private File configFile()
+	{
 		final String configPath = JoddPowered.settings.getValue(PropsFlowConfig.PATH.getPropName());
 		final File file = new File(configPath, JoddPowered.settings.getValue(PropsFlowConfig.NAME.getPropName()));
 		return file;

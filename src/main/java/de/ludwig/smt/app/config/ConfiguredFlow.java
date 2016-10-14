@@ -11,7 +11,8 @@ import java.util.Map;
  * @author Daniel
  *
  */
-public class ConfiguredFlow extends FlowBase {
+public class ConfiguredFlow extends FlowBase
+{
 
 	/**
 	 * The serial version uuid.
@@ -22,34 +23,33 @@ public class ConfiguredFlow extends FlowBase {
 	// LoggerFactory.getLogger(ConfiguredFlow.class);
 
 	/**
-	 * Configuration of subflows. The key is the path-definition to the subflow.
-	 * The value is the subflow itself
+	 * Configuration of subflows. The key is the path-definition to the subflow. The value is the subflow itself
 	 */
 	private Map<SubFlowPath, SubFlow> subFlows = new HashMap<>();
-	
+
 	/**
 	 * Provides access to the subflows, without giving the possibility to modify the map.
+	 * 
 	 * @return iterator for {@link SubFlow}.
 	 */
-	public final Iterator<Map.Entry<SubFlowPath, SubFlow>> subFlowIterator() {
+	public final Iterator<Map.Entry<SubFlowPath, SubFlow>> subFlowIterator()
+	{
 		return subFlows.entrySet().iterator();
 	}
 
 	/**
-	 * Adds a subflow for a given path. For every {@link FlowId} inside
-	 * {@link SubFlowPath} there has to be a {@link SubFlow} inside
-	 * {@link #subFlows}. Otherwise the new subflow is not added to the map.
+	 * Adds a subflow for a given path. For every {@link FlowId} inside {@link SubFlowPath} there has to be a
+	 * {@link SubFlow} inside {@link #subFlows}. Otherwise the new subflow is not added to the map.
 	 * 
-	 * @param path
-	 *            Optional. Path where we want to add a new {@link SubFlow}. Do
-	 *            not add the {@link FlowId} of the new {@link SubFlow} by
-	 *            yourself to the path. This is done by this method. If the path is null the new subflow is going to be the first subflow in the hierachy.
-	 * @param subFlow
-	 *            {@link SubFlow} to add.
-	 * @return false if there is already a subflow for the given path, or if the
-	 *         path contains {@link FlowId}s that do not have a {@link SubFlow}.
+	 * @param path Optional. Path where we want to add a new {@link SubFlow}. Do not add the {@link FlowId} of the new
+	 *            {@link SubFlow} by yourself to the path. This is done by this method. If the path is null the new
+	 *            subflow is going to be the first subflow in the hierachy.
+	 * @param subFlow {@link SubFlow} to add.
+	 * @return false if there is already a subflow for the given path, or if the path contains {@link FlowId}s that do
+	 *         not have a {@link SubFlow}.
 	 */
-	final boolean addSubFlow(final SubFlowPath path, final SubFlow subFlow) {
+	final boolean addSubFlow(final SubFlowPath path, final SubFlow subFlow)
+	{
 		final SubFlowPath newPath = new SubFlowPath(path, subFlow.getId());
 		if (subFlows.containsKey(newPath)) {
 			return false;
@@ -66,9 +66,10 @@ public class ConfiguredFlow extends FlowBase {
 		return true;
 	}
 
-	final boolean addSubFlow(final SubFlow subFlow) {
+	final boolean addSubFlow(final SubFlow subFlow)
+	{
 		final SubFlowPath newPath = new SubFlowPath(subFlow.getId());
-		
+
 		if (subFlows.containsKey(newPath)) {
 			return false;
 		}
@@ -77,8 +78,9 @@ public class ConfiguredFlow extends FlowBase {
 
 		return true;
 	}
-	
-	private boolean subFlowExists(LinkedList<FlowId> currentPath) {
+
+	private boolean subFlowExists(LinkedList<FlowId> currentPath)
+	{
 		if (subFlows.containsKey(new SubFlowPath(currentPath)) == false) {
 			return false;
 		}
