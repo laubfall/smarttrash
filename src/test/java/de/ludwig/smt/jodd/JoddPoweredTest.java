@@ -22,7 +22,7 @@ public abstract class JoddPoweredTest {
 	}
 	
 	/**
-	 * Do any additional required setup for your tests here. 
+	 * Do any additional required setup for your tests here. Add this point all Jodd services are available.
 	 * @throws Exception give implementations a chance to declare exceptions rather then catch them.
 	 */
 	public abstract void setup() throws Exception;

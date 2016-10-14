@@ -28,7 +28,7 @@ public class FlowConfigService {
 	 * Save a flow config. Place and config name is defined in the jodd settings file, Properties are here: {@link PropsFlowConfig}.
 	 * @param config config to save.
 	 */
-	public final void saveFlowConfig(final Config config) {
+	public void saveFlowConfig(final Config config) {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(configFile()))) {
 			oos.writeObject(config);
 		} catch (IOException e) {
@@ -40,7 +40,7 @@ public class FlowConfigService {
 	 * Loads a config file. Does a check if there is any config file. If not this method returns an empty config object.
 	 * @return see description.
 	 */
-	public final Config loadFlowConfig() {
+	public Config loadFlowConfig() {
 		File configFile = configFile();
 		if(configFile.exists() == false) {
 			return new Config();
@@ -54,6 +54,10 @@ public class FlowConfigService {
 		}
 	}
 
+	boolean deleteFlowConfig() {
+		return configFile().delete();
+	}
+	
 	private File configFile() {
 		final String configPath = JoddPowered.settings.getValue(PropsFlowConfig.PATH.getPropName());
 		final File file = new File(configPath, JoddPowered.settings.getValue(PropsFlowConfig.NAME.getPropName()));
