@@ -46,6 +46,8 @@ public class ProxettaPetiteContainer extends PetiteContainer {
 	private final void initProxetta() {
 		ProxyAspect aspect = new ProxyAspect(AppLogAdvice.class, new AppLogPointcut());
 		proxetta = ProxyProxetta.withAspects(aspect);
+		
+		// TODO make this configurable
 		proxetta.setDebugFolder("./target");
 	}
 }
