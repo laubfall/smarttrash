@@ -28,8 +28,9 @@ public class FlowConfigServiceTest extends JoddPoweredTest
 		final FlowConfigService configService = JoddPowered.petite.getBean(FlowConfigService.class);
 		Config flowConfig = configService.loadFlowConfig();
 		Assert.assertNotNull(flowConfig);
-		Assert.assertEquals(0, flowConfig.getFlows().size());
-
+		Iterator<ConfiguredFlow> flowIterator = flowConfig.flowIterator();
+		Assert.assertFalse(flowIterator.hasNext());
+		
 		ConfiguredFlow flow = new ConfiguredFlow();
 		flowConfig.addParentFlow(flow);
 
@@ -40,8 +41,9 @@ public class FlowConfigServiceTest extends JoddPoweredTest
 
 		flowConfig = configService.loadFlowConfig();
 		Assert.assertNotNull(flowConfig);
-		Assert.assertEquals(1, flowConfig.getFlows().size());
-		final Iterator<Entry<SubFlowPath, SubFlow>> subFlowIterator = flowConfig.getFlows().get(0).subFlowIterator();
+		flowIterator = flowConfig.flowIterator();
+		Assert.assertTrue(flowIterator.hasNext());
+		final Iterator<Entry<SubFlowPath, SubFlow>> subFlowIterator = flowIterator.next().subFlowIterator();
 		Assert.assertTrue(subFlowIterator.hasNext());
 	}
 

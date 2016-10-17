@@ -2,6 +2,7 @@ package de.ludwig.smt.app.config;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,9 +56,9 @@ public class Config implements Serializable
 		return null;
 	}
 
-	public List<ConfiguredFlow> getFlows()
+	public Iterator<ConfiguredFlow> flowIterator()
 	{
-		return flows;
+		return flows.iterator();
 	}
 
 	@Override

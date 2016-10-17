@@ -58,4 +58,10 @@ public final class FlowId implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "FlowId [id=" + id + "]";
+	}
 }

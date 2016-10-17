@@ -29,4 +29,10 @@ public class FlowBase implements Serializable
 	{
 		return id;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "FlowBase [id=" + id + "]";
+	}
 }

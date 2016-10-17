@@ -37,6 +37,14 @@ public class SubFlowPath implements Serializable
 		this.path = new ArrayList<>(parent.path);
 		this.path.add(id);
 	}
+	
+	public SubFlowPath(SubFlow subFlow) {
+		this(subFlow.getId());
+	}
+	
+	public SubFlowPath(SubFlowPath parent, SubFlow subFlow) {
+		this(parent, subFlow.getId());
+	}
 
 	/**
 	 * Ad-hoc constructor. Internal use only.

@@ -19,9 +19,6 @@ public class ConfiguredFlow extends FlowBase
 	 */
 	private static final long serialVersionUID = -778492061460783490L;
 
-	// private static final transient Logger LOG =
-	// LoggerFactory.getLogger(ConfiguredFlow.class);
-
 	/**
 	 * Configuration of subflows. The key is the path-definition to the subflow. The value is the subflow itself
 	 */
@@ -35,6 +32,15 @@ public class ConfiguredFlow extends FlowBase
 	public final Iterator<Map.Entry<SubFlowPath, SubFlow>> subFlowIterator()
 	{
 		return subFlows.entrySet().iterator();
+	}
+	
+	/**
+	 * 
+	 * @param path path to look for, not optional.
+	 * @return null if there is no subflow for the given path, otherwise the searched subflow.
+	 */
+	public final SubFlow findByPath(final SubFlowPath path) {
+		return subFlows.get(path);
 	}
 
 	/**
