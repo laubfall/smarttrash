@@ -43,7 +43,7 @@ public class AppLogAdvice implements ProxyAdvice
 			Object result = ProxyTarget.invoke();
 			final int argCnt = ProxyTarget.argumentsCount();
 			final Object[] args = ProxyTarget.createArgumentsArray();
-			log.info(callStack.getCallStackName() + ":" + methodName + " executed with params: " + paramLog(argCnt, args));
+			log.info(callStack.getCallStackName() + ": " + methodName + " executed with params: " + paramLog(argCnt, args));
 			return result;
 		} catch (Exception e) {
 			log.error(callStack.getCallStackName() + ":" + "execution of requirement method " + methodName + " failed", e);
@@ -51,6 +51,7 @@ public class AppLogAdvice implements ProxyAdvice
 		} finally {
 			callStack.decrementCallCnt();
 			if(callStack.getCallStackCnt() == 0) {
+				log.info("execution duration (ms): " + callStack.getDuration());
 				// reset the callstack context because we reached the start of the logged requirement stack
 				callStackCtx.set(new CallStackContext());
 			}

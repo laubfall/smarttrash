@@ -12,14 +12,26 @@ public class CallStackContext
 
 	private final String callStackName = Thread.currentThread().getName() + "-" + System.currentTimeMillis();
 
+	private Long startedAt;
+	
+	private Long duration;
+	
 	public final void incrementCallCnt()
 	{
+		if(callStackCnt == 0){
+			startedAt = System.currentTimeMillis();
+		}
+		
 		callStackCnt++;
 	}
 
 	public final void decrementCallCnt()
 	{
 		callStackCnt--;
+		
+		if(callStackCnt == 0) {
+			duration = System.currentTimeMillis() - startedAt;
+		}
 	}
 
 	public Integer getCallStackCnt()
@@ -30,5 +42,10 @@ public class CallStackContext
 	public String getCallStackName()
 	{
 		return callStackName;
+	}
+
+	public Long getDuration()
+	{
+		return duration;
 	}
 }
