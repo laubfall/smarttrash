@@ -12,18 +12,17 @@ import org.junit.Before;
  *
  */
 public abstract class JoddPoweredTest {
-	@Before
-	public final void _setup() throws Exception {
+
+	static {
 		initPetite();
 		initProps();
 		settings.setActiveProfiles(PropsProfiles.JUNIT.getProfileName());
-		
-		setup();
 	}
-	
+		
 	/**
 	 * Do any additional required setup for your tests here. Add this point all Jodd services are available.
 	 * @throws Exception give implementations a chance to declare exceptions rather then catch them.
 	 */
+	@Before
 	public abstract void setup() throws Exception;
 }

@@ -5,18 +5,21 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.ludwig.smt.jodd.JoddPowered;
+import de.ludwig.smt.jodd.JoddPoweredTest;
+
 /**
  * Config test, testing adding Flows, SubFlow, finding Flows and SubFlows.
  * 
  * @author Daniel
  *
  */
-public class ConfigTest
+public class ConfigTest extends JoddPoweredTest
 {
 	@Test
 	public void addingFlows()
 	{
-		Config conf = new Config();
+		Config conf = JoddPowered.petite.getBean(Config.class);
 		conf.addParentFlow(new ConfiguredFlow());
 		Iterator<ConfiguredFlow> flowIterator = conf.flowIterator();
 		Assert.assertTrue(flowIterator.hasNext());
@@ -38,7 +41,7 @@ public class ConfigTest
 	@Test
 	public void addingSubFlows()
 	{
-		Config conf = new Config();
+		Config conf = JoddPowered.petite.getBean(Config.class);
 		ConfiguredFlow cf1 = new ConfiguredFlow();
 		conf.addParentFlow(cf1);
 		SubFlow sf1 = new SubFlow();
@@ -62,5 +65,11 @@ public class ConfigTest
 		
 		cf1.findByPath(new SubFlowPath(sf1_path, sf1_2));
 		Assert.assertNotNull(result);
+	}
+
+	@Override
+	public void setup() throws Exception
+	{
+		// NOOP
 	}
 }

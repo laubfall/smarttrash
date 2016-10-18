@@ -1,5 +1,6 @@
 package de.ludwig.smt.jodd;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,19 +44,28 @@ public class AppLogAdvice implements ProxyAdvice
 			Object result = ProxyTarget.invoke();
 			final int argCnt = ProxyTarget.argumentsCount();
 			final Object[] args = ProxyTarget.createArgumentsArray();
-			log.info(callStack.getCallStackName() + ": " + methodName + " executed with params: " + paramLog(argCnt, args));
+			log.info(callStackName() + methodName + " executed with params: " + paramLog(argCnt, args));
+			
+			// TODO maybe create some annotation that controls the logging of the method return value. 
+			log.info(callStackName() + "result: " + result);
 			return result;
 		} catch (Exception e) {
-			log.error(callStack.getCallStackName() + ":" + "execution of requirement method " + methodName + " failed", e);
+			log.error(callStackName() + "execution of requirement method " + methodName + " failed", e);
 			throw e;
 		} finally {
 			callStack.decrementCallCnt();
 			if(callStack.getCallStackCnt() == 0) {
-				log.info("execution duration (ms): " + callStack.getDuration());
+				log.info(callStackName() + " execution duration (ms): " + callStack.getDuration());
 				// reset the callstack context because we reached the start of the logged requirement stack
 				callStackCtx.set(new CallStackContext());
 			}
 		}
+	}
+
+	private String callStackName()
+	{
+		char[] copyOf = Arrays.copyOf(new char[]{' '}, callStackCtx.get().getCallStackCnt() + 1);
+		return callStackCtx.get().getCallStackName() + ":" + new String(copyOf);
 	}
 
 	private String paramLog(int argCnt, Object[] args)

@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.ludwig.rdd.Requirement;
+import jodd.petite.meta.PetiteBean;
+
 /**
  * Some kind of root configuration element. Containing information about the created flows and their childs.
  * 
  * @author Daniel
  *
  */
+@PetiteBean
 public class Config implements Serializable
 {
 	/**
@@ -23,7 +27,8 @@ public class Config implements Serializable
 	 */
 	private List<ConfiguredFlow> flows = new ArrayList<ConfiguredFlow>();
 
-	public final void addParentFlow(ConfiguredFlow flow)
+	@Requirement
+	public void addParentFlow(ConfiguredFlow flow)
 	{
 		flows.add(flow);
 	}
@@ -36,7 +41,8 @@ public class Config implements Serializable
 	 * @param parentPath Optional.
 	 * @return true if the subflow was successfuly added to the parent flow for a given path (if there is one)
 	 */
-	public final boolean addSubFlow(ConfiguredFlow parent, SubFlow subFlow, SubFlowPath parentPath)
+	@Requirement
+	public boolean addSubFlow(ConfiguredFlow parent, SubFlow subFlow, SubFlowPath parentPath)
 	{
 		if (parentPath == null) {
 			return parent.addSubFlow(subFlow);
@@ -50,12 +56,14 @@ public class Config implements Serializable
 	 * 
 	 * @param id the flow id.
 	 */
+	@Requirement
 	public FlowConfigInformation findById(FlowId id)
 	{
 
 		return null;
 	}
 
+	@Requirement
 	public Iterator<ConfiguredFlow> flowIterator()
 	{
 		return flows.iterator();

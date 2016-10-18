@@ -10,26 +10,28 @@ public class CallStackContext
 {
 	private Integer callStackCnt = 0;
 
+	// TODO time millis are not enough in case of methods that runs "0" millis. In such cases we cannot decide between
+	// different callstacks based on the callstack name because it is equals.
 	private final String callStackName = Thread.currentThread().getName() + "-" + System.currentTimeMillis();
 
 	private Long startedAt;
-	
+
 	private Long duration;
-	
+
 	public final void incrementCallCnt()
 	{
-		if(callStackCnt == 0){
+		if (callStackCnt == 0) {
 			startedAt = System.currentTimeMillis();
 		}
-		
+
 		callStackCnt++;
 	}
 
 	public final void decrementCallCnt()
 	{
 		callStackCnt--;
-		
-		if(callStackCnt == 0) {
+
+		if (callStackCnt == 0) {
 			duration = System.currentTimeMillis() - startedAt;
 		}
 	}
