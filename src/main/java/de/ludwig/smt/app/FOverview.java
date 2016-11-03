@@ -10,6 +10,12 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+/**
+ * Frontend Overview Functionality.
+ * 
+ * @author Daniel
+ *
+ */
 @Requirement
 @PetiteBean
 public class FOverview {
