@@ -1,6 +1,7 @@
 package de.ludwig.smt.app.config;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,13 +22,13 @@ public class ConfigTest extends JoddPoweredTest
 	{
 		Config conf = JoddPowered.petite.getBean(Config.class);
 		conf.addParentFlow(new ConfiguredFlow());
-		Iterator<ConfiguredFlow> flowIterator = conf.flowIterator();
+		Iterator<ConfiguredFlow> flowIterator = conf.parentFlowIterator();
 		Assert.assertTrue(flowIterator.hasNext());
 		flowIterator.next();
 		Assert.assertFalse(flowIterator.hasNext());
 
 		conf.addParentFlow(new ConfiguredFlow());
-		flowIterator = conf.flowIterator();
+		flowIterator = conf.parentFlowIterator();
 		FlowId id1 = flowIterator.next().getId();
 		FlowId id2 = flowIterator.next().getId();
 
@@ -45,17 +46,17 @@ public class ConfigTest extends JoddPoweredTest
 		ConfiguredFlow cf1 = new ConfiguredFlow();
 		conf.addParentFlow(cf1);
 		SubFlow sf1 = new SubFlow();
-		boolean addingResult = conf.addSubFlow(cf1, sf1, null);
-		Assert.assertTrue(addingResult);
+		Optional<SubFlowPath> addingResult = conf.addSubFlow(cf1, sf1, null);
+		Assert.assertTrue(addingResult.isPresent());
 		
 		SubFlow sf1_1 = new SubFlow();
 		SubFlowPath sf1_path = new SubFlowPath(sf1.getId());
 		addingResult = conf.addSubFlow(cf1, sf1_1, sf1_path);
-		Assert.assertTrue(addingResult);
+		Assert.assertTrue(addingResult.isPresent());
 		
 		SubFlow sf1_2 = new SubFlow();
 		addingResult = conf.addSubFlow(cf1, sf1_2, sf1_path);
-		Assert.assertTrue(addingResult);
+		Assert.assertTrue(addingResult.isPresent());
 		
 		SubFlow result = cf1.findByPath(new SubFlowPath(sf1));
 		Assert.assertNotNull(result);

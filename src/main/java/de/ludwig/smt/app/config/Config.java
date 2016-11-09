@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import de.ludwig.rdd.Requirement;
 import jodd.petite.meta.PetiteBean;
@@ -23,7 +24,7 @@ public class Config implements Serializable
 	private static final long serialVersionUID = 1473442523415540443L;
 
 	/**
-	 * All configured flows.
+	 * All configured flows. Configured flows are also known as parent flows.
 	 */
 	private List<ConfiguredFlow> flows = new ArrayList<ConfiguredFlow>();
 
@@ -42,7 +43,7 @@ public class Config implements Serializable
 	 * @return true if the subflow was successfuly added to the parent flow for a given path (if there is one)
 	 */
 	@Requirement
-	public boolean addSubFlow(ConfiguredFlow parent, SubFlow subFlow, SubFlowPath parentPath)
+	public Optional<SubFlowPath> addSubFlow(ConfiguredFlow parent, SubFlow subFlow, SubFlowPath parentPath)
 	{
 		if (parentPath == null) {
 			return parent.addSubFlow(subFlow);
@@ -52,7 +53,7 @@ public class Config implements Serializable
 
 	/**
 	 * The elasticsearch flow object only contains the flow id provided by the config flow. To get further information
-	 * about the positioning inside the flow hierachie it is necessary to make a lookup inside the flow configuration.
+	 * about the positioning inside the flow hierarchy it is necessary to make a lookup inside the flow configuration.
 	 * 
 	 * @param id the flow id.
 	 */
@@ -63,10 +64,30 @@ public class Config implements Serializable
 		return null;
 	}
 
+	/**
+	 * Initially we looking for all the parent flows that exists. This method provides access to these parent flows.
+	 * 
+	 * @return Iterator over all parent flows.
+	 */
 	@Requirement
-	public Iterator<ConfiguredFlow> flowIterator()
+	public Iterator<ConfiguredFlow> parentFlowIterator()
 	{
 		return flows.iterator();
+	}
+
+	/**
+	 * Gives you access to all the {@link SubFlow} stored under a given {@link SubFlowPath} that represents a parent
+	 * {@link SubFlow}.
+	 * 
+	 * @param path path of the parent {@link SubFlow}.
+	 * @return Iterator over all {@link SubFlow}s that are childs of the parent {@link SubFlow}.
+	 */
+	@Requirement
+	public Iterator<SubFlow> childFlowIterator(final SubFlowPath path)
+	{
+//		parentFlowIterator().forEachRemaining(action);
+		
+		return null;
 	}
 
 	@Override

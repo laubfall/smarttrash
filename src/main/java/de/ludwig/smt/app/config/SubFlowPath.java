@@ -69,11 +69,30 @@ public class SubFlowPath implements Serializable
 		path.addAll(ids);
 	}
 
-	public LinkedList<FlowId> currentPath()
+	/**
+	 * Returns the current path as a new list.
+	 * 
+	 * @return new instance of this path as a linked list. A linked list give us some advantages when operationg on flow paths. 
+	 */
+	LinkedList<FlowId> currentPath()
 	{
 		return new LinkedList<>(path);
 	}
 
+	LinkedList<FlowId> parentPath() {
+		LinkedList<FlowId> linkedList = new LinkedList<>(path);
+		if(path.size() == 1) {
+			return linkedList; 
+		}
+		
+		linkedList.pollLast();
+		return linkedList;
+	}
+	
+	SubFlowPath parentSubFlowPath() {
+		return new SubFlowPath(parentPath());
+	}
+	
 	@Override
 	public int hashCode()
 	{

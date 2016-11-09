@@ -3,7 +3,10 @@ package de.ludwig.smt.app.config;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A Flow stored in the configuration.
@@ -33,14 +36,27 @@ public class ConfiguredFlow extends FlowBase
 	{
 		return subFlows.entrySet().iterator();
 	}
-	
+
 	/**
 	 * 
 	 * @param path path to look for, not optional.
 	 * @return null if there is no subflow for the given path, otherwise the searched subflow.
 	 */
-	public final SubFlow findByPath(final SubFlowPath path) {
+	final SubFlow findByPath(final SubFlowPath path)
+	{
 		return subFlows.get(path);
+	}
+
+	/**
+	 * Find all SubFlows of a given {@link ConfiguredFlow} or {@link SubFlow}.
+	 * 
+	 * @param path Not optional. Path to the parent flow object.
+	 * @return all the child flows, never null.
+	 */
+	final List<SubFlow> findChildsByPath(final SubFlowPath path)
+	{
+		return subFlows.keySet().parallelStream().filter(subPath -> subPath.parentSubFlowPath().equals(path))
+				.map(subPath -> subFlows.get(subPath)).collect(Collectors.toList());
 	}
 
 	/**
@@ -51,38 +67,37 @@ public class ConfiguredFlow extends FlowBase
 	 *            {@link SubFlow} by yourself to the path. This is done by this method. If the path is null the new
 	 *            subflow is going to be the first subflow in the hierachy.
 	 * @param subFlow {@link SubFlow} to add.
-	 * @return false if there is already a subflow for the given path, or if the path contains {@link FlowId}s that do
-	 *         not have a {@link SubFlow}.
+	 * @return TODO javadoc
 	 */
-	final boolean addSubFlow(final SubFlowPath path, final SubFlow subFlow)
+	final Optional<SubFlowPath> addSubFlow(final SubFlowPath path, final SubFlow subFlow)
 	{
 		final SubFlowPath newPath = new SubFlowPath(path, subFlow.getId());
 		if (subFlows.containsKey(newPath)) {
-			return false;
+			return Optional.empty();
 		}
 
 		// Check the existance of flows described by the SubFlowPath
 		if (subFlowExists(path.currentPath()) == false) {
 			// TODO maybe some logging?
-			return false;
+			return Optional.empty();
 		}
 
 		subFlows.put(newPath, subFlow);
 
-		return true;
+		return Optional.of(newPath);
 	}
 
-	final boolean addSubFlow(final SubFlow subFlow)
+	final Optional<SubFlowPath> addSubFlow(final SubFlow subFlow)
 	{
 		final SubFlowPath newPath = new SubFlowPath(subFlow.getId());
 
 		if (subFlows.containsKey(newPath)) {
-			return false;
+			return Optional.empty();
 		}
 
 		subFlows.put(newPath, subFlow);
 
-		return true;
+		return Optional.of(newPath);
 	}
 
 	private boolean subFlowExists(LinkedList<FlowId> currentPath)
