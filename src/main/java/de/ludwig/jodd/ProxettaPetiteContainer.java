@@ -1,4 +1,4 @@
-package de.ludwig.smt.jodd;
+package de.ludwig.jodd;
 
 import jodd.petite.BeanDefinition;
 import jodd.petite.PetiteContainer;

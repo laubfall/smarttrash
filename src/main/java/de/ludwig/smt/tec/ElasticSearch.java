@@ -8,8 +8,8 @@ import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.PropsElasticsearchProps;
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.PropsElasticsearchProps;
 import jodd.petite.meta.PetiteBean;
 
 /**

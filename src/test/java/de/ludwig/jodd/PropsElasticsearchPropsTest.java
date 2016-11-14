@@ -1,8 +1,12 @@
-package de.ludwig.smt.jodd;
+package de.ludwig.jodd;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.PropsElasticsearchProps;
+import de.ludwig.jodd.PropsProfiles;
 
 /**
  * Load all elasticsearch properties and validate if there is a value.

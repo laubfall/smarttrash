@@ -1,6 +1,6 @@
 package de.ludwig.smt;
 
-import de.ludwig.smt.jodd.JoddPowered;
+import de.ludwig.jodd.JoddPowered;
 import de.ludwig.smt.req.backend.BApplication;
 
 /**

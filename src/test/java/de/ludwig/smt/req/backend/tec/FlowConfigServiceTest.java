@@ -6,12 +6,12 @@ import java.util.Map.Entry;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.JoddPoweredTest;
 import de.ludwig.smt.app.config.Config;
 import de.ludwig.smt.app.config.ConfiguredFlow;
 import de.ludwig.smt.app.config.SubFlow;
 import de.ludwig.smt.app.config.SubFlowPath;
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.JoddPoweredTest;
 import de.ludwig.smt.req.backend.tec.FlowConfigService;
 
 /**

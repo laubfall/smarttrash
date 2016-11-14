@@ -1,10 +1,12 @@
-package de.ludwig.smt.jodd;
+package de.ludwig.jodd;
 
-import static de.ludwig.smt.jodd.JoddPowered.initPetite;
-import static de.ludwig.smt.jodd.JoddPowered.initProps;
-import static de.ludwig.smt.jodd.JoddPowered.settings;
+import static de.ludwig.jodd.JoddPowered.initPetite;
+import static de.ludwig.jodd.JoddPowered.initProps;
+import static de.ludwig.jodd.JoddPowered.settings;
 
 import org.junit.Before;
+
+import de.ludwig.jodd.PropsProfiles;
 
 /**
  * Base Test class for unit tests that depends on jodd components like configuration and DI.

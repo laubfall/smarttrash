@@ -1,12 +1,12 @@
 package de.ludwig.smt.app;
 
-import static de.ludwig.smt.jodd.JoddPowered.petite;
+import static de.ludwig.jodd.JoddPowered.petite;
 
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import de.ludwig.smt.jodd.JoddPoweredTest;
+import de.ludwig.jodd.JoddPoweredTest;
 import de.ludwig.smt.tec.ElasticSearch;
 
 /**

@@ -1,6 +1,6 @@
 package de.ludwig.smt.req.backend;
 
-import static de.ludwig.smt.jodd.JoddPowered.petite;
+import static de.ludwig.jodd.JoddPowered.petite;
 
 import java.util.List;
 

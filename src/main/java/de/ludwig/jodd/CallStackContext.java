@@ -1,4 +1,4 @@
-package de.ludwig.smt.jodd;
+package de.ludwig.jodd;
 
 /**
  * Information about the current callstack of proxied services. Used to group calls to those services by an ID.

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.JoddPoweredTest;
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.JoddPoweredTest;
 
 /**
  * Config test, testing adding Flows, SubFlow, finding Flows and SubFlows.

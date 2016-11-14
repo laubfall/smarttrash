@@ -18,13 +18,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementExecutionException;
 import de.ludwig.smt.SmartTrashException;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.PropsElasticsearchProps;
 import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;

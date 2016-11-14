@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.PropsFlowConfig;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.SmartTrashException;
 import de.ludwig.smt.app.config.Config;
-import de.ludwig.smt.jodd.JoddPowered;
-import de.ludwig.smt.jodd.PropsFlowConfig;
 import jodd.petite.meta.PetiteBean;
 
 /**
