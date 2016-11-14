@@ -29,6 +29,9 @@ public class BApplication {
 		startElasticsearch();
 	}
 
+	/**
+	 * Register all Spark Request Handler.
+	 */
 	public final void startSpark() {
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new ThymeleafTemplateEngine());
 	}

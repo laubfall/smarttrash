@@ -49,7 +49,6 @@ public class FlowConfigService
 		File configFile = configFile();
 		if (configFile.exists() == false) {
 			return JoddPowered.petite.getBean(Config.class);
-//			return new Config();
 		}
 
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(configFile()))) {
