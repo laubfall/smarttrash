@@ -1,4 +1,4 @@
-package de.ludwig.smt.tec;
+package de.ludwig.smt.req.backend.tec;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,7 +22,6 @@ import jodd.petite.meta.PetiteBean;
  */
 @PetiteBean
 @Requirement // TODO provide specifiation for this requirement
-// TODO is that package a good place for this class? Ok, it's a technical one, but annotated with @Requirement.
 public class FlowConfigService
 {
 	/**

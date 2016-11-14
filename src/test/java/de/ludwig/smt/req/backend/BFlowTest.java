@@ -1,4 +1,4 @@
-package de.ludwig.smt.app;
+package de.ludwig.smt.req.backend;
 
 import static de.ludwig.smt.jodd.JoddPowered.petite;
 
@@ -7,8 +7,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.ludwig.smt.app.ElasticSearchTest;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
+import de.ludwig.smt.req.backend.BFlow;
 
 /**
  * BFlow Test.

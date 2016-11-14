@@ -1,4 +1,4 @@
-package de.ludwig.smt.app;
+package de.ludwig.smt.req.backend;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 

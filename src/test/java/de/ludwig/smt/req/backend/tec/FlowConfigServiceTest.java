@@ -1,4 +1,4 @@
-package de.ludwig.smt.tec;
+package de.ludwig.smt.req.backend.tec;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -12,6 +12,7 @@ import de.ludwig.smt.app.config.SubFlow;
 import de.ludwig.smt.app.config.SubFlowPath;
 import de.ludwig.smt.jodd.JoddPowered;
 import de.ludwig.smt.jodd.JoddPoweredTest;
+import de.ludwig.smt.req.backend.tec.FlowConfigService;
 
 /**
  * Test for {@link FlowConfigService}.

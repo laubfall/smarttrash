@@ -1,4 +1,4 @@
-package de.ludwig.smt.app;
+package de.ludwig.smt.req.frontend;
 
 import java.util.HashMap;
 import java.util.Map;
