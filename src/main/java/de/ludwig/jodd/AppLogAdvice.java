@@ -25,6 +25,9 @@ public class AppLogAdvice implements ProxyAdvice
 	 */
 	private Map<Class<?>, Logger> loggers = new HashMap<>();
 
+	/**
+	 * This Threadlocal contains the logging context of the current Stack.
+	 */
 	private static final ThreadLocal<CallStackContext> callStackCtx = new ThreadLocal<>();
 
 	@Override
@@ -64,6 +67,7 @@ public class AppLogAdvice implements ProxyAdvice
 
 	private String callStackName()
 	{
+		// a "graphical" representation of the depth of the callStackCount.
 		char[] copyOf = Arrays.copyOf(new char[]{' '}, callStackCtx.get().getCallStackCnt() + 1);
 		return callStackCtx.get().getCallStackName() + ":" + new String(copyOf);
 	}

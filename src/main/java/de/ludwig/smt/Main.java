@@ -1,6 +1,7 @@
 package de.ludwig.smt;
 
 import de.ludwig.jodd.JoddPowered;
+import de.ludwig.jodd.PropsProfiles;
 import de.ludwig.smt.req.backend.BApplication;
 
 /**
@@ -9,14 +10,19 @@ import de.ludwig.smt.req.backend.BApplication;
  * @author daniel
  *
  */
-public class Main extends JoddPowered {
-
-	public static void main(String[] args) {
+public class Main extends JoddPowered
+{
+	public static void main(String[] args)
+	{
 		new Main().start();
 	}
 
-	private void start() {
+	private void start()
+	{
+		initProps();
 		initPetite();
+
+		settings.setActiveProfiles(PropsProfiles.APPLICATION.getProfileName());
 
 		final BApplication bApplication = petite.getBean(BApplication.class);
 		bApplication.startApplication();

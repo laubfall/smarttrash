@@ -11,20 +11,23 @@ import jodd.proxetta.impl.ProxyProxettaBuilder;
 
 /**
  * Petite Container with Proxetta Support.
+ * 
  * @author daniel
  *
  */
-public class ProxettaPetiteContainer extends PetiteContainer {
+public class ProxettaPetiteContainer extends PetiteContainer
+{
 
 	private ProxyProxetta proxetta;
 
-	public ProxettaPetiteContainer() {	
+	public ProxettaPetiteContainer() {
 		initProxetta();
 	}
 
 	@Override
 	public BeanDefinition registerPetiteBean(Class type, String name, Class<? extends Scope> arg2, WiringMode arg3,
-			boolean arg4) {
+			boolean arg4)
+	{
 
 		if (name == null) {
 			name = PetiteUtil.resolveBeanName(type, true);
@@ -38,15 +41,18 @@ public class ProxettaPetiteContainer extends PetiteContainer {
 	}
 
 	@Override
-	public <T> T getBean(Class<T> type) {
-		// You cannot retrieve Beans by type that are proxied with Proxetta, so we forward the call to the method that expects the Class-name
+	public <T> T getBean(Class<T> type)
+	{
+		// You cannot retrieve Beans by type that are proxied with Proxetta, so we forward the call to the method that
+		// expects the Class-name
 		return super.getBean(type.getCanonicalName());
 	}
 
-	private final void initProxetta() {
+	private final void initProxetta()
+	{
 		ProxyAspect aspect = new ProxyAspect(AppLogAdvice.class, new AppLogPointcut());
 		proxetta = ProxyProxetta.withAspects(aspect);
-		
+
 		// TODO make this configurable
 		proxetta.setDebugFolder("./target");
 	}

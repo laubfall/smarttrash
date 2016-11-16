@@ -13,12 +13,23 @@ import jodd.props.Props;
  * @author daniel
  *
  */
-public abstract class JoddPowered {
+public abstract class JoddPowered
+{
+	/**
+	 * The petite container.
+	 */
 	public static PetiteContainer petite;
-	
+
+	/**
+	 * Jodd powered settings.
+	 */
 	public static Props settings;
-	
-	public static void initProps(){
+
+	/**
+	 * Init the jodd powered settings.
+	 */
+	public static void initProps()
+	{
 		settings = new Props();
 		try {
 			settings.load(JoddPowered.class.getResourceAsStream("/settings.properties"));
@@ -26,11 +37,14 @@ public abstract class JoddPowered {
 			throw new SmartTrashException("Unable to load Settings", e);
 		}
 	}
-	
-	public static void initPetite(){
+
+	/**
+	 * Init Petite.
+	 */
+	public static void initPetite()
+	{
 		petite = new ProxettaPetiteContainer();
-	    AutomagicPetiteConfigurator petiteConfigurator =
-	        new AutomagicPetiteConfigurator();
-	    petiteConfigurator.configure(petite);
+		AutomagicPetiteConfigurator petiteConfigurator = new AutomagicPetiteConfigurator();
+		petiteConfigurator.configure(petite);
 	}
 }

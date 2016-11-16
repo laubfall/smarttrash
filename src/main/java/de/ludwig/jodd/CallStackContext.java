@@ -8,6 +8,9 @@ package de.ludwig.jodd;
  */
 public class CallStackContext
 {
+	/**
+	 * Count of method calls in the current call stack. This is equivalent to the count of logged methods by {@link AppLogAdvice}.
+	 */
 	private Integer callStackCnt = 0;
 
 	// TODO time millis are not enough in case of methods that runs "0" millis. In such cases we cannot decide between

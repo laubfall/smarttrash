@@ -22,32 +22,39 @@ import spark.Response;
  */
 @Requirement
 @PetiteBean
-public class FOverview {
-	
+public class FOverview
+{
 	@PetiteInject
-	private OverviewDataService ods;
-	
-	public BiFunction<Request, Response, ModelAndView> showWelcomePage(){		
+	protected OverviewDataService ods;
+
+	public BiFunction<Request, Response, ModelAndView> showWelcomePage()
+	{
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			createFlowOverviewMenu(model);
 			createFlowOverview();
-			
+
 			return new ModelAndView(model, "index");
 		};
 	}
-	
+
 	/**
 	 * Create the menu.
+	 * 
 	 * @param model model object that contains the menu object.
+	 * @return
 	 */
-	public void createFlowOverviewMenu(Map<String, Object> model){
+	public Map<String, Object> createFlowOverviewMenu(Map<String, Object> model)
+	{
 		final List<MenuEntry> createFlowOverviewMenu = ods.createFlowOverviewMenu();
 		model.put("menu", createFlowOverviewMenu);
+		model.put("test", "hello world");
+		return model;
 	}
-	
-	public Map<String, Object> createFlowOverview(){
-		
+
+	public Map<String, Object> createFlowOverview()
+	{
+
 		return null;
 	}
 }
