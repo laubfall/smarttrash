@@ -1,15 +1,9 @@
 package de.ludwig.smt.req.backend;
 
-import java.util.HashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.FOverview;
 import de.ludwig.smt.tec.ElasticSearch;
-import jodd.json.JsonSerializer;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;
@@ -30,9 +24,7 @@ public class BApplication
 	protected ElasticSearch es;
 
 	@PetiteInject
-	protected FOverview fOverview;
-
-	private static Logger LOG = LoggerFactory.getLogger(BApplication.class); 
+	protected FOverview fOverview; 
 	
 	public void startApplication()
 	{
@@ -45,13 +37,16 @@ public class BApplication
 	 */
 	public final void startSpark()
 	{
+		// New logging context with every request
 		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 		
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new HandlebarsTemplateEngine());
-		
-		Spark.after((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
-		
+
+		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));
+		
+		// Cleanup after a request-response-cycle
+		Spark.after((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 	}
 
 	public final void startElasticsearch()
@@ -59,7 +54,11 @@ public class BApplication
 		es.startElasticsearch();
 	}
 	
+	/**
+	 * Does nothing, but the call is logged by logging framework.
+	 * @param e exception to handle.
+	 */
 	public void handleSparkRoutingException(Exception e) {
-
+		// NOOP
 	}
 }
