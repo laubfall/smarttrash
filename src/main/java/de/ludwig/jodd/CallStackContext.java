@@ -21,6 +21,11 @@ public class CallStackContext
 
 	private Long duration;
 
+	/**
+	 * This Threadlocal contains the logging context of the current Stack.
+	 */
+	public static final ThreadLocal<CallStackContext> callStackCtx = new ThreadLocal<>();
+	
 	public final void incrementCallCnt()
 	{
 		if (callStackCnt == 0) {

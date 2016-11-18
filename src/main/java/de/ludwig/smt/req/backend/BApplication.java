@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.FOverview;
 import de.ludwig.smt.tec.ElasticSearch;
@@ -44,7 +45,11 @@ public class BApplication
 	 */
 	public final void startSpark()
 	{
+		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
+		
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new HandlebarsTemplateEngine());
+		
+		Spark.after((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 		
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));
 	}

@@ -25,17 +25,14 @@ public class AppLogAdvice implements ProxyAdvice
 	 */
 	private Map<Class<?>, Logger> loggers = new HashMap<>();
 
-	/**
-	 * This Threadlocal contains the logging context of the current Stack.
-	 */
-	private static final ThreadLocal<CallStackContext> callStackCtx = new ThreadLocal<>();
-
 	@Override
 	public Object execute() throws Exception
 	{
 		final Logger log = nullSafeGetLogger(ProxyTarget.targetClass());
 		final String methodName = ProxyTarget.targetMethodName();
 
+		
+		ThreadLocal<CallStackContext> callStackCtx = CallStackContext.callStackCtx;
 		if(callStackCtx.get() == null) {
 			callStackCtx.set(new CallStackContext());
 		}
@@ -60,13 +57,15 @@ public class AppLogAdvice implements ProxyAdvice
 			if(callStack.getCallStackCnt() == 0) {
 				log.info(callStackName() + " execution duration (ms): " + callStack.getDuration());
 				// reset the callstack context because we reached the start of the logged requirement stack
-				callStackCtx.set(new CallStackContext());
+//				callStackCtx.set(new CallStackContext());
 			}
 		}
 	}
 
 	private String callStackName()
 	{
+		ThreadLocal<CallStackContext> callStackCtx = CallStackContext.callStackCtx;
+		
 		// a "graphical" representation of the depth of the callStackCount.
 		char[] copyOf = Arrays.copyOf(new char[]{' '}, callStackCtx.get().getCallStackCnt() + 1);
 		return callStackCtx.get().getCallStackName() + ":" + new String(copyOf);
