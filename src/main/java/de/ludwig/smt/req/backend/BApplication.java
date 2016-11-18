@@ -37,6 +37,8 @@ public class BApplication
 	 */
 	public final void startSpark()
 	{
+		Spark.staticFileLocation("web");
+		
 		// New logging context with every request
 		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 		
