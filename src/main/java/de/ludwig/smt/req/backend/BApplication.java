@@ -7,7 +7,7 @@ import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;
-import spark.template.handlebars.HandlebarsTemplateEngine;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 /**
  * Everything to start the whole application.
@@ -40,7 +40,7 @@ public class BApplication
 		// New logging context with every request
 		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 		
-		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new HandlebarsTemplateEngine());
+		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new ThymeleafTemplateEngine());
 
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));

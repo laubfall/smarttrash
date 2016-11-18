@@ -34,7 +34,8 @@ public class FOverview
 			createFlowOverviewMenu(model);
 			createFlowOverview();
 
-			return new ModelAndView(model, "index");
+			model.put("template", "index");
+			return new ModelAndView(model, "main");
 		};
 	}
 
