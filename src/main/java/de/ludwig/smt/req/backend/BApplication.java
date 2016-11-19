@@ -3,6 +3,7 @@ package de.ludwig.smt.req.backend;
 import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.FOverview;
+import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
@@ -26,6 +27,9 @@ public class BApplication
 	@PetiteInject
 	protected FOverview fOverview; 
 	
+	@PetiteInject
+	protected ModalService modalService;
+	
 	public void startApplication()
 	{
 		startSpark();
@@ -42,7 +46,9 @@ public class BApplication
 		// New logging context with every request
 		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 		
-		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), new ThymeleafTemplateEngine());
+		final ThymeleafTemplateEngine thymeLeafEngine = new ThymeleafTemplateEngine();
+		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), thymeLeafEngine);
+		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));

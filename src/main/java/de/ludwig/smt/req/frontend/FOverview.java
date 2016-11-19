@@ -31,7 +31,7 @@ public class FOverview
 	{
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
-			createFlowOverviewMenu(model);
+			createMenu(model);
 			createFlowOverview();
 
 			model.put("template", "index");
@@ -45,7 +45,7 @@ public class FOverview
 	 * @param model model object that contains the menu object.
 	 * @return
 	 */
-	public Map<String, Object> createFlowOverviewMenu(Map<String, Object> model)
+	public Map<String, Object> createMenu(Map<String, Object> model)
 	{
 		final List<MenuEntry> createFlowOverviewMenu = ods.createFlowOverviewMenu();
 		model.put("menu", createFlowOverviewMenu);
