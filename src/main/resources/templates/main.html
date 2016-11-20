@@ -26,20 +26,12 @@
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 	
-<script type="text/javascript">
-function modal(name) {
-	$.get('/modal/' + name, function(data) {
-		$('#modal').html(data)
-	})
-}
-</script>
-	
+<script src="js/stModal.js"></script>	
 </head>
 <body>
 
 	<div th:replace="header :: header"></div>
 
-	
 	<div class="container" th:insert="${template} :: content"></div>
 
 	<div th:replace="footer :: footer"></div>
