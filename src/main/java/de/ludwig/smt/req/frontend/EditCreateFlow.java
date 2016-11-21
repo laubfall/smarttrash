@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.tec.frontend.FormMessage;
+import de.ludwig.smt.tec.frontend.ModalFormResult;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import jodd.petite.meta.PetiteBean;
 import spark.ModelAndView;
@@ -26,8 +28,22 @@ public class EditCreateFlow implements ModalProvider
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			model.put("modalContent", "editCreateFlow");
-			return new ModelAndView(model , "modal");
+			
+			
+			// TODO Testcode
+			model.put("input_name_state", "has-warning");
+			ModalFormResult modalFormResult = new ModalFormResult();
+			modalFormResult.addMessage(new FormMessage("hello", 3));
+			model.put("model", modalFormResult);
+			return new ModelAndView(model, "modal");
 		};
+	}
+
+	public ModalFormResult saveFlow()
+	{
+		final ModalFormResult result = new ModalFormResult();
+		result.addMessage(new FormMessage("fjdsljf", 3));
+		return result;
 	}
 
 	@Override

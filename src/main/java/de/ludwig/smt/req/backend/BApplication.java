@@ -2,9 +2,11 @@ package de.ludwig.smt.req.backend;
 
 import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.req.frontend.EditCreateFlow;
 import de.ludwig.smt.req.frontend.FOverview;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
+import de.ludwig.smt.tec.frontend.JsonResponseTransformer;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;
@@ -30,6 +32,9 @@ public class BApplication
 	@PetiteInject
 	protected ModalService modalService;
 	
+	@PetiteInject
+	protected EditCreateFlow editCreateFlow;
+	
 	public void startApplication()
 	{
 		startSpark();
@@ -50,6 +55,9 @@ public class BApplication
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), thymeLeafEngine);
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
+		// Form Handlers
+		Spark.post("/editCreateFlow", "application/json", (req, res) -> editCreateFlow.saveFlow(), new JsonResponseTransformer());
+		
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));
 		
