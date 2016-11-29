@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalFormResult;
 import de.ludwig.smt.tec.frontend.ModalProvider;
@@ -28,22 +29,23 @@ public class EditCreateFlow implements ModalProvider
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			model.put("modalContent", "editCreateFlow");
-			
-			
-			// TODO Testcode
-			model.put("input_name_state", "has-warning");
-			ModalFormResult modalFormResult = new ModalFormResult();
+			ModalFormResult modalFormResult = new EditCreateFlowModel();
 			modalFormResult.addMessage(new FormMessage("hello", 3));
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");
 		};
 	}
 
-	public ModalFormResult saveFlow()
+	public BiFunction<Request, Response, ModelAndView> saveFlow()
 	{
-		final ModalFormResult result = new ModalFormResult();
-		result.addMessage(new FormMessage("fjdsljf", 3));
-		return result;
+		return (req, res) -> {			
+			final Map<String, Object> model = new HashMap<>();
+			model.put("modalContent", "editCreateFlow");
+			ModalFormResult modalFormResult = new EditCreateFlowModel();
+			modalFormResult.addMessage(new FormMessage("saved", 1));
+			model.put("model", modalFormResult);
+			return new ModelAndView(model, "modal");
+		};
 	}
 
 	@Override

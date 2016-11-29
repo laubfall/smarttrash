@@ -56,7 +56,7 @@ public class BApplication
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
 		// Form Handlers
-		Spark.post("/editCreateFlow", "application/json", (req, res) -> editCreateFlow.saveFlow(), new JsonResponseTransformer());
+		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res), thymeLeafEngine);
 		
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));

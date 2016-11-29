@@ -9,6 +9,7 @@ import java.util.Set;
  * @author Daniel
  *
  */
+// TODO better name? Isn't that some kind of model?
 public abstract class AjaxFormSubmitResult implements Serializable
 {
 	/**

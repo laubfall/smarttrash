@@ -14,8 +14,9 @@ function modal(name) {
 		
 		$("#stModalForm").submit(function(event) {
 			 $.post($(this).attr('action'), $(this).serialize(), function(response){
-		            $(this).find('#test').append(response.test)
-		      },'json');
+				 // change the "replaceable" part. This is done because of components with js appended inside the modal (e.g. the submit button).
+				 $('#replaceable').empty().append($(response).find('#replaceable'))
+		      },'html');
 		      return false;
 		});
 	})
