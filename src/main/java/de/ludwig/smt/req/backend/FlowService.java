@@ -23,8 +23,11 @@ import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementExecutionException;
 import de.ludwig.smt.SmartTrashException;
+import de.ludwig.smt.app.config.Config;
+import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
+import de.ludwig.smt.req.backend.tec.FlowConfigService;
 import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
@@ -37,14 +40,19 @@ import jodd.petite.meta.PetiteInject;
  */
 @Requirement
 @PetiteBean
-public class BFlow {
+public class FlowService
+{
 
 	private String indexName = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
 
 	@PetiteInject
 	protected ElasticSearch es;
 
-	public List<Hit<Flow>> loadFlows() {
+	@PetiteInject
+	protected FlowConfigService flowConfig;
+
+	public List<Hit<Flow>> loadFlows()
+	{
 		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName).setTypes("flow").get();
 		final List<Hit<Flow>> result = new ArrayList<>();
 
@@ -63,8 +71,21 @@ public class BFlow {
 		return result;
 	}
 
-	public String createFlow(final Flow flow) {
-
+	/**
+	 * Creates a new flow.
+	 * 
+	 * @param required. flow the flow to create. TODO check if the parameter is set.
+	 * @param parents optional. List of IDs that represents the chain of parent flows.
+	 * @return TODO only the id as return value?
+	 */
+	public String saveFlow(final Flow flow, final List<FlowId> parents)
+	{
+		validateFlow();
+		
+//		Config config;
+//		flowConfig.saveFlowConfig(config);
+		flowConfig.createFlow(flow, parents);
+		
 		final IndexRequest request = es.esClient().prepareIndex(indexName, "flow").setSource(toElasticSearch(flow))
 				.request() //
 				.refresh(true); // in case of an immediately call to loadFlows,
@@ -77,12 +98,21 @@ public class BFlow {
 			throw new RequirementExecutionException(e);
 		}
 	}
+
+	public void createFlow() {
+		
+	}
 	
-	public void updateFlow(final Flow flow){
+	public void updateFlow() {
+		
+	}
+	
+	public void validateFlow() {
 		
 	}
 
-	private Flow fromElasticSearch(BytesReference ref) throws JsonParseException, JsonMappingException, IOException {
+	private Flow fromElasticSearch(BytesReference ref) throws JsonParseException, JsonMappingException, IOException
+	{
 		// ObjectMapper om = new ObjectMapper();
 		ObjectMapper om = new ObjectMapper();
 
@@ -90,14 +120,12 @@ public class BFlow {
 		return readValue;
 
 	}
-	
-	private BytesReference toElasticSearch(final Flow flow){
+
+	private BytesReference toElasticSearch(final Flow flow)
+	{
 
 		try {
-			XContentBuilder builder = jsonBuilder()
-			    .startObject()
-			        .field("name", flow.getName())
-			    .endObject();
+			XContentBuilder builder = jsonBuilder().startObject().field("name", flow.getName()).endObject();
 			return builder.bytes();
 		} catch (IOException e) {
 			throw new SmartTrashException(e);

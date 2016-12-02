@@ -40,4 +40,14 @@ public class Flow {
 		// TODO recreate with new properties
 		return "Flow [name=" + name + "]";
 	}
+
+	public FlowId getId()
+	{
+		return id;
+	}
+
+	public void setId(FlowId id)
+	{
+		this.id = id;
+	}
 }

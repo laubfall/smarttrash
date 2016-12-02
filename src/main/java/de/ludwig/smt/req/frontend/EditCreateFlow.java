@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.app.data.Flow;
+import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalFormResult;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import jodd.petite.meta.PetiteBean;
+import jodd.petite.meta.PetiteInject;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -24,6 +29,9 @@ import spark.Response;
 @Requirement
 public class EditCreateFlow implements ModalProvider
 {
+	@PetiteInject
+	protected FlowService flowService;
+	
 	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
 	{
 		return (req, res) -> {
@@ -38,10 +46,18 @@ public class EditCreateFlow implements ModalProvider
 
 	public BiFunction<Request, Response, ModelAndView> saveFlow()
 	{
-		return (req, res) -> {			
+		return (req, res) -> {
+			// TODO convert req
+			Flow convertValue = new Flow();
+			
+			// TODO validate and reflect result
+			flowService.saveFlow(convertValue, null);
+			
+			
 			final Map<String, Object> model = new HashMap<>();
 			model.put("modalContent", "editCreateFlow");
 			ModalFormResult modalFormResult = new EditCreateFlowModel();
+			
 			modalFormResult.addMessage(new FormMessage("saved", 1));
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");

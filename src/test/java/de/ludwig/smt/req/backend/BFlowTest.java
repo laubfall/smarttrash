@@ -10,7 +10,7 @@ import org.junit.Test;
 import de.ludwig.smt.app.ElasticSearchTest;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
-import de.ludwig.smt.req.backend.BFlow;
+import de.ludwig.smt.req.backend.FlowService;
 
 /**
  * BFlow Test.
@@ -19,7 +19,7 @@ import de.ludwig.smt.req.backend.BFlow;
  *
  */
 public class BFlowTest extends ElasticSearchTest {
-	private BFlow bFlow;
+	private FlowService bFlow;
 
 	@Test
 	public void createAndLoadFlow() throws InterruptedException {
@@ -40,6 +40,6 @@ public class BFlowTest extends ElasticSearchTest {
 
 	@Override
 	public void setup() {
-		bFlow = petite.getBean(BFlow.class);
+		bFlow = petite.getBean(FlowService.class);
 	}
 }
