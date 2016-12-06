@@ -13,6 +13,7 @@ import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalFormResult;
 import de.ludwig.smt.tec.frontend.ModalProvider;
+import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.ModelAndView;
@@ -50,7 +51,11 @@ public class EditCreateFlow implements ModalProvider
 			// TODO convert req
 			Flow convertValue = new Flow();
 			
-			// TODO validate and reflect result
+			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
+			if(validateFlow.isValid() == false) {
+				return displayValidationMessage().apply(req, res);
+			}
+			
 			flowService.saveFlow(convertValue, null);
 			
 			
@@ -61,9 +66,15 @@ public class EditCreateFlow implements ModalProvider
 			modalFormResult.addMessage(new FormMessage("saved", 1));
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");
+			
 		};
 	}
 
+	public BiFunction<Request, Response, ModelAndView> displayValidationMessage() {
+		
+		return null;
+	}
+	
 	@Override
 	public BiFunction<Request, Response, ModelAndView> modal()
 	{

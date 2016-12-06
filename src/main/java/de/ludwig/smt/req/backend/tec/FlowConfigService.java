@@ -78,6 +78,10 @@ public class FlowConfigService
 
 	}
 
+	public boolean isNewFlow() {
+		return false;
+	}
+	
 	boolean deleteFlowConfig()
 	{
 		return configFile().delete();

@@ -25,13 +25,13 @@ public class BFlowTest extends ElasticSearchTest {
 	public void createAndLoadFlow() throws InterruptedException {
 		final Flow flow = new Flow("createAndLoadFlow");
 
-		bFlow.createFlow(flow);
+		bFlow.saveFlow(flow, null);
 
 		List<Hit<Flow>> loadFlows = bFlow.loadFlows();
 		Assert.assertFalse(loadFlows.isEmpty());
 		Assert.assertEquals(1, loadFlows.size());
 		
-		bFlow.createFlow(flow);
+		bFlow.saveFlow(flow, null);
 		
 		loadFlows = bFlow.loadFlows();
 		Assert.assertFalse(loadFlows.isEmpty());
