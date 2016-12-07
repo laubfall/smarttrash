@@ -23,7 +23,7 @@ public class FlowTest
 		Assert.assertTrue(elasticSearch.contains("jfldsj fdjlsjf jfldsj"));
 		System.out.println(elasticSearch);
 		
-		Flow fromElasticSearch = Flow.fromElasticSearch(elasticSearch);
+		Flow fromElasticSearch = Flow.fromJson(elasticSearch);
 		Assert.assertNotNull(fromElasticSearch);
 		Assert.assertEquals(fromElasticSearch, f);
 	}

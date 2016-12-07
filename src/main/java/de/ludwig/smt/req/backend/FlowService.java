@@ -38,9 +38,14 @@ import spark.utils.StringUtils;
 @PetiteBean
 public class FlowService
 {
-
+	/**
+	 * ES Index-Name for the Flow.
+	 */
 	private String indexName = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
 
+	/**
+	 * ES Type description for the Flow.
+	 */
 	private static String esFlowType = "flow";
 
 	@PetiteInject
@@ -69,17 +74,9 @@ public class FlowService
 
 	public void createFlow(final Flow flow, final List<FlowId> parents)
 	{
-
-		final IndexRequest request = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
+		es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
 				.request() //
 				.refresh(true); // in case of an immediately call to loadFlows,
-								// otherwise we will not find any result.
-		final ActionFuture<IndexResponse> indexFuture = es.esClient().index(request);
-		try {
-			final IndexResponse response = indexFuture.get();
-		} catch (InterruptedException | ExecutionException e) {
-			throw new RequirementExecutionException(e);
-		}
 
 		flowConfig.createFlow(flow, parents);
 	}
@@ -125,7 +122,7 @@ public class FlowService
 		searchResponse.getHits().forEach(hit -> {
 			Hit<Flow> hitR = new Hit<>();
 			hitR.setDocumentId(hit.getId());
-			hitR.setDocument(Flow.fromElasticSearch(hit.getSourceRef().toUtf8()));
+			hitR.setDocument(Flow.fromJson(hit.getSourceRef().toUtf8()));
 			result.add(hitR);
 		});
 		;

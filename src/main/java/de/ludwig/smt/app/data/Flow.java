@@ -58,8 +58,7 @@ public class Flow
 	@Override
 	public String toString()
 	{
-		// TODO recreate with new properties
-		return "Flow [name=" + name + "]";
+		return "Flow [name=" + name + ", id=" + id + "]";
 	}
 
 	@Override
@@ -107,7 +106,7 @@ public class Flow
 		return js.serialize(flow);
 	}
 
-	public static Flow fromElasticSearch(String ref)
+	public static Flow fromJson(String ref)
 	{
 		JsonParser jsonParser = JsonParser.create();
 		return jsonParser.parse(ref, Flow.class);
