@@ -2,6 +2,7 @@ package de.ludwig.smt.req.backend;
 
 import static de.ludwig.jodd.JoddPowered.petite;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -13,18 +14,18 @@ import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
 
 /**
- * BFlow Test.
+ * Testing flow service functionality.
  * 
  * @author daniel
  *
  */
-public class BFlowTest extends ElasticSearchTest {
+public class FlowServiceTest extends ElasticSearchTest {
 	private FlowService bFlow;
 
 	@Test
 	public void createAndLoadFlow() throws InterruptedException {
 		final Flow flow = new Flow("createAndLoadFlow");
-
+		flow.setDescription("a flow create by FlowServiceTest");
 		bFlow.saveFlow(flow, null);
 
 		List<Hit<Flow>> loadFlows = bFlow.loadFlows();
@@ -39,7 +40,8 @@ public class BFlowTest extends ElasticSearchTest {
 	}
 
 	@Override
-	public void setup() {
+	public void setup() throws IOException {
+		super.setup();
 		bFlow = petite.getBean(FlowService.class);
 	}
 }

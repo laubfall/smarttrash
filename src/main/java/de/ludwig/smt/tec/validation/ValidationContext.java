@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * 
@@ -40,5 +42,9 @@ public class ValidationContext<VO>
 		}
 		
 		return false;
+	}
+	
+	public Set<Entry<String, List<ValidationMessage>>> messages() {
+		return messages.entrySet();
 	}
 }

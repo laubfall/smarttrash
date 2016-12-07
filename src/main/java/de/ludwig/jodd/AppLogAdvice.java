@@ -41,13 +41,14 @@ public class AppLogAdvice implements ProxyAdvice
 		
 		try {
 			callStack.incrementCallCnt();
-			Object result = ProxyTarget.invoke();
+			final String targetClassName = ProxyTarget.targetClass().getSimpleName();
 			final int argCnt = ProxyTarget.argumentsCount();
 			final Object[] args = ProxyTarget.createArgumentsArray();
-			log.info(callStackName() + methodName + " executed with params: " + paramLog(argCnt, args));
+			log.info(callStackName() + "execute " + targetClassName + "." + methodName + " with params: " + paramLog(argCnt, args));
+			Object result = ProxyTarget.invoke();
 			
 			// TODO maybe create some annotation that controls the logging of the method return value. 
-			log.info(callStackName() + "result: " + result);
+			log.info(callStackName() + targetClassName + "." + methodName + " result: " + result);
 			return result;
 		} catch (Exception e) {
 			log.error(callStackName() + "execution of requirement method " + methodName + " failed", e);
@@ -56,19 +57,18 @@ public class AppLogAdvice implements ProxyAdvice
 			callStack.decrementCallCnt();
 			if(callStack.getCallStackCnt() == 0) {
 				log.info(callStackName() + " execution duration (ms): " + callStack.getDuration());
+				// TODO why is the following code not active
 				// reset the callstack context because we reached the start of the logged requirement stack
-//				callStackCtx.set(new CallStackContext());
+				// callStackCtx.set(new CallStackContext());
 			}
 		}
 	}
 
 	private String callStackName()
 	{
-		ThreadLocal<CallStackContext> callStackCtx = CallStackContext.callStackCtx;
-		
-		// a "graphical" representation of the depth of the callStackCount.
-		char[] copyOf = Arrays.copyOf(new char[]{' '}, callStackCtx.get().getCallStackCnt() + 1);
-		return callStackCtx.get().getCallStackName() + ":" + new String(copyOf);
+		final ThreadLocal<CallStackContext> callStackCtx = CallStackContext.callStackCtx;
+		String format = String.format("%1$" + (callStackCtx.get().getCallStackCnt() + 1) + "s", " ");
+		return callStackCtx.get().getCallStackName() + ":" + format;
 	}
 
 	private String paramLog(int argCnt, Object[] args)
@@ -77,7 +77,7 @@ public class AppLogAdvice implements ProxyAdvice
 			return "no params";
 		}
 
-		final String result = StringUtil.join(args, "\n");
+		final String result = "\n" + StringUtil.join(args, "\n");
 		return result;
 	}
 

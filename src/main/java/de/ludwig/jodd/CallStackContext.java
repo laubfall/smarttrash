@@ -9,7 +9,8 @@ package de.ludwig.jodd;
 public class CallStackContext
 {
 	/**
-	 * Count of method calls in the current call stack. This is equivalent to the count of logged methods by {@link AppLogAdvice}.
+	 * Count of method calls in the current call stack. This is equivalent to the count of logged methods by
+	 * {@link AppLogAdvice}.
 	 */
 	private Integer callStackCnt = 0;
 
@@ -25,7 +26,10 @@ public class CallStackContext
 	 * This Threadlocal contains the logging context of the current Stack.
 	 */
 	public static final ThreadLocal<CallStackContext> callStackCtx = new ThreadLocal<>();
-	
+
+	/**
+	 * Increment current callstack count and set the field {@link #startedAt} when this callstack is new.
+	 */
 	public final void incrementCallCnt()
 	{
 		if (callStackCnt == 0) {
