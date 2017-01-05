@@ -2,6 +2,7 @@ package de.ludwig.smt.tec;
 
 import java.io.File;
 
+import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
@@ -36,10 +37,25 @@ public class ElasticSearch
 
 		// Prepare the index so we do not get an IndexNotFoundException if the index does not exist.
 		final String idx = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
-		final IndicesExistsResponse indicesExistsResponse = node.client().admin().indices().prepareExists(idx).get();
-		if (indicesExistsResponse.isExists() == false) {
-			node.client().admin().indices().prepareCreate(idx).get();
-		}
+		
+		
+		node.client().admin().indices().prepareExists(idx).execute(new ActionListener<IndicesExistsResponse>() {
+
+			@Override
+			public void onResponse(IndicesExistsResponse response)
+			{
+				if (response.isExists() == false) {
+					node.client().admin().indices().prepareCreate(idx).get();
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable e)
+			{
+				// TODO Logging
+			}
+		});
+		
 	}
 
 	private NodeBuilder nodeBuilder()

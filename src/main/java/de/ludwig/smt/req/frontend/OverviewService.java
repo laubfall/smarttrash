@@ -26,7 +26,7 @@ import spark.Response;
  */
 @Requirement
 @PetiteBean
-public class FOverview
+public class OverviewService
 {
 	@PetiteInject
 	protected OverviewDataService ods;

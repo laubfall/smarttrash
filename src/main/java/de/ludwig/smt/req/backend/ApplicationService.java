@@ -2,8 +2,8 @@ package de.ludwig.smt.req.backend;
 
 import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
-import de.ludwig.smt.req.frontend.EditCreateFlow;
-import de.ludwig.smt.req.frontend.FOverview;
+import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
+import de.ludwig.smt.req.frontend.OverviewService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
@@ -26,13 +26,13 @@ public class ApplicationService
 	protected ElasticSearch es;
 
 	@PetiteInject
-	protected FOverview fOverview; 
+	protected OverviewService fOverview; 
 	
 	@PetiteInject
 	protected ModalService modalService;
 	
 	@PetiteInject
-	protected EditCreateFlow editCreateFlow;
+	protected EditCreateFlowViewService editCreateFlow;
 	
 	public void startApplication()
 	{

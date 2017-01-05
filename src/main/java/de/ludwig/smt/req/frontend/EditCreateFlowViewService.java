@@ -27,13 +27,13 @@ import spark.Response;
  */
 @PetiteBean
 @Requirement
-public class EditCreateFlow implements ModalProvider
+public class EditCreateFlowViewService implements ModalProvider
 {
 	@PetiteInject
 	protected FlowService flowService;
 
 	@PetiteInject
-	protected FOverview overviewService;
+	protected OverviewService overviewService;
 
 	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
 	{
@@ -52,10 +52,11 @@ public class EditCreateFlow implements ModalProvider
 		return (req, res) -> {
 			// TODO convert req
 			final Flow convertValue = new Flow();
-			convertValue.setDescription(req.params().get("description"));
-			convertValue.setName(req.params().get("name"));
-			// TODO map the id. How without breaking the flowid mechanism?
+			convertValue.setDescription(req.queryMap("description").value());
+			convertValue.setName(req.queryMap("name").value());
+			// TODO map the id. How without breaking the flowid mechanism? Maybe send the FlowId of the orginal object as json.
 //			convertValue.setId(FlowId.);
+			convertValue.setId(new FlowId());
 			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
 			if (validateFlow.isValid() == false) {
 				return displayValidationMessage(validateFlow);

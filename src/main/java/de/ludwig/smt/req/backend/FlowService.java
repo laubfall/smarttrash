@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TypeQueryBuilder;
 
@@ -72,12 +75,12 @@ public class FlowService
 	public void createFlow(final Flow flow, final List<FlowId> parents)
 	{
 		final FlowBase flowBase = flowConfig.createFlow(parents);
-		
+
 		flow.setId(flowBase.getId());
-		
-		es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
-				.request() //
-				.refresh(true); // in case of an immediately call to loadFlows,
+
+		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow)).setRefresh(true).get();
+
+		// .refresh(true); // in case of an immediately call to loadFlows,
 
 	}
 
@@ -123,7 +126,8 @@ public class FlowService
 	 */
 	public List<Hit<Flow>> loadFlows()
 	{
-		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName).setTypes(esFlowType).get();
+		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName).setQuery(new TypeQueryBuilder(esFlowType))
+				.setTypes(esFlowType).get();
 		final List<Hit<Flow>> result = new ArrayList<>();
 
 		searchResponse.getHits().forEach(hit -> {

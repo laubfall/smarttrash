@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.rdd.Requirement;
-import de.ludwig.smt.req.frontend.EditCreateFlow;
+import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import jodd.petite.meta.PetiteBean;
 import spark.ModelAndView;
@@ -26,7 +26,7 @@ public class ModalService
 	private static Map<String, Class<? extends ModalProvider>> modalProviders = new HashMap<>();
 
 	static {
-		modalProviders.put("editCreateFlow", EditCreateFlow.class);
+		modalProviders.put("editCreateFlow", EditCreateFlowViewService.class);
 	}
 
 	public BiFunction<Request, Response, ModelAndView> openModal()
