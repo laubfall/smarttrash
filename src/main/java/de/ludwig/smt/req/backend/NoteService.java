@@ -1,5 +1,5 @@
 package de.ludwig.smt.req.backend;
 
-public class BNote {
+public class NoteService {
 
 }

@@ -40,7 +40,8 @@ public class EditCreateFlow implements ModalProvider
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			model.put("modalContent", "editCreateFlow");
-			ModalFormResult modalFormResult = new EditCreateFlowModel();
+			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+			modalFormResult.setFlow(new Flow());
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");
 		};

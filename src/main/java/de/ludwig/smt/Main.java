@@ -2,7 +2,7 @@ package de.ludwig.smt;
 
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsProfiles;
-import de.ludwig.smt.req.backend.BApplication;
+import de.ludwig.smt.req.backend.ApplicationService;
 
 /**
  * Smarttrash App, starts the webserver and elasticsearch.
@@ -24,7 +24,7 @@ public class Main extends JoddPowered
 
 		settings.setActiveProfiles(PropsProfiles.APPLICATION.getProfileName());
 
-		final BApplication bApplication = petite.getBean(BApplication.class);
+		final ApplicationService bApplication = petite.getBean(ApplicationService.class);
 		bApplication.startApplication();
 	}
 

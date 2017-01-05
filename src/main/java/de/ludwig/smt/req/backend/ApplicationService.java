@@ -19,7 +19,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
  */
 @Requirement
 @PetiteBean
-public class BApplication
+public class ApplicationService
 {
 
 	@PetiteInject
