@@ -6,7 +6,6 @@ import de.ludwig.smt.req.frontend.EditCreateFlow;
 import de.ludwig.smt.req.frontend.FOverview;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
-import de.ludwig.smt.tec.frontend.JsonResponseTransformer;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;

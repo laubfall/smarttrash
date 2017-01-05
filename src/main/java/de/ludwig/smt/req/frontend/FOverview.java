@@ -4,8 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.app.data.Flow;
+import de.ludwig.smt.app.data.Hit;
+import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.req.frontend.tec.MenuEntry;
 import de.ludwig.smt.req.frontend.tec.OverviewDataService;
 import jodd.petite.meta.PetiteBean;
@@ -27,12 +31,15 @@ public class FOverview
 	@PetiteInject
 	protected OverviewDataService ods;
 
+	@PetiteInject
+	protected FlowService flowService;
+	
 	public BiFunction<Request, Response, ModelAndView> showWelcomePage()
 	{
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			createMenu(model);
-			createFlowOverview();
+			model.putAll(createFlowOverview());
 
 			model.put("template", "index");
 			return new ModelAndView(model, "main");
@@ -52,10 +59,18 @@ public class FOverview
 		model.put("test", "hello world");
 		return model;
 	}
-	
+
+	/**
+	 * Prepares flow data for the overview.
+	 * 
+	 * @return Map with one entry "flows";
+	 */
 	public Map<String, Object> createFlowOverview()
 	{
-
-		return null;
+		final List<Hit<Flow>> loadFlows = flowService.loadFlows();
+		List<Flow> collect = loadFlows.parallelStream().map(flowHit -> flowHit.getDocument()).collect(Collectors.toList());
+		final Map<String, Object> fmo = new HashMap<>();
+		fmo.put("flows", collect);
+		return fmo;
 	}
 }

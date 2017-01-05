@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
+import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
@@ -49,8 +50,11 @@ public class EditCreateFlow implements ModalProvider
 	{
 		return (req, res) -> {
 			// TODO convert req
-			Flow convertValue = new Flow();
-
+			final Flow convertValue = new Flow();
+			convertValue.setDescription(req.params().get("description"));
+			convertValue.setName(req.params().get("name"));
+			// TODO map the id. How without breaking the flowid mechanism?
+//			convertValue.setId(FlowId.);
 			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
 			if (validateFlow.isValid() == false) {
 				return displayValidationMessage(validateFlow);

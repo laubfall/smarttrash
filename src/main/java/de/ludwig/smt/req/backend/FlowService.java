@@ -2,11 +2,8 @@ package de.ludwig.smt.req.backend;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import org.elasticsearch.action.ActionFuture;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -16,7 +13,7 @@ import org.elasticsearch.index.query.TypeQueryBuilder;
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.rdd.Requirement;
-import de.ludwig.rdd.RequirementExecutionException;
+import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
@@ -74,11 +71,14 @@ public class FlowService
 
 	public void createFlow(final Flow flow, final List<FlowId> parents)
 	{
+		final FlowBase flowBase = flowConfig.createFlow(parents);
+		
+		flow.setId(flowBase.getId());
+		
 		es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
 				.request() //
 				.refresh(true); // in case of an immediately call to loadFlows,
 
-		flowConfig.createFlow(flow, parents);
 	}
 
 	public void updateFlow(final Flow flow, final List<FlowId> parents)
@@ -114,6 +114,13 @@ public class FlowService
 		return ctx;
 	}
 
+	/**
+	 * Loads all stored flows.
+	 * 
+	 * TODO actually this method is not that usefull because it loads all flows.
+	 * 
+	 * @return loaded flows.
+	 */
 	public List<Hit<Flow>> loadFlows()
 	{
 		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName).setTypes(esFlowType).get();

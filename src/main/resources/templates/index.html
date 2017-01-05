@@ -9,6 +9,10 @@
 <div th:fragment="content">
 Smarttrash - <span th:text="${test}"/>
 
+<tr th:each="f : ${flows}">
+	<td th:text="${f.name}"></td>
+	<td th:text="${f.description}"></td>
+</tr>
 
 </div>
 </body>

@@ -14,7 +14,10 @@ import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.SmartTrashException;
 import de.ludwig.smt.app.config.Config;
 import de.ludwig.smt.app.config.ConfiguredFlow;
+import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
+import de.ludwig.smt.app.config.SubFlow;
+import de.ludwig.smt.app.config.SubFlowPath;
 import de.ludwig.smt.app.data.Flow;
 import jodd.petite.meta.PetiteBean;
 
@@ -66,11 +69,25 @@ public class FlowConfigService
 		}
 	}
 
-	public void createFlow(Flow flow, List<FlowId> parentFlows)
+	/**
+	 * 
+	 * @param parentFlows Optional.
+	 * @return
+	 */
+	public FlowBase createFlow(List<FlowId> parentFlows)
 	{
 		Config config = loadFlowConfig();
-		ConfiguredFlow configuredFlow = new ConfiguredFlow();
-		config.addParentFlow(configuredFlow);
+		if(parentFlows == null || parentFlows.isEmpty()) {			
+			ConfiguredFlow configuredFlow = new ConfiguredFlow();
+			config.addParentFlow(configuredFlow);
+			return configuredFlow;
+		}
+		
+		final SubFlow subFlow = new SubFlow();
+		
+		// TODO resolve parent flow or redesign that method. Why not simply put in the list of ids that contains the id of the parent?
+		config.addSubFlowWithIds(null, subFlow, parentFlows);
+		return subFlow;
 	}
 
 	public void updateFlow(Flow flow)

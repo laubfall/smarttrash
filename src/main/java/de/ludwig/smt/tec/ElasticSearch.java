@@ -13,22 +13,33 @@ import de.ludwig.jodd.PropsElasticsearchProps;
 import jodd.petite.meta.PetiteBean;
 
 /**
+ * Provides low-level elasticsearch functionality.
  * 
  * @author daniel
  *
  */
 @PetiteBean
-public class ElasticSearch {
+public class ElasticSearch
+{
 	private static final Logger LOG = LoggerFactory.getLogger(ElasticSearch.class);
 
 	private Node node = null;
 
-	public final void startElasticsearch() {
+	/**
+	 * Starts an elasticsearch node.
+	 */
+	public final void startElasticsearch()
+	{
 		node = nodeBuilder().build();
 		node.start();
+
+		// Prepare the index so we do not get an IndexNotFoundException if the index does not exist.
+		node.client().admin().indices()
+				.prepareCreate(JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName())).get();
 	}
 
-	private NodeBuilder nodeBuilder() {
+	private NodeBuilder nodeBuilder()
+	{
 		return NodeBuilder.nodeBuilder()
 				.settings(NodeBuilder.nodeBuilder().getSettings().loadFromStream("ONLY-THE-EXT-MATTERS.json",
 						getClass().getResourceAsStream(
@@ -36,10 +47,12 @@ public class ElasticSearch {
 	}
 
 	/**
+	 * Grants access to a node client. The client provides an API accessing the elasticsearch service.
 	 * 
 	 * @return an es client. Null if there is no es node.
 	 */
-	public final Client esClient() {
+	public final Client esClient()
+	{
 		if (node == null) {
 			LOG.error("Elasticsearch Node not available, unable to get Client");
 			return null;
@@ -48,7 +61,8 @@ public class ElasticSearch {
 		return node.client();
 	}
 
-	public File pathHome() {
+	public File pathHome()
+	{
 		String pathHome;
 		if (node == null) {
 			pathHome = nodeBuilder().getSettings().get("path.home");

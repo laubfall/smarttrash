@@ -51,6 +51,20 @@ public class Config implements Serializable
 		return parent.addSubFlow(parentPath, subFlow);
 	}
 
+	public Optional<SubFlowPath> addSubFlowWithIds(ConfiguredFlow parent, SubFlow subFlow, List<FlowId> pathIds)
+	{
+		SubFlowPath sfp = null;
+		for(FlowId id : pathIds) {
+			if(sfp == null) {
+				sfp = new SubFlowPath(id);
+			} else {
+				sfp = new SubFlowPath(sfp, id);
+			}
+		}
+		
+		return addSubFlow(parent, subFlow, sfp);
+	}
+
 	/**
 	 * The elasticsearch flow object only contains the flow id provided by the config flow. To get further information
 	 * about the positioning inside the flow hierarchy it is necessary to make a lookup inside the flow configuration.
@@ -85,8 +99,8 @@ public class Config implements Serializable
 	@Requirement
 	public Iterator<SubFlow> childFlowIterator(final SubFlowPath path)
 	{
-//		parentFlowIterator().forEachRemaining(action);
-		
+		// parentFlowIterator().forEachRemaining(action);
+
 		return null;
 	}
 

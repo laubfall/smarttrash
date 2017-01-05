@@ -1,5 +1,6 @@
 package de.ludwig.smt.app.data;
 
+import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
@@ -18,9 +19,9 @@ public class Flow
 	private String description;
 
 	/**
-	 * A unique ID identifying this flow in the configuration.
+	 * The flowid of a {@link FlowBase} as saved in the configuration.
 	 */
-	private FlowId id = new FlowId();
+	private FlowId id;
 
 	public Flow() {
 
@@ -53,6 +54,11 @@ public class Flow
 	public FlowId getId()
 	{
 		return id;
+	}
+
+	public void setId(FlowId id)
+	{
+		this.id = id;
 	}
 
 	@Override
