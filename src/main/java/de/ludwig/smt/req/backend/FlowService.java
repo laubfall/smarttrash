@@ -80,8 +80,6 @@ public class FlowService
 
 		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow)).setRefresh(true).get();
 
-		// .refresh(true); // in case of an immediately call to loadFlows,
-
 	}
 
 	public void updateFlow(final Flow flow, final List<FlowId> parents)
