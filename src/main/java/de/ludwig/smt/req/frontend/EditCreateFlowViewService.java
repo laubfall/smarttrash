@@ -8,6 +8,7 @@ import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.req.backend.FlowService;
+import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalFormResult;
@@ -40,7 +41,9 @@ public class EditCreateFlowViewService implements ModalProvider
 		return (req, res) -> {
 			final Map<String, Object> model = new HashMap<>();
 			model.put("modalContent", "editCreateFlow");
+			model.put(ModalService.REQ_PARAM_ACTION_NAME, "editCreateFlow");
 			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+			// TODO this actually only works for creating a new flow
 			modalFormResult.setFlow(new Flow());
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");

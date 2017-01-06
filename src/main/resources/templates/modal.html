@@ -1,8 +1,7 @@
 <div class="modal fade" id="stModal" tabindex="-1" role="dialog"
 	aria-labelledby="stModalLabel">
 	<div class="modal-dialog" role="document">
-		<!-- TODO action has to be a parameter -->
-		<form action="/editCreateFlow" method="post" id="stModalForm"
+		<form th:action="${action}" method="post" id="stModalForm"
 			th:object="${model}">
 			<div class="modal-content">
 				<div class="modal-header">
