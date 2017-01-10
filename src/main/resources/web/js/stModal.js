@@ -7,13 +7,12 @@
  *            content.
  * @returns nothing.
  */
-function modal(name) {
-	$.get('/modal/' + name, function(data) {
+function modal(name, reqData) {
+	$.get('/modal/' + name, reqData, function(data) {
 		$('#modal').empty().append(data)
 		$('#stModal').modal('show');
 		
 		$("#stModalForm").submit(function(event) {
-			// TODO generischen Mechanismus für AJAX Posts etablieren (JSon als Response).
 			 $.post($(this).attr('action'), $(this).serialize(), function(response){
 				 // change the "replaceable" part. This is done because of components with js appended inside the modal (e.g. the submit button).
 				 evaluateATResponse(response, function(appendableMarkup) {
@@ -25,6 +24,9 @@ function modal(name) {
 	})
 }
 
+/**
+ * Hides the modal (if there is one visible).
+ */
 function closeModal() {
 	$('#stModal').modal('hide');
 }

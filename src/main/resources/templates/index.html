@@ -9,10 +9,13 @@
 <div th:fragment="content">
 Smarttrash - <span th:text="${test}"/>
 
+<table>
 <tr th:each="f : ${flows}">
 	<td th:text="${f.name}"></td>
 	<td th:text="${f.description}"></td>
+	<td><a href="#" th:onclick="|modal('editCreateFlow', {flowId : ${f.id}})|">edit</a></td>
 </tr>
+</table>
 
 </div>
 </body>
