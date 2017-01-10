@@ -6,6 +6,7 @@ import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
+import de.ludwig.smt.tec.frontend.AjaxTriggeredResponseTransformer;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;
@@ -55,7 +56,8 @@ public class ApplicationService
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
 		// Form Handlers
-		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res), thymeLeafEngine);
+//		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res), thymeLeafEngine);
+		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res), new AjaxTriggeredResponseTransformer());
 		
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));

@@ -8,6 +8,8 @@ import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.req.backend.FlowService;
+import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse;
+import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
@@ -17,8 +19,11 @@ import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.ModelAndView;
+import spark.Redirect.Status;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 /**
  * Business methods for creating or editing a flow.
@@ -50,7 +55,7 @@ public class EditCreateFlowViewService implements ModalProvider
 		};
 	}
 
-	public BiFunction<Request, Response, ModelAndView> saveFlow()
+	public BiFunction<Request, Response, AjaxTriggeredResponse> saveFlow()
 	{
 		return (req, res) -> {
 			// TODO convert req
@@ -62,13 +67,18 @@ public class EditCreateFlowViewService implements ModalProvider
 			convertValue.setId(new FlowId());
 			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
 			if (validateFlow.isValid() == false) {
-				return displayValidationMessage(validateFlow);
+				ModelAndView displayValidationMessage = displayValidationMessage(validateFlow);
+				AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
+				atr.setMav(displayValidationMessage);
+				return atr; 
 			}
 
 			flowService.saveFlow(convertValue, null);
 
-			final Map<String, Object> model = new HashMap<>();
-			return closeEditCreateFlowDialog(model, req, res);
+			final AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
+			atr.setUsage(Usage.JS_ONLY);
+			atr.setEvaluatableJS(closeEditCreateFlowDialog());
+			return atr;
 		};
 	}
 
@@ -77,7 +87,8 @@ public class EditCreateFlowViewService implements ModalProvider
 		final Map<String, Object> model = new HashMap<>();
 		ModelAndView mav = new ModelAndView(model, "modal");
 		model.put("modalContent", "editCreateFlow");
-		ModalFormResult modalFormResult = new EditCreateFlowModel();
+		EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+		modalFormResult.setFlow(ctx.getValidatedObject());
 		model.put("model", modalFormResult);
 		
 		ctx.messages().forEach(entry -> entry.getValue().forEach(msg -> modalFormResult.addMessage(new FormMessage(msg.getI18nKey(), 1))));
@@ -85,9 +96,9 @@ public class EditCreateFlowViewService implements ModalProvider
 		return mav;
 	}
 
-	public ModelAndView closeEditCreateFlowDialog(Map<String, Object> model, Request req, Response res)
+	public String closeEditCreateFlowDialog()
 	{
-		return overviewService.showWelcomePage().apply(req, res);
+		return "closeModal()";
 	}
 
 	@Override

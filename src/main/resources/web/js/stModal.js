@@ -13,11 +13,18 @@ function modal(name) {
 		$('#stModal').modal('show');
 		
 		$("#stModalForm").submit(function(event) {
+			// TODO generischen Mechanismus für AJAX Posts etablieren (JSon als Response).
 			 $.post($(this).attr('action'), $(this).serialize(), function(response){
 				 // change the "replaceable" part. This is done because of components with js appended inside the modal (e.g. the submit button).
-				 $('#replaceable').empty().append($(response).find('#replaceable'))
+				 evaluateATResponse(response, function(appendableMarkup) {
+					 $('#replaceable').empty().append($(appendableMarkup).find('#replaceable'))
+				 })
 		      },'html');
 		      return false;
 		});
 	})
+}
+
+function closeModal() {
+	$('#stModal').modal('hide');
 }

@@ -47,4 +47,9 @@ public class ValidationContext<VO>
 	public Set<Entry<String, List<ValidationMessage>>> messages() {
 		return messages.entrySet();
 	}
+
+	public VO getValidatedObject()
+	{
+		return validatedObject;
+	}
 }
