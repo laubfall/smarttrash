@@ -13,9 +13,16 @@ import jodd.json.JsonSerializer;
  */
 public class Flow
 {
-
+	/**
+	 * Mandatory.
+	 * Name of the flow.
+	 */
 	private String name;
 
+	/**
+	 * Optional.
+	 * Description of the flow.
+	 */
 	private String description;
 
 	/**

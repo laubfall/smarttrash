@@ -1,9 +1,11 @@
 package de.ludwig.smt.tec;
 
 import java.io.File;
+import java.util.function.Function;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
+import de.ludwig.smt.app.data.Hit;
 import jodd.petite.meta.PetiteBean;
 
 /**
@@ -37,8 +40,7 @@ public class ElasticSearch
 
 		// Prepare the index so we do not get an IndexNotFoundException if the index does not exist.
 		final String idx = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
-		
-		
+
 		node.client().admin().indices().prepareExists(idx).execute(new ActionListener<IndicesExistsResponse>() {
 
 			@Override
@@ -55,7 +57,20 @@ public class ElasticSearch
 				// TODO Logging
 			}
 		});
-		
+
+	}
+
+	public <D> Hit<D> documentById(final String esDocumentId, Function<String, D> jsonConverter)
+	{
+		final GetResponse getResponse = node.client()
+				.prepareGet(JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName()), null,
+						esDocumentId)
+				.get();
+
+		final Hit<D> hitR = new Hit<>();
+		hitR.setDocumentId(esDocumentId);
+		hitR.setDocument(jsonConverter.apply(getResponse.getSourceAsString()));
+		return hitR;
 	}
 
 	private NodeBuilder nodeBuilder()

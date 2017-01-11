@@ -8,6 +8,7 @@
  * @returns nothing.
  */
 function modal(name, reqData) {
+	// TODO exception / error handling -> show some information about the error to the user.
 	$.get('/modal/' + name, reqData, function(data) {
 		$('#modal').empty().append(data)
 		$('#stModal').modal('show');

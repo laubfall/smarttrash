@@ -11,9 +11,9 @@ Smarttrash - <span th:text="${test}"/>
 
 <table>
 <tr th:each="f : ${flows}">
-	<td th:text="${f.name}"></td>
-	<td th:text="${f.description}"></td>
-	<td><a href="#" th:onclick="|modal('editCreateFlow', {flowId : ${f.id}})|">edit</a></td>
+	<td th:text="${f.document.name}"></td>
+	<td th:text="${f.document.description}"></td>
+	<td><a href="#" th:onclick="|modal('editCreateFlow', {flowId : '${f.documentId}'})|">edit</a></td>
 </tr>
 </table>
 

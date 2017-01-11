@@ -7,6 +7,7 @@ import java.util.function.BiFunction;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
+import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse;
 import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse.Usage;
@@ -48,8 +49,17 @@ public class EditCreateFlowViewService implements ModalProvider
 			model.put("modalContent", "editCreateFlow");
 			model.put(ModalService.REQ_PARAM_ACTION_NAME, "editCreateFlow");
 			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
-			// TODO this actually only works for creating a new flow
-			modalFormResult.setFlow(new Flow());
+			
+			Flow modelObject = null;
+			if(isNewFlow(req)) {
+				modelObject = new Flow();
+			} else {
+				final String esDocId = req.queryMap("flowId").value();
+				// load the elasticsearch document.
+				Hit<Flow> flow = flowService.getFlow(esDocId);
+				modelObject = flow.getDocument();
+			}
+			modalFormResult.setFlow(modelObject);
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");
 		};
@@ -101,6 +111,10 @@ public class EditCreateFlowViewService implements ModalProvider
 		return "closeModal()";
 	}
 
+	public boolean isNewFlow(Request req) {
+		return req.queryMap("flowId").hasValue() == false;
+	}
+	
 	@Override
 	public BiFunction<Request, Response, ModelAndView> modal()
 	{

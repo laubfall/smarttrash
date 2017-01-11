@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -78,7 +79,8 @@ public class FlowService
 
 		flow.setId(flowBase.getId());
 
-		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow)).setRefresh(true).get();
+		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
+				.setRefresh(true).get();
 
 	}
 
@@ -124,8 +126,8 @@ public class FlowService
 	 */
 	public List<Hit<Flow>> loadFlows()
 	{
-		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName).setQuery(new TypeQueryBuilder(esFlowType))
-				.setTypes(esFlowType).get();
+		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName)
+				.setQuery(new TypeQueryBuilder(esFlowType)).setTypes(esFlowType).get();
 		final List<Hit<Flow>> result = new ArrayList<>();
 
 		searchResponse.getHits().forEach(hit -> {
@@ -137,5 +139,10 @@ public class FlowService
 		;
 
 		return result;
+	}
+
+	public Hit<Flow> getFlow(final String esDocumentId)
+	{
+		return es.documentById(esDocumentId, Flow::fromJson);
 	}
 }

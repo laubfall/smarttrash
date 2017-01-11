@@ -68,9 +68,9 @@ public class OverviewService
 	public Map<String, Object> createFlowOverview()
 	{
 		final List<Hit<Flow>> loadFlows = flowService.loadFlows();
-		List<Flow> collect = loadFlows.parallelStream().map(flowHit -> flowHit.getDocument()).collect(Collectors.toList());
+//		List<Flow> collect = loadFlows.parallelStream().map(flowHit -> flowHit.getDocument()).collect(Collectors.toList());
 		final Map<String, Object> fmo = new HashMap<>();
-		fmo.put("flows", collect);
+		fmo.put("flows", loadFlows);
 		return fmo;
 	}
 }
