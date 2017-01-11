@@ -24,6 +24,9 @@ function evaluateATResponse(response, markup_action, js_action, both_action) {
 		}
 		
 		break;
+	case "BOTH":
+		both_action();
+		break;
 	}
 }
 
