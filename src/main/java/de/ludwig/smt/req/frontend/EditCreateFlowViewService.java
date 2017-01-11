@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
-import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
@@ -14,18 +13,14 @@ import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
-import de.ludwig.smt.tec.frontend.ModalFormResult;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import jodd.util.StringUtil;
 import spark.ModelAndView;
-import spark.Redirect.Status;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
-import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 /**
  * Business methods for creating or editing a flow.
