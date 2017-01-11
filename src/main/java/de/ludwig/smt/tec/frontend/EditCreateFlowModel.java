@@ -20,6 +20,9 @@ public class EditCreateFlowModel extends ModalFormResult
 	 */
 	private Flow flow;
 
+	/**
+	 * ES Document ID. If null we assume that this model does not represent a saved Flow.
+	 */
 	private String esDocumentId;
 	
 	public Flow getFlow()

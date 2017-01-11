@@ -15,6 +15,9 @@ public class FormMessage implements Serializable
 	 */
 	private static final long serialVersionUID = -8892838259368795943L;
 
+	/**
+	 * The human readable message.
+	 */
 	private final String message;
 	
 	/**
@@ -28,12 +31,23 @@ public class FormMessage implements Serializable
 	 */
 	private String inputElementId;
 	
+	/**
+	 * Constructor.
+	 * @param message human readable message.
+	 * @param level severity of the message
+	 */
 	public FormMessage(String message, int level) {
 		super();
 		this.message = message;
 		this.level = level;
 	}
 
+	/**
+	 * Constructor.
+	 * @param message human readable message.
+	 * @param level severity of the message
+	 * @param inputElementId TODO whats that for?
+	 */
 	public FormMessage(String message, int level, String inputElementId) {
 		super();
 		this.message = message;

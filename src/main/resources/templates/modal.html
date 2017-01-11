@@ -16,7 +16,7 @@
 					<div class="modal-body">
 						<div class="row" th:each="msg : *{messages}">
 							<div th:text="${msg.message}"
-								th:class="'col-md-12 ' + ${msg.modalMsgCssClass}">dlfj</div>
+								th:class="'col-md-12 ' + ${msg.modalMsgCssClass}"></div>
 						</div>
 					</div>
 					<div class="modal-body" th:insert="${modalContent} :: modalBody"></div>

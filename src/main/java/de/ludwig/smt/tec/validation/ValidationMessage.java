@@ -1,6 +1,7 @@
 package de.ludwig.smt.tec.validation;
 
 /**
+ * An Object that is created in case of a validation error. Holds the message and the severity of the validation.
  * 
  * @author Daniel
  *

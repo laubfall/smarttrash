@@ -60,6 +60,12 @@ public class ElasticSearch
 
 	}
 
+	/**
+	 * Get a document by its ES Id.
+	 * @param esDocumentId the ES document ID.
+	 * @param jsonConverter Takes care of converting the json to the correct Java-Type.
+	 * @return Document with its source.
+	 */
 	public <D> Hit<D> documentById(final String esDocumentId, Function<String, D> jsonConverter)
 	{
 		final GetResponse getResponse = node.client()

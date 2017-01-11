@@ -1,6 +1,7 @@
 package de.ludwig.smt.req.frontend;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -11,6 +12,7 @@ import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse;
 import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.req.frontend.tec.ModalService;
+import de.ludwig.smt.req.frontend.tec.StandaloneStandardMessageResolver;
 import de.ludwig.smt.tec.frontend.EditCreateFlowModel;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalProvider;
@@ -37,6 +39,8 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	@PetiteInject
 	protected OverviewService overviewService;
+	
+	private static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateFlow");
 
 	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
 	{
@@ -50,16 +54,23 @@ public class EditCreateFlowViewService implements ModalProvider
 			if (isNewFlow(req)) {
 				modelObject = new Flow();
 			} else {
-				final String esDocId = req.queryMap("flowId").value();
-				// load the elasticsearch document.
-				Hit<Flow> hit = flowService.getFlow(esDocId);
-				modelObject = hit.getDocument();
-				modalFormResult.setEsDocumentId(hit.getDocumentId());
+				modelObject = loadFlowFillForm(req, modalFormResult);
 			}
 			modalFormResult.setFlow(modelObject);
 			model.put("model", modalFormResult);
 			return new ModelAndView(model, "modal");
 		};
+	}
+
+	private Flow loadFlowFillForm(Request req, final EditCreateFlowModel modalFormResult)
+	{
+		Flow modelObject;
+		final String esDocId = req.queryMap("flowId").value();
+		// load the elasticsearch document.
+		Hit<Flow> hit = flowService.getFlow(esDocId);
+		modelObject = hit.getDocument();
+		modalFormResult.setEsDocumentId(hit.getDocumentId());
+		return modelObject;
 	}
 
 	public BiFunction<Request, Response, AjaxTriggeredResponse> saveFlow()
@@ -72,7 +83,7 @@ public class EditCreateFlowViewService implements ModalProvider
 				Hit<Flow> hit = flowService.getFlow(esDocumentId);
 				convertValue = hit.getDocument();
 			}
-			
+
 			convertValue.setDescription(req.queryMap("description").value());
 			convertValue.setName(req.queryMap("name").value());
 			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
@@ -101,8 +112,10 @@ public class EditCreateFlowViewService implements ModalProvider
 		modalFormResult.setFlow(ctx.getValidatedObject());
 		model.put("model", modalFormResult);
 
-		ctx.messages().forEach(entry -> entry.getValue()
-				.forEach(msg -> modalFormResult.addMessage(new FormMessage(msg.getI18nKey(), 1))));
+		ctx.messages().forEach(entry -> entry.getValue().forEach(msg -> {
+			final String msgResolved = I18N.resolveMessage(msg.getI18nKey(), Locale.GERMAN); // TODO resolve the chosen locale.
+			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
+		}));
 
 		return mav;
 	}
