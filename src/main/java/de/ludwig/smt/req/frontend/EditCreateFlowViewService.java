@@ -19,6 +19,7 @@ import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
+import jodd.util.StringUtil;
 import spark.ModelAndView;
 import spark.Redirect.Status;
 import spark.Request;
@@ -49,15 +50,16 @@ public class EditCreateFlowViewService implements ModalProvider
 			model.put("modalContent", "editCreateFlow");
 			model.put(ModalService.REQ_PARAM_ACTION_NAME, "editCreateFlow");
 			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
-			
+
 			Flow modelObject = null;
-			if(isNewFlow(req)) {
+			if (isNewFlow(req)) {
 				modelObject = new Flow();
 			} else {
 				final String esDocId = req.queryMap("flowId").value();
 				// load the elasticsearch document.
-				Hit<Flow> flow = flowService.getFlow(esDocId);
-				modelObject = flow.getDocument();
+				Hit<Flow> hit = flowService.getFlow(esDocId);
+				modelObject = hit.getDocument();
+				modalFormResult.setEsDocumentId(hit.getDocumentId());
 			}
 			modalFormResult.setFlow(modelObject);
 			model.put("model", modalFormResult);
@@ -68,22 +70,25 @@ public class EditCreateFlowViewService implements ModalProvider
 	public BiFunction<Request, Response, AjaxTriggeredResponse> saveFlow()
 	{
 		return (req, res) -> {
-			// TODO convert req
-			final Flow convertValue = new Flow();
+			Flow convertValue = new Flow();
+
+			final String esDocumentId = req.queryMap("id").value();
+			if (StringUtil.isNotBlank(esDocumentId)) {
+				Hit<Flow> hit = flowService.getFlow(esDocumentId);
+				convertValue = hit.getDocument();
+			}
+			
 			convertValue.setDescription(req.queryMap("description").value());
 			convertValue.setName(req.queryMap("name").value());
-			// TODO map the id. How without breaking the flowid mechanism? Maybe send the FlowId of the orginal object as json.
-//			convertValue.setId(FlowId.);
-			convertValue.setId(new FlowId());
 			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
 			if (validateFlow.isValid() == false) {
 				ModelAndView displayValidationMessage = displayValidationMessage(validateFlow);
 				AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
 				atr.setMav(displayValidationMessage);
-				return atr; 
+				return atr;
 			}
 
-			flowService.saveFlow(convertValue, null);
+			flowService.saveFlow(convertValue, null, esDocumentId);
 
 			final AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
 			atr.setUsage(Usage.JS_ONLY);
@@ -100,9 +105,10 @@ public class EditCreateFlowViewService implements ModalProvider
 		EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
 		modalFormResult.setFlow(ctx.getValidatedObject());
 		model.put("model", modalFormResult);
-		
-		ctx.messages().forEach(entry -> entry.getValue().forEach(msg -> modalFormResult.addMessage(new FormMessage(msg.getI18nKey(), 1))));
-		
+
+		ctx.messages().forEach(entry -> entry.getValue()
+				.forEach(msg -> modalFormResult.addMessage(new FormMessage(msg.getI18nKey(), 1))));
+
 		return mav;
 	}
 
@@ -111,10 +117,11 @@ public class EditCreateFlowViewService implements ModalProvider
 		return "closeModal()";
 	}
 
-	public boolean isNewFlow(Request req) {
+	public boolean isNewFlow(Request req)
+	{
 		return req.queryMap("flowId").hasValue() == false;
 	}
-	
+
 	@Override
 	public BiFunction<Request, Response, ModelAndView> modal()
 	{

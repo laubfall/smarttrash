@@ -3,15 +3,9 @@ package de.ludwig.smt.req.backend;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.IndexNotFoundException;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.index.query.TypeQueryBuilder;
 
 import de.ludwig.jodd.JoddPowered;
@@ -57,23 +51,22 @@ public class FlowService
 
 	/**
 	 * Creates a new flow.
+	 * @param parents optional. List of IDs that represents the chain of parent flows.
+	 * @param esDocumentId TODO
 	 * 
 	 * @param required. flow the flow to create. TODO check if the parameter is set.
-	 * @param parents optional. List of IDs that represents the chain of parent flows.
-	 * @return TODO only the id as return value?
+	 * @return ES Document ID.
 	 */
-	public String saveFlow(final Flow flow, final List<FlowId> parents)
+	public String saveFlow(final Flow flow, final List<FlowId> parents, String esDocumentId)
 	{
-		if (isNewFlow(flow)) {
-			createFlow(flow, parents);
+		if (isNewFlow(esDocumentId)) {
+			return createFlow(flow, parents);
 		} else {
-			updateFlow(flow, parents);
+			return updateFlow(flow, parents, esDocumentId);
 		}
-
-		return null;
 	}
 
-	public void createFlow(final Flow flow, final List<FlowId> parents)
+	public String createFlow(final Flow flow, final List<FlowId> parents)
 	{
 		final FlowBase flowBase = flowConfig.createFlow(parents);
 
@@ -82,11 +75,20 @@ public class FlowService
 		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, esFlowType).setSource(Flow.toJson(flow))
 				.setRefresh(true).get();
 
+		return indexResponse.getId();
 	}
 
-	public void updateFlow(final Flow flow, final List<FlowId> parents)
+	/**
+	 * 
+	 * @param flow
+	 * @param parents TODO is there really a need for that parameter?
+	 * @param esDocumentId Mandatory. ID of the ES document that represents the given flow.
+	 * @return 
+	 */
+	public String updateFlow(final Flow flow, final List<FlowId> parents, String esDocumentId)
 	{
-
+		UpdateResponse updateResponse = es.esClient().prepareUpdate(indexName, esFlowType, esDocumentId).setDoc(Flow.toJson(flow)).get();
+		return updateResponse.getId();
 	}
 
 	/**
@@ -94,17 +96,13 @@ public class FlowService
 	 * 
 	 * @return true if there is already a flow for the given id.
 	 */
-	public boolean isNewFlow(final Flow flow)
+	public boolean isNewFlow(String esDocumentId)
 	{
-		BoolQueryBuilder bqb = new BoolQueryBuilder();
-		bqb.must(new TypeQueryBuilder(esFlowType)).must(new TermQueryBuilder("id", flow.getId()));
-		try {
-			SearchResponse actionGet = es.esClient().prepareSearch(indexName).setQuery(bqb).execute().actionGet();
-			long totalHits = actionGet.getHits().totalHits();
-			return totalHits == 0;
-		} catch (IndexNotFoundException e) {
+		if(StringUtils.isBlank(esDocumentId)) {
 			return true;
 		}
+
+		return getFlow(esDocumentId) == null;
 	}
 
 	public ValidationContext<Flow> validateFlow(final Flow flow)
@@ -120,14 +118,14 @@ public class FlowService
 	/**
 	 * Loads all stored flows.
 	 * 
-	 * TODO actually this method is not that usefull because it loads all flows.
+	 * TODO actually this method is not that useful because it loads all flows.
 	 * 
 	 * @return loaded flows.
 	 */
 	public List<Hit<Flow>> loadFlows()
 	{
 		final SearchResponse searchResponse = es.esClient().prepareSearch(indexName)
-				.setQuery(new TypeQueryBuilder(esFlowType)).setTypes(esFlowType).get();
+				.setQuery(new TypeQueryBuilder(esFlowType)).setSize(100).setTypes(esFlowType).get();
 		final List<Hit<Flow>> result = new ArrayList<>();
 
 		searchResponse.getHits().forEach(hit -> {

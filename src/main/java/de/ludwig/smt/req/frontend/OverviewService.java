@@ -56,7 +56,6 @@ public class OverviewService
 	{
 		final List<MenuEntry> createFlowOverviewMenu = ods.createFlowOverviewMenu();
 		model.put("menu", createFlowOverviewMenu);
-		model.put("test", "hello world");
 		return model;
 	}
 
@@ -68,7 +67,6 @@ public class OverviewService
 	public Map<String, Object> createFlowOverview()
 	{
 		final List<Hit<Flow>> loadFlows = flowService.loadFlows();
-//		List<Flow> collect = loadFlows.parallelStream().map(flowHit -> flowHit.getDocument()).collect(Collectors.toList());
 		final Map<String, Object> fmo = new HashMap<>();
 		fmo.put("flows", loadFlows);
 		return fmo;
