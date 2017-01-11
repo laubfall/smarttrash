@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Flow;
@@ -69,6 +68,9 @@ public class OverviewService
 		final List<Hit<Flow>> loadFlows = flowService.loadFlows();
 		final Map<String, Object> fmo = new HashMap<>();
 		fmo.put("flows", loadFlows);
+		
+		// TODO as specified create information if there are no flows
+		
 		return fmo;
 	}
 }
