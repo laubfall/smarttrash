@@ -13,6 +13,8 @@ import de.ludwig.smt.req.frontend.tec.EditCreateFlowModel;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
 import de.ludwig.smt.tec.frontend.FormMessage;
+import de.ludwig.smt.tec.frontend.ModalModelAndView;
+import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
@@ -39,15 +41,12 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	@PetiteInject
 	protected OverviewService overviewService;
-	
+
 	private static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateFlow");
 
 	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
 	{
 		return (req, res) -> {
-			final Map<String, Object> model = new HashMap<>();
-			model.put("modalContent", "editCreateFlow");
-			model.put(ModalService.REQ_PARAM_ACTION_NAME, "editCreateFlow");
 			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
 
 			Flow modelObject = null;
@@ -57,8 +56,11 @@ public class EditCreateFlowViewService implements ModalProvider
 				modelObject = loadFlowFillForm(req, modalFormResult);
 			}
 			modalFormResult.setFlow(modelObject);
-			model.put("model", modalFormResult);
-			return new ModelAndView(model, "modal");
+
+			final ModalModelObject mmo = new ModalModelObject();
+			mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(modalFormResult);
+
+			return new ModalModelAndView(mmo);
 		};
 	}
 
@@ -105,19 +107,18 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	public ModelAndView displayValidationMessage(final ValidationContext<Flow> ctx)
 	{
-		final Map<String, Object> model = new HashMap<>();
-		ModelAndView mav = new ModelAndView(model, "modal");
-		model.put("modalContent", "editCreateFlow");
-		EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+		final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
 		modalFormResult.setFlow(ctx.getValidatedObject());
-		model.put("model", modalFormResult);
 
 		ctx.messages().forEach(entry -> entry.getValue().forEach(msg -> {
-			final String msgResolved = I18N.resolveMessage(msg.getI18nKey(), Locale.GERMAN); // TODO resolve the chosen locale.
+			final String msgResolved = I18N.resolveMessage(msg.getI18nKey(), Locale.GERMAN); // TODO resolve the chosen
+																								// locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
 		}));
 
-		return mav;
+		final ModalModelObject mmo = new ModalModelObject();
+		mmo.modalContentName("editCreateFlow").modelObject(modalFormResult);
+		return new ModalModelAndView(mmo);
 	}
 
 	public String closeEditCreateFlowDialog()
