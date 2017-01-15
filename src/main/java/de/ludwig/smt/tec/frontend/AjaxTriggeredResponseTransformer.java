@@ -1,7 +1,6 @@
 package de.ludwig.smt.tec.frontend;
 
 import de.ludwig.smt.SmartTrashException;
-import de.ludwig.smt.req.frontend.tec.AjaxTriggeredResponse;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 

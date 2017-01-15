@@ -1,4 +1,4 @@
-package de.ludwig.smt.req.frontend.tec;
+package de.ludwig.smt.tec.frontend;
 
 import java.util.HashMap;
 import java.util.Locale;
