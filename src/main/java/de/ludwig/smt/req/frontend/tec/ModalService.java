@@ -7,6 +7,7 @@ import java.util.function.BiFunction;
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
+import de.ludwig.smt.req.frontend.EditCreateNoteViewService;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import jodd.petite.meta.PetiteBean;
 import spark.ModelAndView;
@@ -42,6 +43,7 @@ public class ModalService
 
 	static {
 		modalProviders.put("editCreateFlow", EditCreateFlowViewService.class);
+		modalProviders.put("editCreateNote", EditCreateNoteViewService.class);
 	}
 
 	public BiFunction<Request, Response, ModelAndView> openModal()

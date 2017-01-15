@@ -1,6 +1,7 @@
-package de.ludwig.smt.tec.frontend;
+package de.ludwig.smt.req.frontend.tec;
 
 import de.ludwig.smt.app.data.Flow;
+import de.ludwig.smt.tec.frontend.ModalFormResult;
 
 /**
  * Model object for the editCreateFlow Form.
