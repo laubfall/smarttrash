@@ -49,4 +49,9 @@ public class ModalModelObject extends HashMap<String, Object>
 		put("model", modelObject);
 		return this;
 	}
+	
+	public final ModalModelObject title(String title) {
+		put("title", title);
+		return this;
+	}
 }

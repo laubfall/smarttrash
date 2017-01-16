@@ -1,8 +1,6 @@
 package de.ludwig.smt.req.frontend;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
@@ -10,14 +8,13 @@ import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.req.frontend.tec.EditCreateFlowModel;
-import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
+import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalModelAndView;
 import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
-import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
@@ -58,7 +55,8 @@ public class EditCreateFlowViewService implements ModalProvider
 			modalFormResult.setFlow(modelObject);
 
 			final ModalModelObject mmo = new ModalModelObject();
-			mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(modalFormResult);
+			mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(modalFormResult)
+					.title(I18N.resolveMessage("title", Locale.GERMAN)); // TODO resolve chosen language.
 
 			return new ModalModelAndView(mmo);
 		};
