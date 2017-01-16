@@ -51,10 +51,12 @@ public class FlowService
 
 	/**
 	 * Creates a new flow.
-	 * @param parents optional. List of IDs that represents the chain of parent flows.
-	 * @param esDocumentId TODO
 	 * 
-	 * @param required. flow the flow to create. TODO check if the parameter is set.
+	 * @param flow required. flow the flow to create. TODO check if the parameter is set.
+	 * @param parents optional. List of IDs that represents the chain of parent flows.
+	 * @param esDocumentId ID of the elasticsearch document that stores information for the given flow. This is
+	 *            optional. If given, this methods tries to load a document with that id.
+	 * 
 	 * @return ES Document ID.
 	 */
 	public String saveFlow(final Flow flow, final List<FlowId> parents, String esDocumentId)
@@ -79,15 +81,17 @@ public class FlowService
 	}
 
 	/**
+	 * Updates a flow.
 	 * 
-	 * @param flow
+	 * @param flow Mandatory. Flow to update.
 	 * @param parents TODO is there really a need for that parameter?
 	 * @param esDocumentId Mandatory. ID of the ES document that represents the given flow.
-	 * @return 
+	 * @return ID of the elasticsearch document id.
 	 */
 	public String updateFlow(final Flow flow, final List<FlowId> parents, String esDocumentId)
 	{
-		UpdateResponse updateResponse = es.esClient().prepareUpdate(indexName, esFlowType, esDocumentId).setDoc(Flow.toJson(flow)).get();
+		UpdateResponse updateResponse = es.esClient().prepareUpdate(indexName, esFlowType, esDocumentId)
+				.setDoc(Flow.toJson(flow)).get();
 		return updateResponse.getId();
 	}
 
@@ -98,7 +102,7 @@ public class FlowService
 	 */
 	public boolean isNewFlow(String esDocumentId)
 	{
-		if(StringUtils.isBlank(esDocumentId)) {
+		if (StringUtils.isBlank(esDocumentId)) {
 			return true;
 		}
 
@@ -109,7 +113,6 @@ public class FlowService
 	{
 		ValidationContext<Flow> ctx = new ValidationContext<Flow>(flow);
 		if (StringUtils.isBlank(flow.getName())) {
-			// TODO correct key
 			ctx.addValidationMessage("name", new ValidationMessage("empty.name"));
 		}
 		return ctx;
