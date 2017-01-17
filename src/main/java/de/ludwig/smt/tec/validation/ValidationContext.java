@@ -8,16 +8,27 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
+ * Object that holds information about the validation of another object.
  * 
  * @author Daniel
  *
  */
 public class ValidationContext<VO>
 {
+	/**
+	 * The validated object.
+	 */
 	private VO validatedObject;
 
+	/**
+	 * Validation messages, created while validating the {@link #validatedObject}.
+	 */
 	private Map<String, List<ValidationMessage>> messages = new HashMap<>();
 	
+	/**
+	 * Constructor.
+	 * @param validatedObject Object to validate.
+	 */
 	public ValidationContext(VO validatedObject) {
 		this.validatedObject = validatedObject;
 	}
@@ -36,6 +47,10 @@ public class ValidationContext<VO>
 		messages.get(field).add(msg);
 	}
 	
+	/**
+	 * If there are any validation messages then the validated object seems to be valid.
+	 * @return s. description.
+	 */
 	public final boolean isValid() {
 		if(messages.isEmpty()) {
 			return true;

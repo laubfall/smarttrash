@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.ludwig.smt.app.ElasticSearchTest;
+import de.ludwig.smt.app.AbstractElasticSearchTest;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
@@ -19,7 +19,7 @@ import de.ludwig.smt.req.backend.FlowService;
  * @author daniel
  *
  */
-public class FlowServiceTest extends ElasticSearchTest {
+public class FlowServiceTest extends AbstractElasticSearchTest {
 	private FlowService bFlow;
 
 	@Test
@@ -41,7 +41,7 @@ public class FlowServiceTest extends ElasticSearchTest {
 
 	@Override
 	public void setup() throws IOException {
-		super.setup();
+//		super.setup();
 		bFlow = petite.getBean(FlowService.class);
 	}
 }

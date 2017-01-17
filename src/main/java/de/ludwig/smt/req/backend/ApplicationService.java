@@ -27,14 +27,14 @@ public class ApplicationService
 	protected ElasticSearch es;
 
 	@PetiteInject
-	protected OverviewService fOverview; 
-	
+	protected OverviewService fOverview;
+
 	@PetiteInject
 	protected ModalService modalService;
-	
+
 	@PetiteInject
 	protected EditCreateFlowViewService editCreateFlow;
-	
+
 	public void startApplication()
 	{
 		startSpark();
@@ -47,20 +47,21 @@ public class ApplicationService
 	public final void startSpark()
 	{
 		Spark.staticFileLocation("web");
-		
+
 		// New logging context with every request
 		Spark.before((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
-		
+
 		final ThymeleafTemplateEngine thymeLeafEngine = new ThymeleafTemplateEngine();
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), thymeLeafEngine);
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
 		// Form Handlers
-		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res), new AjaxTriggeredResponseTransformer());
-		
+		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res),
+				new AjaxTriggeredResponseTransformer());
+
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));
-		
+
 		// Cleanup after a request-response-cycle
 		Spark.after((req, res) -> CallStackContext.callStackCtx.set(new CallStackContext()));
 	}
@@ -69,12 +70,14 @@ public class ApplicationService
 	{
 		es.startElasticsearch();
 	}
-	
+
 	/**
 	 * Does nothing, but the call is logged by logging framework.
+	 * 
 	 * @param e exception to handle.
 	 */
-	public void handleSparkRoutingException(Exception e) {
+	public void handleSparkRoutingException(Exception e)
+	{
 		// NOOP
 	}
 }
