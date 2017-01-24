@@ -1,7 +1,9 @@
 package de.ludwig.jodd;
 
 import de.ludwig.rdd.Requirement;
+import jodd.petite.meta.PetiteBean;
 
+@PetiteBean
 @Requirement
 public class AppLogBean2 extends AppLogBean1
 {
@@ -12,5 +14,4 @@ public class AppLogBean2 extends AppLogBean1
 		// TODO Auto-generated method stub
 		
 	}
-
 }

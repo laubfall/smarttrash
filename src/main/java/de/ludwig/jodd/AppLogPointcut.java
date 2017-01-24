@@ -16,11 +16,14 @@ public class AppLogPointcut extends ProxyPointcutSupport
 	@Override
 	public boolean apply(MethodInfo methodInfo)
 	{
+		// do not log any methods of class Object
+		if(isRootMethod(methodInfo)) {
+			return false;
+		}
+		
 		boolean apply = hasAnnotation(methodInfo.getClassInfo(), Requirement.class)
-				&& hasAnnotation(methodInfo, Requirement.class);
+				|| hasAnnotation(methodInfo, Requirement.class);
 
-		System.out.println(methodInfo.getClassInfo().getClassname() + "." + methodInfo.getMethodName() + ":" + apply
-				+ " topLevelMethod: " + methodInfo.isTopLevelMethod() + " " + methodInfo.getRawSignature());
 		return apply;
 
 	}
