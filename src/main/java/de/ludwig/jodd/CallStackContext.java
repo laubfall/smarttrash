@@ -1,5 +1,7 @@
 package de.ludwig.jodd;
 
+import de.ludwig.jodd.proxetta.AppLogAdvice;
+
 /**
  * Information about the current callstack of proxied services. Used to group calls to those services by an ID.
  * 

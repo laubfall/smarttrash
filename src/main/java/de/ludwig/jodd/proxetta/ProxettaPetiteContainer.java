@@ -1,4 +1,4 @@
-package de.ludwig.jodd;
+package de.ludwig.jodd.proxetta;
 
 import jodd.petite.BeanDefinition;
 import jodd.petite.PetiteContainer;

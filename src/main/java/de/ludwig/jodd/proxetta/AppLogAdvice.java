@@ -1,4 +1,4 @@
-package de.ludwig.jodd;
+package de.ludwig.jodd.proxetta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.ludwig.jodd.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementMapping;
 import jodd.proxetta.ProxyAdvice;

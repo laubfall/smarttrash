@@ -1,4 +1,4 @@
-package de.ludwig.jodd;
+package de.ludwig.jodd.proxetta;
 
 import de.ludwig.rdd.Requirement;
 import jodd.proxetta.MethodInfo;

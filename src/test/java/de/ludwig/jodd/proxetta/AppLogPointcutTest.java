@@ -1,4 +1,4 @@
-package de.ludwig.jodd;
+package de.ludwig.jodd.proxetta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import de.ludwig.jodd.proxetta.AppLogPointcut;
+import de.ludwig.jodd.proxetta.ProxettaPetiteContainer;
 import jodd.petite.config.AutomagicPetiteConfigurator;
 import jodd.proxetta.MethodInfo;
 import jodd.proxetta.pointcuts.ProxyPointcutSupport;

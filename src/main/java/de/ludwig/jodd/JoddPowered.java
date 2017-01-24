@@ -2,6 +2,7 @@ package de.ludwig.jodd;
 
 import java.io.IOException;
 
+import de.ludwig.jodd.proxetta.ProxettaPetiteContainer;
 import de.ludwig.smt.SmartTrashException;
 import jodd.petite.PetiteContainer;
 import jodd.petite.config.AutomagicPetiteConfigurator;
