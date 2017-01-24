@@ -14,16 +14,33 @@ import jodd.petite.config.AutomagicPetiteConfigurator;
 import jodd.proxetta.MethodInfo;
 import jodd.proxetta.pointcuts.ProxyPointcutSupport;
 
+/**
+ * Tests if the {@link AppLogPointcut} hits the correct methods.
+ * 
+ * @author Daniel
+ *
+ */
 public class AppLogPointcutTest
 {
 	@Test
-	public void aop()
+	public void samplebeansOne()
 	{
-		final AppLogPointcut spy = Mockito.spy(new AppLogPointcut());
-
 		final PointcutResultList expectedResults = new PointcutResultList();
 		expectedResults.addResult("AppLogBean1", false, "test01", "hashCode", "equals", "toString");
-		expectedResults.addResult("AppLogBean2", "test01", true).addResult("AppLogBean2", false,  "hashCode", "equals", "toString");
+		expectedResults.addResult("AppLogBean2", "test01", true).addResult("AppLogBean2", false, "hashCode", "equals",
+				"toString");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.one.*");
+	}
+
+	@Test
+	public void samplebeansTwo()
+	{
+
+	}
+
+	private void doAssertions(PointcutResultList expectedResults, String includedEntriesMatcher)
+	{
+		final AppLogPointcut spy = Mockito.spy(new AppLogPointcut());
 
 		Mockito.doAnswer(invocation -> {
 			final MethodInfo methodInfo = (MethodInfo) invocation.getArguments()[0];
@@ -52,7 +69,7 @@ public class AppLogPointcutTest
 		};
 
 		final AutomagicPetiteConfigurator petiteConfigurator = new AutomagicPetiteConfigurator();
-		petiteConfigurator.setIncludedEntries("de.ludwig.jodd*");
+		petiteConfigurator.setIncludedEntries(includedEntriesMatcher);
 		petiteConfigurator.configure(container);
 
 		Mockito.verify(spy, Mockito.times(expectedResults.size())).apply(Mockito.any(MethodInfo.class));

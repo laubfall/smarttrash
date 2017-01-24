@@ -1,4 +1,4 @@
-package de.ludwig.jodd.proxetta;
+package de.ludwig.jodd.proxetta.samplebeans.one;
 
 import jodd.petite.meta.PetiteBean;
 
