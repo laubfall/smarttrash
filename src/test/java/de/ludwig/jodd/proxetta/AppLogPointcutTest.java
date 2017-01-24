@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 
 import de.ludwig.jodd.proxetta.AppLogPointcut;
 import de.ludwig.jodd.proxetta.ProxettaPetiteContainer;
+import de.ludwig.jodd.proxetta.samplebeans.three.AppLogBean5;
 import jodd.petite.config.AutomagicPetiteConfigurator;
 import jodd.proxetta.MethodInfo;
 import jodd.proxetta.pointcuts.ProxyPointcutSupport;
@@ -35,7 +36,19 @@ public class AppLogPointcutTest
 	@Test
 	public void samplebeansTwo()
 	{
+		final PointcutResultList expectedResults = new PointcutResultList();
+		expectedResults.addResult("AppLogBean3", false, "test", "hashCode", "equals", "toString");
+		expectedResults.addResult("AppLogBean4", "test", true).addResult("AppLogBean4", false, "hashCode", "equals",
+				"toString");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.two.*");
+	}
 
+	@Test
+	public void samplebeansThree()
+	{
+		final PointcutResultList expectedResults = new PointcutResultList();
+		expectedResults.addResult(AppLogBean5.class.getSimpleName(), true, "test").addResult(AppLogBean5.class.getSimpleName(), false, "hashCode", "equals", "toString");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.three.*");
 	}
 
 	private void doAssertions(PointcutResultList expectedResults, String includedEntriesMatcher)
