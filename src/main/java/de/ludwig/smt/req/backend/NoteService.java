@@ -2,7 +2,6 @@ package de.ludwig.smt.req.backend;
 
 import java.util.function.Function;
 
-import de.ludwig.rdd.NoRequirement;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementMapping;
 import de.ludwig.smt.app.config.FlowId;
@@ -53,14 +52,12 @@ public class NoteService extends ElasticSearchDocumentService<Note>
 		return es.documentById(esDocumentId, Note::fromJson);
 	}
 
-	@NoRequirement
 	@Override
 	public String documentType()
 	{
 		return esNoteType;
 	}
 
-	@NoRequirement
 	@Override
 	public Function<Note, String> jsonifier()
 	{

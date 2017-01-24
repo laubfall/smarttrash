@@ -7,7 +7,6 @@ import org.elasticsearch.action.update.UpdateResponse;
 
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
-import de.ludwig.rdd.NoRequirement;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.tec.ElasticSearch;
 import de.ludwig.smt.tec.validation.ValidationContext;
@@ -59,15 +58,11 @@ public abstract class ElasticSearchDocumentService<D>
 		return updateResponse.getId();
 	}
 
-	@NoRequirement
 	public abstract ValidationContext<D> validateDocument(D document);
 
-	@NoRequirement
 	public abstract Hit<D> getDocument(final String esDocumentId);
 
-	@NoRequirement
 	public abstract String documentType();
 
-	@NoRequirement
 	public abstract Function<D, String> jsonifier();
 }
