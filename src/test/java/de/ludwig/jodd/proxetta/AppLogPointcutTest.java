@@ -1,5 +1,6 @@
 package de.ludwig.jodd.proxetta;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +32,9 @@ public class AppLogPointcutTest
 	public void samplebeansOne()
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
-		expectedResults.addResult(AppLogBean1_1.class.getSimpleName(), false, "test01", "hashCode", "equals",
-				"toString");
-		expectedResults.addResult(AppLogBean1_2.class.getSimpleName(), "test01", true)
+		expectedResults.addResult(AppLogBean1_1.class.getSimpleName(), false, "test01", "test02", "test03", "hashCode",
+				"equals", "toString");
+		expectedResults.addResult(AppLogBean1_2.class.getSimpleName(), true, "test03", "test02", "test01")
 				.addResult(AppLogBean1_2.class.getSimpleName(), false, "hashCode", "equals", "toString");
 		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean1*");
 	}
@@ -43,8 +44,8 @@ public class AppLogPointcutTest
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
 		expectedResults.addResult(AppLogBean2_1.class.getSimpleName(), false, "test", "hashCode", "equals", "toString");
-		expectedResults.addResult(AppLogBean2_2.class.getSimpleName(), "test", true).addResult(AppLogBean2_2.class.getSimpleName(), false, "hashCode", "equals",
-				"toString");
+		expectedResults.addResult(AppLogBean2_2.class.getSimpleName(), "test", true)
+				.addResult(AppLogBean2_2.class.getSimpleName(), false, "hashCode", "equals", "toString");
 		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean2*");
 	}
 
@@ -63,17 +64,25 @@ public class AppLogPointcutTest
 
 		Mockito.doAnswer(invocation -> {
 			final MethodInfo methodInfo = (MethodInfo) invocation.getArguments()[0];
+
 			Boolean isPointcut = (Boolean) invocation.callRealMethod();
+			if (spy.ignoredMethod(methodInfo) == false) {
+				List<PointcutResult> expectedResult = expectedResults.expectedResult(
+						methodInfo.getClassInfo().getClassname(), methodInfo.getMethodName(), isPointcut);
 
-			List<PointcutResult> expectedResult = expectedResults
-					.expectedResult(methodInfo.getClassInfo().getClassname(), methodInfo.getMethodName(), isPointcut);
+				System.out.println(methodInfo.getClassInfo().getClassname() //
+						+ "." + methodInfo.getMethodName() + ":\n" //
+						+ " is Pointcut: " + isPointcut //
+						+ "\n topLevelMethod: " + methodInfo.isTopLevelMethod() //
+						+ "\n rootMethod: " + spy.isRootMethod(methodInfo) //
+						+ "\n specialMethod: " + spy.isSpecialMethod(methodInfo) //
+						+ "\n declaration: " + methodInfo.getDeclaration() //
+						+ "\n declaredClassName: " + methodInfo.getDeclaredClassName() //
+						+ "\n accessFlags: " + Modifier.toString(methodInfo.getAccessFlags()) + "\n");
 
-			System.out.println(methodInfo.getClassInfo().getClassname() + "." + methodInfo.getMethodName() + ":"
-					+ isPointcut + "\n topLevelMethod: " + methodInfo.isTopLevelMethod() + "\n rootMethod: "
-					+ spy.isRootMethod(methodInfo) + "\n specialMethod: " + spy.isSpecialMethod(methodInfo) + "\n");
-
-			Assert.assertEquals("expected " + methodInfo.getClassInfo().getClassname() + "."
-					+ methodInfo.getMethodName() + " to be logged", 1, expectedResult.size());
+				Assert.assertEquals("expected " + methodInfo.getClassInfo().getClassname() + "."
+						+ methodInfo.getMethodName() + " to be logged", 1, expectedResult.size());
+			}
 
 			return isPointcut;
 		}).when(spy).apply(Mockito.any(MethodInfo.class));
@@ -90,8 +99,6 @@ public class AppLogPointcutTest
 		final AutomagicPetiteConfigurator petiteConfigurator = new AutomagicPetiteConfigurator();
 		petiteConfigurator.setIncludedEntries(includedEntriesMatcher);
 		petiteConfigurator.configure(container);
-
-		Mockito.verify(spy, Mockito.times(expectedResults.size())).apply(Mockito.any(MethodInfo.class));
 	}
 
 	class PointcutResult

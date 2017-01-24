@@ -1,5 +1,7 @@
 package de.ludwig.jodd.proxetta;
 
+import java.lang.reflect.Modifier;
+
 import de.ludwig.rdd.Requirement;
 import jodd.proxetta.MethodInfo;
 import jodd.proxetta.pointcuts.ProxyPointcutSupport;
@@ -17,10 +19,10 @@ public class AppLogPointcut extends ProxyPointcutSupport
 	public boolean apply(MethodInfo methodInfo)
 	{
 		// do not log any methods of class Object
-		if(isRootMethod(methodInfo)) {
+		if (ignoredMethod(methodInfo)) {
 			return false;
 		}
-		
+
 		boolean apply = hasAnnotation(methodInfo.getClassInfo(), Requirement.class)
 				|| hasAnnotation(methodInfo, Requirement.class);
 
@@ -28,4 +30,9 @@ public class AppLogPointcut extends ProxyPointcutSupport
 
 	}
 
+	public boolean ignoredMethod(final MethodInfo methodInfo)
+	{
+		return isRootMethod(methodInfo) || Modifier.isAbstract(methodInfo.getAccessFlags())
+				|| Modifier.isVolatile(methodInfo.getAccessFlags());
+	}
 }
