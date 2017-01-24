@@ -126,6 +126,7 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	public boolean isNewFlow(Request req)
 	{
+		// TODO we do not check if a flow with the given id really exists.
 		return req.queryMap("flowId").hasValue() == false;
 	}
 

@@ -8,6 +8,7 @@ import jodd.petite.scope.Scope;
 import jodd.proxetta.ProxyAspect;
 import jodd.proxetta.impl.ProxyProxetta;
 import jodd.proxetta.impl.ProxyProxettaBuilder;
+import jodd.proxetta.pointcuts.ProxyPointcutSupport;
 
 /**
  * Petite Container with Proxetta Support.
@@ -50,10 +51,15 @@ public class ProxettaPetiteContainer extends PetiteContainer
 
 	private final void initProxetta()
 	{
-		ProxyAspect aspect = new ProxyAspect(AppLogAdvice.class, new AppLogPointcut());
+		ProxyAspect aspect = new ProxyAspect(AppLogAdvice.class, appLogAdvicePointcut());
 		proxetta = ProxyProxetta.withAspects(aspect);
 
 		// TODO make this configurable
 		proxetta.setDebugFolder("./target");
+	}
+
+	public ProxyPointcutSupport appLogAdvicePointcut()
+	{
+		return new AppLogPointcut();
 	}
 }
