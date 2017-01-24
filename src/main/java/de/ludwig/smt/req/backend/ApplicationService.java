@@ -1,6 +1,6 @@
 package de.ludwig.smt.req.backend;
 
-import de.ludwig.jodd.CallStackContext;
+import de.ludwig.jodd.proxetta.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
