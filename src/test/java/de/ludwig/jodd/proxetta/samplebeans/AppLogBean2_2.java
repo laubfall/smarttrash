@@ -1,10 +1,10 @@
-package de.ludwig.jodd.proxetta.samplebeans.two;
+package de.ludwig.jodd.proxetta.samplebeans;
 
 import de.ludwig.rdd.Requirement;
 import jodd.petite.meta.PetiteBean;
 
 @PetiteBean
-public class AppLogBean4 extends AppLogBean3
+public class AppLogBean2_2 extends AppLogBean2_1
 {
 	@Requirement
 	public void test()

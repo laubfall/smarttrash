@@ -1,11 +1,11 @@
-package de.ludwig.jodd.proxetta.samplebeans.one;
+package de.ludwig.jodd.proxetta.samplebeans;
 
 import de.ludwig.rdd.Requirement;
 import jodd.petite.meta.PetiteBean;
 
 @PetiteBean
 @Requirement
-public class AppLogBean2 extends AppLogBean1
+public class AppLogBean1_2 extends AppLogBean1_1
 {
 
 	@Override

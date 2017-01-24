@@ -10,7 +10,11 @@ import org.mockito.Mockito;
 
 import de.ludwig.jodd.proxetta.AppLogPointcut;
 import de.ludwig.jodd.proxetta.ProxettaPetiteContainer;
-import de.ludwig.jodd.proxetta.samplebeans.three.AppLogBean5;
+import de.ludwig.jodd.proxetta.samplebeans.AppLogBean1_1;
+import de.ludwig.jodd.proxetta.samplebeans.AppLogBean1_2;
+import de.ludwig.jodd.proxetta.samplebeans.AppLogBean2_1;
+import de.ludwig.jodd.proxetta.samplebeans.AppLogBean2_2;
+import de.ludwig.jodd.proxetta.samplebeans.AppLogBean3_1;
 import jodd.petite.config.AutomagicPetiteConfigurator;
 import jodd.proxetta.MethodInfo;
 import jodd.proxetta.pointcuts.ProxyPointcutSupport;
@@ -27,28 +31,30 @@ public class AppLogPointcutTest
 	public void samplebeansOne()
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
-		expectedResults.addResult("AppLogBean1", false, "test01", "hashCode", "equals", "toString");
-		expectedResults.addResult("AppLogBean2", "test01", true).addResult("AppLogBean2", false, "hashCode", "equals",
+		expectedResults.addResult(AppLogBean1_1.class.getSimpleName(), false, "test01", "hashCode", "equals",
 				"toString");
-		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.one.*");
+		expectedResults.addResult(AppLogBean1_2.class.getSimpleName(), "test01", true)
+				.addResult(AppLogBean1_2.class.getSimpleName(), false, "hashCode", "equals", "toString");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean1*");
 	}
 
 	@Test
 	public void samplebeansTwo()
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
-		expectedResults.addResult("AppLogBean3", false, "test", "hashCode", "equals", "toString");
-		expectedResults.addResult("AppLogBean4", "test", true).addResult("AppLogBean4", false, "hashCode", "equals",
+		expectedResults.addResult(AppLogBean2_1.class.getSimpleName(), false, "test", "hashCode", "equals", "toString");
+		expectedResults.addResult(AppLogBean2_2.class.getSimpleName(), "test", true).addResult(AppLogBean2_2.class.getSimpleName(), false, "hashCode", "equals",
 				"toString");
-		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.two.*");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean2*");
 	}
 
 	@Test
 	public void samplebeansThree()
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
-		expectedResults.addResult(AppLogBean5.class.getSimpleName(), true, "test").addResult(AppLogBean5.class.getSimpleName(), false, "hashCode", "equals", "toString");
-		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.three.*");
+		expectedResults.addResult(AppLogBean3_1.class.getSimpleName(), true, "test")
+				.addResult(AppLogBean3_1.class.getSimpleName(), false, "hashCode", "equals", "toString");
+		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean3*");
 	}
 
 	private void doAssertions(PointcutResultList expectedResults, String includedEntriesMatcher)

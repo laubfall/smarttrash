@@ -1,9 +1,9 @@
-package de.ludwig.jodd.proxetta.samplebeans.two;
+package de.ludwig.jodd.proxetta.samplebeans;
 
 import jodd.petite.meta.PetiteBean;
 
 @PetiteBean
-public abstract class AppLogBean3
+public abstract class AppLogBean2_1
 {
 	public abstract void test();
 }
