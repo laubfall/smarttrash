@@ -32,9 +32,9 @@ public class AppLogPointcutTest
 	public void samplebeansOne()
 	{
 		final PointcutResultList expectedResults = new PointcutResultList();
-		expectedResults.addResult(AppLogBean1_1.class.getSimpleName(), false, "test01", "test02", "test03", "hashCode",
+		expectedResults.addResult(AppLogBean1_1.class.getSimpleName(), false, "noRequirementMethod", "test01", "test02", "test03", "hashCode",
 				"equals", "toString");
-		expectedResults.addResult(AppLogBean1_2.class.getSimpleName(), true, "test03", "test02", "test01")
+		expectedResults.addResult(AppLogBean1_2.class.getSimpleName(), true, "test03", "test02", "test01", "noRequirementMethod")
 				.addResult(AppLogBean1_2.class.getSimpleName(), false, "hashCode", "equals", "toString");
 		doAssertions(expectedResults, "de.ludwig.jodd.proxetta.samplebeans.AppLogBean1*");
 	}
