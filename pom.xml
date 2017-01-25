@@ -19,6 +19,10 @@
 		</plugins>
 	</build>
 
+	<properties>
+		<org.jodd.version>3.7</org.jodd.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.sparkjava</groupId>
@@ -38,22 +42,27 @@
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-petite</artifactId>
-			<version>3.7</version>
+			<version>${org.jodd.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-proxetta</artifactId>
-			<version>3.7</version>
+			<version>${org.jodd.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-json</artifactId>
-			<version>3.7</version>
+			<version>${org.jodd.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-props</artifactId>
-			<version>3.7</version>
+			<version>${org.jodd.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-vtor</artifactId>
+			<version>${org.jodd.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
