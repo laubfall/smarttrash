@@ -30,6 +30,13 @@ public class AppLogPointcut extends ProxyPointcutSupport
 
 	}
 
+	/**
+	 * Some methods are ignored by default. Thos methods are: abstract methods, volatile methods and methods provided by
+	 * java.lang.Object.
+	 * 
+	 * @param methodInfo method to check.
+	 * @return true if a method is ignored.
+	 */
 	public boolean ignoredMethod(final MethodInfo methodInfo)
 	{
 		return isRootMethod(methodInfo) || Modifier.isAbstract(methodInfo.getAccessFlags())
