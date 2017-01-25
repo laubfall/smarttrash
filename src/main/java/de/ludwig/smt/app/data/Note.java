@@ -3,6 +3,7 @@ package de.ludwig.smt.app.data;
 import de.ludwig.smt.app.config.FlowId;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
+import jodd.vtor.constraint.NotNull;
 
 /**
  * A Note.
@@ -20,6 +21,7 @@ public class Note
 	/**
 	 * The flow this note belongs to.
 	 */
+	@NotNull
 	private FlowId flow;
 
 	public String getContent()

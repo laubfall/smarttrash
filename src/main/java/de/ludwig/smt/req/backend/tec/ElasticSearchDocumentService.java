@@ -1,5 +1,7 @@
 package de.ludwig.smt.req.backend.tec;
 
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.elasticsearch.action.index.IndexResponse;
@@ -9,11 +11,19 @@ import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.tec.ElasticSearch;
-import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
+import jodd.vtor.Violation;
+import jodd.vtor.Vtor;
 import spark.utils.StringUtils;
 
+/**
+ * Base class that provides functionality to index ES documents.
+ * 
+ * @author Daniel
+ *
+ * @param <D> ES document type. Typically a POJO.
+ */
 @PetiteBean
 public abstract class ElasticSearchDocumentService<D>
 {
@@ -22,9 +32,19 @@ public abstract class ElasticSearchDocumentService<D>
 
 	private String indexName = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
 
-	public String saveDocument(D document, String esDocumentId)
+	/**
+	 * Index or update a document. Before it does it does validation of the document.
+	 * 
+	 * @param document document to index or update.
+	 * @param esDocumentId ES Document ID. Required if you want to update a document.
+	 * @param onValidationErrors callback in case of validation violations.
+	 * @return esDocumentId. either the newly created one, or the id of an existing document. Null if validation of document failed.
+	 */
+	public String saveDocument(D document, String esDocumentId, Consumer<List<Violation>> onValidationErrors)
 	{
-		validateDocument(document); // TODO provide a callback or exception to signal that there are validation errors.
+		if(validateDocument(document, onValidationErrors) == false) {
+			return null;
+		}
 
 		if (isNewDocument(esDocumentId)) {
 			return indexDocument(document);
@@ -33,6 +53,12 @@ public abstract class ElasticSearchDocumentService<D>
 		}
 	}
 
+	/**
+	 * Checks if there already exists an es document for the given document id.
+	 * 
+	 * @param esDocumentId id to check.
+	 * @return see description.
+	 */
 	public boolean isNewDocument(String esDocumentId)
 	{
 		if (StringUtils.isBlank(esDocumentId)) {
@@ -42,6 +68,12 @@ public abstract class ElasticSearchDocumentService<D>
 		return getDocument(esDocumentId) == null;
 	}
 
+	/**
+	 * Index a document.
+	 * 
+	 * @param document document to index.
+	 * @return es id of the indexed document.
+	 */
 	public String indexDocument(D document)
 	{
 		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, documentType())
@@ -50,7 +82,14 @@ public abstract class ElasticSearchDocumentService<D>
 		return indexResponse.getId();
 	}
 
-	private String updateDocument(D document, String esDocumentId)
+	/**
+	 * Update a document.
+	 * 
+	 * @param document document to update.
+	 * @param esDocumentId Mandatory. ID of the document to update.
+	 * @return esDocumentId.
+	 */
+	public String updateDocument(D document, String esDocumentId)
 	{
 		UpdateResponse updateResponse = es.esClient().prepareUpdate(indexName, documentType(), esDocumentId)
 				.setDoc(jsonifier().apply(document)).get();
@@ -58,11 +97,32 @@ public abstract class ElasticSearchDocumentService<D>
 		return updateResponse.getId();
 	}
 
-	public abstract ValidationContext<D> validateDocument(D document);
+	/**
+	 * Does the validation of a document before it gets indexed or updated.
+	 * 
+	 * @param document
+	 * @return
+	 */
+	public List<Violation> validateDocument(D document)
+	{
+		final Vtor vtor = new Vtor();
+		final List<Violation> validate = vtor.validate(document);
+		return validate;
+	}
 
 	public abstract Hit<D> getDocument(final String esDocumentId);
 
 	public abstract String documentType();
 
 	public abstract Function<D, String> jsonifier();
+
+	private boolean validateDocument(D document, Consumer<List<Violation>> onValidationErrors)
+	{
+		List<Violation> validateDocument = validateDocument(document);
+		if(validateDocument != null && validateDocument.isEmpty() == false && onValidationErrors != null) {
+			onValidationErrors.accept(validateDocument);
+			return false;
+		}
+		return true;
+	}
 }
