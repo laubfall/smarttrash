@@ -115,6 +115,7 @@ public abstract class ElasticSearchDocumentService<D>
 	public abstract String documentType();
 
 	public abstract Function<D, String> jsonifier();
+	
 
 	private boolean validateDocument(D document, Consumer<List<Violation>> onValidationErrors)
 	{
