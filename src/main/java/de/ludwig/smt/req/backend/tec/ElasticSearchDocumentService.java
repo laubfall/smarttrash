@@ -110,10 +110,23 @@ public abstract class ElasticSearchDocumentService<D>
 		return validate;
 	}
 
+	/**
+	 * Loads a document for a given ID.
+	 * @param esDocumentId id of the document to load.
+	 * @return loaded document. Null if there is no document for the given id.
+	 */
 	public abstract Hit<D> getDocument(final String esDocumentId);
 
+	/**
+	 * Type of the elasticsearch documen type.
+	 * @return s. description.
+	 */
 	public abstract String documentType();
 
+	/**
+	 * Factory-method.
+	 * @return a Function that provides the functionality to convert a pojo to a json.
+	 */
 	public abstract Function<D, String> jsonifier();
 	
 
