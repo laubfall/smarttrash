@@ -6,7 +6,10 @@ import java.util.function.Function;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistRequestBuilder;
+import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
@@ -65,8 +68,7 @@ public class ElasticSearch
 			@Override
 			public void onFailure(Throwable e)
 			{
-				// TODO catched by the executing thread.
-				throw new SmartTrashException("Exception while preparing smarttrash es index", e);
+
 			}
 		});
 	}
@@ -102,7 +104,8 @@ public class ElasticSearch
 			});
 
 			execute.actionGet();
-		} catch (Throwable t) { // providing an action listener does not prevent exceptions bubbling up in the call hierachy.
+		} catch (Throwable t) { // providing an action listener does not prevent exceptions bubbling up in the call
+								// hierachy.
 			LOG.error("Exception occured while indexing document", t);
 		}
 	}
