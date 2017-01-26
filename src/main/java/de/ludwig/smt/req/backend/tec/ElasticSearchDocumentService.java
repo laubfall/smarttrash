@@ -1,5 +1,6 @@
 package de.ludwig.smt.req.backend.tec;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -109,6 +110,9 @@ public abstract class ElasticSearchDocumentService<D>
 		final SmtVtor vtor = new SmtVtor();
 		vtor.useProfiles(profile);
 		final List<Violation> validate = vtor.validate(document);
+		if(validate == null) {
+			return new ArrayList<>(0);
+		}
 		return validate;
 	}
 

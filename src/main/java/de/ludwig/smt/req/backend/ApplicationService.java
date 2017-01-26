@@ -1,5 +1,8 @@
 package de.ludwig.smt.req.backend;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.ludwig.jodd.proxetta.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
@@ -35,6 +38,8 @@ public class ApplicationService
 	@PetiteInject
 	protected EditCreateFlowViewService editCreateFlow;
 
+	private static final Logger LOG = LoggerFactory.getLogger(ApplicationService.class);
+	
 	public void startApplication()
 	{
 		startSpark();
@@ -72,14 +77,12 @@ public class ApplicationService
 	}
 
 	/**
-	 * Does nothing, but the call is logged by logging framework.
+	 * Logs unhandled exceptions.
 	 *
-	 * TODO that does not work well. Only the Exception type is logged but not the stacktrace.
-	 * 
 	 * @param e exception to handle.
 	 */
 	public void handleSparkRoutingException(Exception e)
 	{
-		// NOOP
+		LOG.error("unhandled exception occured", e);
 	}
 }
