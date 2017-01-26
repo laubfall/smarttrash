@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
+import de.ludwig.jodd.vtor.VtorProfile;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
@@ -87,7 +88,7 @@ public class EditCreateFlowViewService implements ModalProvider
 
 			convertValue.setDescription(req.queryMap("description").value());
 			convertValue.setName(req.queryMap("name").value());
-			List<Violation> validateFlow = flowService.validateDocument(convertValue);
+			List<Violation> validateFlow = flowService.validateDocument(convertValue, VtorProfile.GUI);
 
 			if (validateFlow.isEmpty() == false) {
 				ModelAndView displayValidationMessage = displayValidationMessage(validateFlow);
@@ -107,14 +108,12 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	public ModelAndView displayValidationMessage(final List<Violation> ctx)
 	{
-
 		final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
-		
-		// TODO check if this is really needed.
-		// modalFormResult.setFlow(ctx.getValidatedObject());
+		modalFormResult.setFlow((Flow) ctx.iterator().next().getValidatedObject());
 
 		ctx.stream().forEach(violation -> {
-			final String msgResolved = I18N.resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the chosen locale.
+			final String msgResolved = I18N.resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the
+																								// chosen locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
 		});
 

@@ -9,12 +9,13 @@ import org.elasticsearch.action.update.UpdateResponse;
 
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
+import de.ludwig.jodd.vtor.SmtVtor;
+import de.ludwig.jodd.vtor.VtorProfile;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.tec.ElasticSearch;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import jodd.vtor.Violation;
-import jodd.vtor.Vtor;
 import spark.utils.StringUtils;
 
 /**
@@ -103,9 +104,10 @@ public abstract class ElasticSearchDocumentService<D>
 	 * @param document
 	 * @return
 	 */
-	public List<Violation> validateDocument(D document)
+	public List<Violation> validateDocument(D document, VtorProfile ... profile)
 	{
-		final Vtor vtor = new Vtor();
+		final SmtVtor vtor = new SmtVtor();
+		vtor.useProfiles(profile);
 		final List<Violation> validate = vtor.validate(document);
 		return validate;
 	}
@@ -132,7 +134,7 @@ public abstract class ElasticSearchDocumentService<D>
 
 	private boolean validateDocument(D document, Consumer<List<Violation>> onValidationErrors)
 	{
-		List<Violation> validateDocument = validateDocument(document);
+		List<Violation> validateDocument = validateDocument(document, VtorProfile.PERSISTENCE);
 		if(validateDocument != null && validateDocument.isEmpty() == false && onValidationErrors != null) {
 			onValidationErrors.accept(validateDocument);
 			return false;

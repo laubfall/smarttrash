@@ -73,6 +73,8 @@ public class ApplicationService
 
 	/**
 	 * Does nothing, but the call is logged by logging framework.
+	 *
+	 * TODO that does not work well. Only the Exception type is logged but not the stacktrace.
 	 * 
 	 * @param e exception to handle.
 	 */

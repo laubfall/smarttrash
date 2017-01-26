@@ -19,7 +19,7 @@ public class Flow
 	 * Mandatory.
 	 * Name of the flow.
 	 */
-	@NotBlank(message="flow.name.notblank")
+	@NotBlank(message="flow.name.notblank", profiles={"GUI", "PERSISTENCE"})
 	private String name;
 
 	/**
@@ -31,7 +31,7 @@ public class Flow
 	/**
 	 * The flowid of a {@link FlowBase} as saved in the configuration.
 	 */
-	@NotNull
+	@NotNull(message="flow.id.notnull", profiles={"PERSISTENCE"})
 	private FlowId id;
 
 	public Flow() {
