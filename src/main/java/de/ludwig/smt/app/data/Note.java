@@ -21,7 +21,7 @@ public class Note
 	/**
 	 * The flow this note belongs to.
 	 */
-	@NotNull
+	@NotNull(message="note.flow.notnull")
 	private FlowId flow;
 
 	public String getContent()

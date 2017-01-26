@@ -4,6 +4,8 @@ import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
+import jodd.vtor.constraint.NotBlank;
+import jodd.vtor.constraint.NotNull;
 
 /**
  * A Flow as known by elastic search.
@@ -17,6 +19,7 @@ public class Flow
 	 * Mandatory.
 	 * Name of the flow.
 	 */
+	@NotBlank(message="flow.name.notblank")
 	private String name;
 
 	/**
@@ -28,6 +31,7 @@ public class Flow
 	/**
 	 * The flowid of a {@link FlowBase} as saved in the configuration.
 	 */
+	@NotNull
 	private FlowId id;
 
 	public Flow() {

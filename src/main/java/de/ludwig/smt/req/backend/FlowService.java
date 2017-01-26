@@ -45,7 +45,6 @@ public class FlowService extends ElasticSearchDocumentService<Flow>
 	@PetiteInject
 	protected FlowConfigService flowConfig;
 
-	
 	/**
 	 * Creates a new flow.
 	 * 
@@ -58,21 +57,12 @@ public class FlowService extends ElasticSearchDocumentService<Flow>
 	 */
 	public String saveFlow(final Flow flow, final List<FlowId> parents, String esDocumentId)
 	{
-		if(isNewDocument(esDocumentId)) {
+		if (isNewDocument(esDocumentId)) {
 			final FlowBase flowBase = flowConfig.createFlow(parents);
 			flow.setId(flowBase.getId());
 		}
-		
-		return saveDocument(flow, esDocumentId, null);
-	}
 
-	public ValidationContext<Flow> validateFlow(final Flow flow)
-	{
-		ValidationContext<Flow> ctx = new ValidationContext<Flow>(flow);
-		if (StringUtils.isBlank(flow.getName())) {
-			ctx.addValidationMessage("name", new ValidationMessage("empty.name"));
-		}
-		return ctx;
+		return saveDocument(flow, esDocumentId, null);
 	}
 
 	/**

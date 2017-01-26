@@ -1,5 +1,6 @@
 package de.ludwig.smt.req.frontend;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
@@ -19,6 +20,7 @@ import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import jodd.util.StringUtil;
+import jodd.vtor.Violation;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -86,8 +88,9 @@ public class EditCreateFlowViewService implements ModalProvider
 
 			convertValue.setDescription(req.queryMap("description").value());
 			convertValue.setName(req.queryMap("name").value());
-			ValidationContext<Flow> validateFlow = flowService.validateFlow(convertValue);
-			if (validateFlow.isValid() == false) {
+			List<Violation> validateFlow = flowService.validateDocument(convertValue);
+
+			if (validateFlow.isEmpty() == false) {
 				ModelAndView displayValidationMessage = displayValidationMessage(validateFlow);
 				AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
 				atr.setMav(displayValidationMessage);
@@ -103,16 +106,18 @@ public class EditCreateFlowViewService implements ModalProvider
 		};
 	}
 
-	public ModelAndView displayValidationMessage(final ValidationContext<Flow> ctx)
+	public ModelAndView displayValidationMessage(final List<Violation> ctx)
 	{
-		final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
-		modalFormResult.setFlow(ctx.getValidatedObject());
 
-		ctx.messages().forEach(entry -> entry.getValue().forEach(msg -> {
-			final String msgResolved = I18N.resolveMessage(msg.getI18nKey(), Locale.GERMAN); // TODO resolve the chosen
-																								// locale.
+		final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+		
+		// TODO check if this is really needed.
+		// modalFormResult.setFlow(ctx.getValidatedObject());
+
+		ctx.stream().forEach(violation -> {
+			final String msgResolved = I18N.resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the chosen locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
-		}));
+		});
 
 		final ModalModelObject mmo = new ModalModelObject();
 		mmo.modalContentName("editCreateFlow").modelObject(modalFormResult);
