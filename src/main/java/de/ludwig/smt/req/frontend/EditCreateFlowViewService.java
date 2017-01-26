@@ -16,7 +16,6 @@ import de.ludwig.smt.tec.frontend.ModalModelAndView;
 import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
-import de.ludwig.smt.tec.validation.ValidationContext;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import jodd.util.StringUtil;

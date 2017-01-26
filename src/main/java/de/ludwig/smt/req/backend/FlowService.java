@@ -16,11 +16,8 @@ import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.tec.ElasticSearchDocumentService;
 import de.ludwig.smt.req.backend.tec.FlowConfigService;
-import de.ludwig.smt.tec.validation.ValidationContext;
-import de.ludwig.smt.tec.validation.ValidationMessage;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
-import spark.utils.StringUtils;
 
 /**
  * Business requirements flows placed in the backend.
