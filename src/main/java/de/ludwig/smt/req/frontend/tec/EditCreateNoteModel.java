@@ -1,14 +1,15 @@
 package de.ludwig.smt.req.frontend.tec;
 
 import de.ludwig.smt.app.data.Note;
-import de.ludwig.smt.tec.frontend.ModalFormResult;
+import de.ludwig.smt.tec.frontend.AjaxFormSubmitResult;
 
 /**
  * 
  * @author Daniel
  *
  */
-public class EditCreateNoteModel extends ModalFormResult
+@Deprecated // We convert EditCreateFlowModel in a generic type.
+public class EditCreateNoteModel extends AjaxFormSubmitResult
 {
 	/**
 	 * The serial version uid.

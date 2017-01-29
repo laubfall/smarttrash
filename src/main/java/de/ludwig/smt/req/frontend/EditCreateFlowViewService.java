@@ -9,7 +9,7 @@ import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
-import de.ludwig.smt.req.frontend.tec.EditCreateFlowModel;
+import de.ludwig.smt.req.frontend.tec.EditCreateDocumentModelObject;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.tec.frontend.FormMessage;
@@ -46,16 +46,11 @@ public class EditCreateFlowViewService implements ModalProvider
 	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
 	{
 		return (req, res) -> {
-			final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
-
-			Flow modelObject = null;
-			if (isNewFlow(req)) {
-				modelObject = new Flow();
-			} else {
-				modelObject = loadFlowFillForm(req, modalFormResult);
-			}
-			modalFormResult.setFlow(modelObject);
-
+			final EditCreateDocumentModelObject modalFormResult = new EditCreateDocumentModelObject();
+			loadFlowFillForm(req, modalFormResult);
+			
+			
+			
 			final ModalModelObject mmo = new ModalModelObject();
 			mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(modalFormResult)
 					.title(I18N.resolveMessage("title", Locale.GERMAN)); // TODO resolve chosen language.
@@ -64,14 +59,20 @@ public class EditCreateFlowViewService implements ModalProvider
 		};
 	}
 
-	private Flow loadFlowFillForm(Request req, final EditCreateFlowModel modalFormResult)
+	private Flow loadFlowFillForm(Request req, final EditCreateDocumentModelObject modalFormResult)
 	{
 		Flow modelObject;
 		final String esDocId = req.queryMap("flowId").value();
 		// load the elasticsearch document.
-		Hit<Flow> hit = flowService.getFlow(esDocId);
-		modelObject = hit.getDocument();
-		modalFormResult.setEsDocumentId(hit.getDocumentId());
+		
+		if(flowService.isNewDocument(esDocId)) {
+			modelObject = new Flow();
+		} else {
+			Hit<Flow> hit = flowService.getFlow(esDocId);
+			modelObject = hit.getDocument();			
+			modalFormResult.setEsDocumentId(hit.getDocumentId());
+		}
+		modalFormResult.setFlow(modelObject);
 		return modelObject;
 	}
 
@@ -108,7 +109,7 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	public ModelAndView displayValidationMessage(final List<Violation> ctx)
 	{
-		final EditCreateFlowModel modalFormResult = new EditCreateFlowModel();
+		final EditCreateDocumentModelObject modalFormResult = new EditCreateDocumentModelObject();
 		modalFormResult.setFlow((Flow) ctx.iterator().next().getValidatedObject());
 
 		ctx.stream().forEach(violation -> {
@@ -129,8 +130,12 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	public boolean isNewFlow(Request req)
 	{
-		// TODO we do not check if a flow with the given id really exists.
-		return req.queryMap("flowId").hasValue() == false;
+		if(req.queryMap("flowId").hasValue() == false) {
+			return false;
+		}
+		
+		String value = req.queryMap("flowId").value();
+		return flowService.isNewDocument(value);
 	}
 
 	@Override

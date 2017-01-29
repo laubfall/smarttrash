@@ -1,7 +1,7 @@
 package de.ludwig.smt.req.frontend.tec;
 
 import de.ludwig.smt.app.data.Flow;
-import de.ludwig.smt.tec.frontend.ModalFormResult;
+import de.ludwig.smt.tec.frontend.AjaxFormSubmitResult;
 
 /**
  * Model object for the editCreateFlow Form.
@@ -9,7 +9,7 @@ import de.ludwig.smt.tec.frontend.ModalFormResult;
  * @author Daniel
  *
  */
-public class EditCreateFlowModel extends ModalFormResult
+public class EditCreateDocumentModelObject extends AjaxFormSubmitResult
 {
 	/**
 	 * The serial version uid.
