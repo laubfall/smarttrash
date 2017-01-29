@@ -4,9 +4,7 @@ import java.util.function.BiFunction;
 
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Note;
-import de.ludwig.smt.req.frontend.tec.EditCreateNoteModel;
-import de.ludwig.smt.tec.frontend.ModalModelAndView;
-import de.ludwig.smt.tec.frontend.ModalModelObject;
+import de.ludwig.smt.req.frontend.tec.EditCreateDocumentModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import jodd.petite.meta.PetiteBean;
 import spark.ModelAndView;
@@ -26,22 +24,24 @@ public class EditCreateNoteViewService implements ModalProvider
 
 	public BiFunction<Request, Response, ModelAndView> showEditCreateNote()
 	{
-		return (req, res) -> {
-			final EditCreateNoteModel editCreateNoteModel = new EditCreateNoteModel();
-			Note note = new Note();
-			if (isNewNote(req) == false) {
-				// TODO load the note
-			}
-			
-			editCreateNoteModel.setNote(note);
-
-			final ModalModelObject mmo = new ModalModelObject();
-			mmo.modalContentName("editCreateNote").formActionName("editCreateNote").modelObject(editCreateNoteModel);
-			return new ModalModelAndView(mmo);
-		};
+//		return (req, res) -> {
+//			final EditCreateNoteModel editCreateNoteModel = new EditCreateNoteModel();
+//			Note note = new Note();
+//			if (isNewNote(req) == false) {
+//				// TODO load the note
+//			}
+//			
+//			editCreateNoteModel.setNote(note);
+//
+//			final ModalModelObject mmo = new ModalModelObject();
+//			mmo.modalContentName("editCreateNote").formActionName("editCreateNote").modelObject(editCreateNoteModel);
+//			return new ModalModelAndView(mmo);
+//		};
+		
+		return null;
 	}
 
-	public Note loadNoteFillForm(Request req, EditCreateNoteModel modelObject)
+	public Note loadNoteFillForm(Request req, EditCreateDocumentModelObject modelObject)
 	{
 		return null;
 	}
