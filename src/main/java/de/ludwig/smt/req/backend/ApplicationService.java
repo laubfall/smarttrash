@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import de.ludwig.jodd.proxetta.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
+import de.ludwig.smt.req.frontend.EditCreateNoteViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
@@ -38,6 +39,9 @@ public class ApplicationService
 	@PetiteInject
 	protected EditCreateFlowViewService editCreateFlow;
 
+	@PetiteInject
+	protected EditCreateNoteViewService editCreateNote;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ApplicationService.class);
 	
 	public void startApplication()
@@ -62,6 +66,9 @@ public class ApplicationService
 
 		// Form Handlers
 		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res),
+				new AjaxTriggeredResponseTransformer());
+		
+		Spark.post("/editCreateNote", (req, res) -> editCreateNote.saveDocument().apply(req, res),
 				new AjaxTriggeredResponseTransformer());
 
 		// handle exceptions that were not caught.

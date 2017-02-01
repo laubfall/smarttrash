@@ -22,19 +22,25 @@ public class AjaxTriggeredResponse implements Serializable
 	 * Markup that is ready for use.
 	 */
 	private String appendableMarkup;
-	
+
 	/**
 	 * JS that can be evaluated by the browser.
 	 */
 	private String evaluatableJS;
-	
+
 	private Usage usage = Usage.MARKUP_ONLY;
-	
+
 	private transient ModelAndView mav;
-	
+
 	public String getAppendableMarkup()
 	{
 		return appendableMarkup;
+	}
+
+	public AjaxTriggeredResponse appendableMarkup(String appendableMarkup)
+	{
+		setAppendableMarkup(appendableMarkup);
+		return this;
 	}
 
 	public void setAppendableMarkup(String appendableMarkup)
@@ -47,6 +53,12 @@ public class AjaxTriggeredResponse implements Serializable
 		return evaluatableJS;
 	}
 
+	public AjaxTriggeredResponse evaluatableJS(String evaluatableJS)
+	{
+		setEvaluatableJS(evaluatableJS);
+		return this;
+	}
+
 	public void setEvaluatableJS(String evaluatableJS)
 	{
 		this.evaluatableJS = evaluatableJS;
@@ -55,6 +67,12 @@ public class AjaxTriggeredResponse implements Serializable
 	public Usage getUsage()
 	{
 		return usage;
+	}
+
+	public AjaxTriggeredResponse usage(Usage usage)
+	{
+		setUsage(usage);
+		return this;
 	}
 
 	public void setUsage(Usage usage)
@@ -67,6 +85,12 @@ public class AjaxTriggeredResponse implements Serializable
 		return mav;
 	}
 
+	public AjaxTriggeredResponse mav(ModelAndView mav)
+	{
+		setMav(mav);
+		return this;
+	}
+
 	public void setMav(ModelAndView mav)
 	{
 		this.mav = mav;
@@ -74,13 +98,12 @@ public class AjaxTriggeredResponse implements Serializable
 
 	/**
 	 * Controll structure to signal possible callers what to do with this response.
+	 * 
 	 * @author Daniel
 	 *
 	 */
-	public static enum Usage {
-		MARKUP_ONLY,
-		JS_ONLY,
-		BOTH,
-		;
+	public static enum Usage
+	{
+		MARKUP_ONLY, JS_ONLY, BOTH,;
 	}
 }
