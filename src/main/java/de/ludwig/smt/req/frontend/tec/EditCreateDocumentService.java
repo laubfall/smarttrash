@@ -61,7 +61,7 @@ public abstract class EditCreateDocumentService<D>
 			modelObject = hit.getDocument();
 			modalFormResult.setEsDocumentId(hit.getDocumentId());
 		}
-		modalFormResult.setFlow(modelObject);
+		modalFormResult.setDocument(modelObject);
 		return modelObject;
 	}
 
@@ -102,7 +102,7 @@ public abstract class EditCreateDocumentService<D>
 	public ModelAndView displayValidationMessage(List<Violation> violations)
 	{
 		final EditCreateDocumentModelObject<D> modalFormResult = new EditCreateDocumentModelObject<>();
-		modalFormResult.setFlow((D) violations.iterator().next().getValidatedObject());
+		modalFormResult.setDocument((D) violations.iterator().next().getValidatedObject());
 
 		violations.stream().forEach(violation -> {
 			final String msgResolved = messageResolver().resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the

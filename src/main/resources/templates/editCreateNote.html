@@ -8,7 +8,7 @@
 <div th:fragment="modalBody">
   <div class="form-group">
     <label for="content" th:text="#{input.content}"></label>
-    <textarea class="form-control" rows="3" id="content" name="content" th:text="*{flow.content}"></textarea>
+    <textarea class="form-control" rows="3" id="content" name="content" th:text="*{document.content}"></textarea>
   </div>
   
   <input type="hidden" name="id" th:value="*{esDocumentId}">

@@ -18,21 +18,21 @@ public class EditCreateDocumentModelObject<D> extends AjaxFormSubmitResult
 	/**
 	 * Flow to edit.
 	 */
-	private D flow;
+	private D document;
 
 	/**
 	 * ES Document ID. If null we assume that this model does not represent a saved Flow.
 	 */
 	private String esDocumentId;
 	
-	public D getFlow()
+	public D getDocument()
 	{
-		return flow;
+		return document;
 	}
 
-	public void setFlow(D flow)
+	public void setDocument(D flow)
 	{
-		this.flow = flow;
+		this.document = flow;
 	}
 
 	public String getEsDocumentId()
