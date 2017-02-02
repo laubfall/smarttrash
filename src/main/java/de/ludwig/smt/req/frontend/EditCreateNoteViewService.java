@@ -15,6 +15,7 @@ import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.tec.frontend.ModalModelAndView;
 import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
+import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.ModelAndView;
@@ -31,6 +32,8 @@ import spark.Response;
 @Requirement(mappings = { @RequirementMapping(name = "showEditCreateNote", target = "showEditCreateDocument") })
 public class EditCreateNoteViewService extends EditCreateDocumentService<Note> implements ModalProvider
 {
+	private static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateNote");
+	
 	@PetiteInject
 	protected NoteService noteService;
 
@@ -81,6 +84,12 @@ public class EditCreateNoteViewService extends EditCreateDocumentService<Note> i
 	public void copyFormValues(Request req, Note document)
 	{
 		document.setContent(req.queryMap("content").value());
+	}
+
+	@Override
+	public StandaloneStandardMessageResolver messageResolver()
+	{
+		return I18N;
 	}
 
 }

@@ -32,8 +32,6 @@ public abstract class EditCreateDocumentService<D>
 	@PetiteInject
 	protected ElasticSearch es;
 
-	protected static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateFlow");
-
 	/**
 	 * Factory-Method.
 	 * 
@@ -107,7 +105,7 @@ public abstract class EditCreateDocumentService<D>
 		modalFormResult.setFlow((D) violations.iterator().next().getValidatedObject());
 
 		violations.stream().forEach(violation -> {
-			final String msgResolved = I18N.resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the
+			final String msgResolved = messageResolver().resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the
 																								// chosen locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
 		});
@@ -150,6 +148,8 @@ public abstract class EditCreateDocumentService<D>
 	 */
 	public abstract D initiateDocument();
 
+	public abstract StandaloneStandardMessageResolver messageResolver();
+	
 	/**
 	 * Converts form values and copy them into the pojo.
 	 * 
