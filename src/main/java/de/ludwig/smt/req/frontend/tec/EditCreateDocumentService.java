@@ -148,6 +148,10 @@ public abstract class EditCreateDocumentService<D>
 	 */
 	public abstract D initiateDocument();
 
+	/**
+	 * Matching Message-Reslover for the view.
+	 * @return a message resolver.
+	 */
 	public abstract StandaloneStandardMessageResolver messageResolver();
 	
 	/**
