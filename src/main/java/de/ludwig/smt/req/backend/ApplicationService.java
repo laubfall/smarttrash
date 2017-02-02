@@ -65,7 +65,7 @@ public class ApplicationService
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 
 		// Form Handlers
-		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveFlow().apply(req, res),
+		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveDocument().apply(req, res),
 				new AjaxTriggeredResponseTransformer());
 		
 		Spark.post("/editCreateNote", (req, res) -> editCreateNote.saveDocument().apply(req, res),

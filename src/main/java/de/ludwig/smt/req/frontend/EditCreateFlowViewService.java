@@ -9,7 +9,9 @@ import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Flow;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
+import de.ludwig.smt.req.backend.tec.ElasticSearchDocumentService;
 import de.ludwig.smt.req.frontend.tec.EditCreateDocumentModelObject;
+import de.ludwig.smt.req.frontend.tec.EditCreateDocumentService;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
 import de.ludwig.smt.tec.frontend.FormMessage;
@@ -33,7 +35,7 @@ import spark.Response;
  */
 @PetiteBean
 @Requirement
-public class EditCreateFlowViewService implements ModalProvider
+public class EditCreateFlowViewService extends EditCreateDocumentService<Flow> implements ModalProvider
 {
 	@PetiteInject
 	protected FlowService flowService;
@@ -43,104 +45,60 @@ public class EditCreateFlowViewService implements ModalProvider
 
 	private static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateFlow");
 
-	public BiFunction<Request, Response, ModelAndView> showEditCreateFlow()
-	{
-		return (req, res) -> {
-			final EditCreateDocumentModelObject modalFormResult = new EditCreateDocumentModelObject();
-			loadFlowFillForm(req, modalFormResult);
-			
-			
-			
-			final ModalModelObject mmo = new ModalModelObject();
-			mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(modalFormResult)
-					.title(I18N.resolveMessage("title", Locale.GERMAN)); // TODO resolve chosen language.
-
-			return new ModalModelAndView(mmo);
-		};
-	}
-
-	private Flow loadFlowFillForm(Request req, final EditCreateDocumentModelObject modalFormResult)
-	{
-		Flow modelObject;
-		final String esDocId = req.queryMap("flowId").value();
-		// load the elasticsearch document.
-		
-		if(flowService.isNewDocument(esDocId)) {
-			modelObject = new Flow();
-		} else {
-			Hit<Flow> hit = flowService.getFlow(esDocId);
-			modelObject = hit.getDocument();			
-			modalFormResult.setEsDocumentId(hit.getDocumentId());
-		}
-		modalFormResult.setFlow(modelObject);
-		return modelObject;
-	}
-
-	public BiFunction<Request, Response, AjaxTriggeredResponse> saveFlow()
-	{
-		return (req, res) -> {
-			Flow convertValue = new Flow();
-
-			final String esDocumentId = req.queryMap("id").value();
-			if (StringUtil.isNotBlank(esDocumentId)) {
-				Hit<Flow> hit = flowService.getFlow(esDocumentId);
-				convertValue = hit.getDocument();
-			}
-
-			convertValue.setDescription(req.queryMap("description").value());
-			convertValue.setName(req.queryMap("name").value());
-			List<Violation> validateFlow = flowService.validateDocument(convertValue, VtorProfile.GUI);
-
-			if (validateFlow.isEmpty() == false) {
-				ModelAndView displayValidationMessage = displayValidationMessage(validateFlow);
-				AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
-				atr.setMav(displayValidationMessage);
-				return atr;
-			}
-
-			flowService.saveFlow(convertValue, null, esDocumentId);
-
-			final AjaxTriggeredResponse atr = new AjaxTriggeredResponse();
-			atr.setUsage(Usage.JS_ONLY);
-			atr.setEvaluatableJS(closeEditCreateFlowDialog());
-			return atr;
-		};
-	}
-
-	public ModelAndView displayValidationMessage(final List<Violation> ctx)
-	{
-		final EditCreateDocumentModelObject modalFormResult = new EditCreateDocumentModelObject();
-		modalFormResult.setFlow((Flow) ctx.iterator().next().getValidatedObject());
-
-		ctx.stream().forEach(violation -> {
-			final String msgResolved = I18N.resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the
-																								// chosen locale.
-			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
-		});
-
-		final ModalModelObject mmo = new ModalModelObject();
-		mmo.modalContentName("editCreateFlow").modelObject(modalFormResult);
-		return new ModalModelAndView(mmo);
-	}
-
-	public String closeEditCreateFlowDialog()
-	{
-		return "closeModal()";
-	}
-
-	public boolean isNewFlow(Request req)
-	{
-		if(req.queryMap("flowId").hasValue() == false) {
-			return false;
-		}
-		
-		String value = req.queryMap("flowId").value();
-		return flowService.isNewDocument(value);
-	}
-
 	@Override
 	public BiFunction<Request, Response, ModelAndView> modal()
 	{
-		return showEditCreateFlow();
+		return showEditCreateDocument();
+	}
+
+	@Override
+	public ElasticSearchDocumentService<Flow> documentService()
+	{
+		return flowService;
+	}
+
+	@Override
+	public ModelAndView mavForShowEditCreateDocument(EditCreateDocumentModelObject<Flow> model)
+	{
+		final ModalModelObject mmo = new ModalModelObject();
+		mmo.modalContentName("editCreateFlow").formActionName("editCreateFlow").modelObject(model)
+				.title(I18N.resolveMessage("title", Locale.GERMAN)); // TODO resolve chosen language.
+
+		return new ModalModelAndView(mmo);
+	}
+
+	@Override
+	public ModelAndView mavForDisplayValidationMessage(EditCreateDocumentModelObject<Flow> validatedObject)
+	{
+		final ModalModelObject mmo = new ModalModelObject();
+		mmo.modalContentName("editCreateFlow").modelObject(validatedObject);
+		return new ModalModelAndView(mmo);
+	}
+
+	@Override
+	public AjaxTriggeredResponse respForSaveDocument()
+	{
+		AjaxTriggeredResponse resp = new AjaxTriggeredResponse();
+		resp.usage(Usage.JS_ONLY).evaluatableJS("closeModal()");
+		return resp;
+	}
+
+	@Override
+	public Flow initiateDocument()
+	{
+		return new Flow();
+	}
+
+	@Override
+	public StandaloneStandardMessageResolver messageResolver()
+	{
+		return I18N;
+	}
+
+	@Override
+	public void copyFormValues(Request req, Flow document)
+	{
+		document.setDescription(req.queryMap("description").value());
+		document.setName(req.queryMap("name").value());
 	}
 }
