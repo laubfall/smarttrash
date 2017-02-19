@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.TypeQueryBuilder;
 import de.ludwig.jodd.JoddPowered;
 import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.rdd.Requirement;
+import de.ludwig.rdd.RequirementMapping;
 import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Flow;
@@ -25,7 +26,12 @@ import jodd.petite.meta.PetiteInject;
  * @author daniel
  *
  */
-@Requirement
+@Requirement(mappings = { // 
+		@RequirementMapping(name = "isNewFlow", target = "isNewDocument"),
+		@RequirementMapping(name = "createFlow", target = "indexDocument"),
+		@RequirementMapping(name = "updateFlow", target = "updateDocument"),
+		@RequirementMapping(name = "validateFlow", target = "validateDocument")
+})
 @PetiteBean
 public class FlowService extends ElasticSearchDocumentService<Flow>
 {
@@ -78,7 +84,7 @@ public class FlowService extends ElasticSearchDocumentService<Flow>
 		searchResponse.getHits().forEach(hit -> {
 			Hit<Flow> hitR = new Hit<>();
 			hitR.setDocumentId(hit.getId());
-			hitR.setDocument(Flow.fromJson(hit.getSourceRef().toUtf8()));
+			hitR.setDocument(Flow.fromJson(hit.getSourceRef().utf8ToString()));
 			result.add(hitR);
 		});
 		;

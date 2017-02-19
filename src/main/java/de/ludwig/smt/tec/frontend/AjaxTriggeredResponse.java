@@ -7,6 +7,9 @@ import spark.ModelAndView;
 /**
  * To json serializable object that is used as a response for an ajax request (GET, POST, etc).
  * 
+ * If you use this class in combination with the {@link AjaxTriggeredResponseTransformer} the field {@link #mav} is used
+ * to create the markup based on the view.
+ * 
  * @author Daniel
  *
  */
@@ -30,6 +33,9 @@ public class AjaxTriggeredResponse implements Serializable
 
 	private Usage usage = Usage.MARKUP_ONLY;
 
+	/**
+	 * Used by {@link AjaxTriggeredResponseTransformer} to create markup from the view.
+	 */
 	private transient ModelAndView mav;
 
 	public String getAppendableMarkup()

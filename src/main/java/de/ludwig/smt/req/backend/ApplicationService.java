@@ -7,6 +7,7 @@ import de.ludwig.jodd.proxetta.CallStackContext;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
 import de.ludwig.smt.req.frontend.EditCreateNoteViewService;
+import de.ludwig.smt.req.frontend.LatestNoteViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.tec.ElasticSearch;
@@ -42,8 +43,11 @@ public class ApplicationService
 	@PetiteInject
 	protected EditCreateNoteViewService editCreateNote;
 	
+	@PetiteInject
+	protected LatestNoteViewService latestNoteView;
+
 	private static final Logger LOG = LoggerFactory.getLogger(ApplicationService.class);
-	
+
 	public void startApplication()
 	{
 		startSpark();
@@ -63,13 +67,16 @@ public class ApplicationService
 		final ThymeleafTemplateEngine thymeLeafEngine = new ThymeleafTemplateEngine();
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), thymeLeafEngine);
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
+		Spark.get("/createLatestNotesView", (req, res) -> latestNoteView.createLatestNotesView().apply(req, res),
+				new AjaxTriggeredResponseTransformer());
 
 		// Form Handlers
 		Spark.post("/editCreateFlow", (req, res) -> editCreateFlow.saveDocument().apply(req, res),
 				new AjaxTriggeredResponseTransformer());
-		
+
 		Spark.post("/editCreateNote", (req, res) -> editCreateNote.saveDocument().apply(req, res),
 				new AjaxTriggeredResponseTransformer());
+		// END Form Handlers.
 
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));

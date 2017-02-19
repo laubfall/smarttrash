@@ -1,5 +1,7 @@
 package de.ludwig.smt.app.data;
 
+import java.util.Date;
+
 import de.ludwig.smt.app.config.FlowBase;
 import de.ludwig.smt.app.config.FlowId;
 import jodd.json.JsonParser;
@@ -34,6 +36,8 @@ public class Flow
 	@NotNull(message="flow.id.notnull")
 	private FlowId id;
 
+	private Date createdAt;
+	
 	public Flow() {
 
 	}
@@ -70,6 +74,16 @@ public class Flow
 	public void setId(FlowId id)
 	{
 		this.id = id;
+	}
+
+	public Date getCreatedAt()
+	{
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt)
+	{
+		this.createdAt = createdAt;
 	}
 
 	@Override

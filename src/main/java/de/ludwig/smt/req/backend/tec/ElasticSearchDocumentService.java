@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.action.update.UpdateResponse;
 
 import de.ludwig.jodd.JoddPowered;
@@ -32,7 +33,7 @@ public abstract class ElasticSearchDocumentService<D>
 	@PetiteInject
 	protected ElasticSearch es;
 
-	private String indexName = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
+	protected String indexName = JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName());
 
 	/**
 	 * Index or update a document. Before it does it does validation of the document.
@@ -79,7 +80,7 @@ public abstract class ElasticSearchDocumentService<D>
 	public String indexDocument(D document)
 	{
 		IndexResponse indexResponse = es.esClient().prepareIndex(indexName, documentType())
-				.setSource(jsonifier().apply(document)).setRefresh(true).get();
+				.setSource(jsonifier().apply(document)).setRefreshPolicy(RefreshPolicy.WAIT_UNTIL).get();
 
 		return indexResponse.getId();
 	}

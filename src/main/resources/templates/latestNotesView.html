@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:each="n : ${youngestNotes}">
+	<div>
+		<span>TODO FLOW PATH</span>
+		<span th:text="${n.content}"></span>
+	</div>
+</div>
+</body>
+</html>
