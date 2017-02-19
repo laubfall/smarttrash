@@ -41,11 +41,12 @@ public abstract class ElasticSearchDocumentService<D>
 	 * @param document document to index or update.
 	 * @param esDocumentId ES Document ID. Required if you want to update a document.
 	 * @param onValidationErrors callback in case of validation violations.
-	 * @return esDocumentId. either the newly created one, or the id of an existing document. Null if validation of document failed.
+	 * @return esDocumentId. either the newly created one, or the id of an existing document. Null if validation of
+	 *         document failed.
 	 */
 	public String saveDocument(D document, String esDocumentId, Consumer<List<Violation>> onValidationErrors)
 	{
-		if(validateDocument(document, onValidationErrors) == false) {
+		if (validateDocument(document, onValidationErrors) == false) {
 			return null;
 		}
 
@@ -106,12 +107,12 @@ public abstract class ElasticSearchDocumentService<D>
 	 * @param document
 	 * @return
 	 */
-	public List<Violation> validateDocument(D document, VtorProfile ... profile)
+	public List<Violation> validateDocument(D document, VtorProfile... profile)
 	{
 		final SmtVtor vtor = new SmtVtor();
 		vtor.useProfiles(profile);
 		final List<Violation> validate = vtor.validate(document);
-		if(validate == null) {
+		if (validate == null) {
 			return new ArrayList<>(0);
 		}
 		return validate;
@@ -119,6 +120,7 @@ public abstract class ElasticSearchDocumentService<D>
 
 	/**
 	 * Loads a document for a given ID.
+	 * 
 	 * @param esDocumentId id of the document to load.
 	 * @return loaded document. Null if there is no document for the given id.
 	 */
@@ -126,21 +128,22 @@ public abstract class ElasticSearchDocumentService<D>
 
 	/**
 	 * Type of the elasticsearch documen type.
+	 * 
 	 * @return s. description.
 	 */
 	public abstract String documentType();
 
 	/**
 	 * Factory-method.
+	 * 
 	 * @return a Function that provides the functionality to convert a pojo to a json.
 	 */
 	public abstract Function<D, String> jsonifier();
-	
 
 	private boolean validateDocument(D document, Consumer<List<Violation>> onValidationErrors)
 	{
 		List<Violation> validateDocument = validateDocument(document, VtorProfile.PERSISTENCE);
-		if(validateDocument != null && validateDocument.isEmpty() == false && onValidationErrors != null) {
+		if (validateDocument != null && validateDocument.isEmpty() == false && onValidationErrors != null) {
 			onValidationErrors.accept(validateDocument);
 			return false;
 		}
