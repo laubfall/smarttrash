@@ -1,10 +1,11 @@
 package de.ludwig.smt.tec;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -19,17 +20,15 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.io.stream.InputStreamStreamInput;
-import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeValidationException;
+import org.elasticsearch.node.internal.InternalSettingsPreparer;
+import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.transport.Netty4Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +57,10 @@ public class ElasticSearch
 	 */
 	public final void startElasticsearch()
 	{
-		node = new Node(loadSettings());
+		// https://discuss.elastic.co/t/unsupported-http-type-netty3-when-trying-to-start-embedded-elasticsearch-node/69669/8
+		final List<Class<? extends Plugin>> plugins = new ArrayList<>();
+		plugins.add(Netty4Plugin.class);
+		node = new PluginConfigurableNode(loadSettings(),plugins);
 		try {
 			node.start();
 		} catch (NodeValidationException e) {
@@ -198,19 +200,14 @@ public class ElasticSearch
 
 	private Settings loadSettings()
 	{
-		Map<String,String> target = new HashMap<>();
+		Map<String, String> target = new HashMap<>();
 		JoddPowered.settings.extractSubProps(target, "elasticsearch.node.*");
 		final Map<String, String> res = new HashMap<>();
-		
-		target.entrySet().stream().forEach(entry -> res.put(StringUtil.remove(entry.getKey(), "elasticsearch.node."), entry.getValue()));
+
+		target.entrySet().stream()
+				.forEach(entry -> res.put(StringUtil.remove(entry.getKey(), "elasticsearch.node."), entry.getValue()));
 		Settings build = Settings.builder().put(res).build();
 		return build;
-//		try (StreamInput input = new InputStreamStreamInput(getClass().getResourceAsStream(
-//				JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName())));) {
-//			return Settings.readSettingsFromStream(input);
-//		} catch (IOException e) {
-//			throw new SmartTrashException("Unable to read elasticsearch settings", e);
-//		}
 	}
 
 	/**
@@ -237,5 +234,16 @@ public class ElasticSearch
 			pathHome = node.client().settings().get("path.home");
 		}
 		return new File(pathHome);
+	}
+
+	/**
+	 * https://discuss.elastic.co/t/unsupported-http-type-netty3-when-trying-to-start-embedded-elasticsearch-node/69669/8
+	 *
+	 */
+	private static class PluginConfigurableNode extends Node
+	{
+		public PluginConfigurableNode(Settings settings, Collection<Class<? extends Plugin>> classpathPlugins) {
+			super(InternalSettingsPreparer.prepareEnvironment(settings, null), classpathPlugins);
+		}
 	}
 }

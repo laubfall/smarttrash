@@ -9,8 +9,10 @@ package de.ludwig.jodd;
 public enum PropsElasticsearchProps
 {
 	ELASTICSEARCH("elasticsearch", true), //
-	CONFIG(ELASTICSEARCH, "config"), //
 	INDEX(ELASTICSEARCH, "index"), //
+	NODE(ELASTICSEARCH, "node", true),
+	NODE_PATH(NODE, "path", true),
+	NODE_DATA(NODE_PATH,"data");
 	;
 	private String propertyName;
 
@@ -27,6 +29,11 @@ public enum PropsElasticsearchProps
 
 	private PropsElasticsearchProps(PropsElasticsearchProps prop, String propertyName) {
 		this.propertyName = prop.propertyName + "." + propertyName;
+	}
+	
+	private PropsElasticsearchProps(PropsElasticsearchProps prop, String propertyName, boolean section) {
+		this.propertyName = prop.propertyName + "." + propertyName;
+		this.section = section;
 	}
 
 	public String getPropertyName()

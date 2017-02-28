@@ -1,12 +1,15 @@
 package de.ludwig.smt.app;
 
 import static de.ludwig.jodd.JoddPowered.petite;
+import static de.ludwig.jodd.JoddPowered.settings;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
 import de.ludwig.jodd.JoddPoweredTest;
+import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.smt.tec.ElasticSearch;
 
 /**
@@ -23,7 +26,9 @@ public abstract class AbstractElasticSearchTest extends JoddPoweredTest
 	static {
 		ElasticSearch es = petite.getBean(ElasticSearch.class);
 		try {
-			FileUtils.deleteDirectory(es.pathHome());
+			String dataDir = settings.getValue(PropsElasticsearchProps.NODE_DATA.getPropertyName());
+			File fDataDir = new File(es.pathHome(), dataDir);
+			FileUtils.deleteDirectory(fDataDir);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception occured while deleting old ES Data Directory", e);
 		}

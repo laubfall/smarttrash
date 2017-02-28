@@ -6,3 +6,4 @@ es/*
 .project
 /bin/
 flowconfig.data
+/elasticsearch/*data/*

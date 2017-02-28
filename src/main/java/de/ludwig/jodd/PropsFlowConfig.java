@@ -6,7 +6,8 @@ package de.ludwig.jodd;
  * @author Daniel
  *
  */
-public enum PropsFlowConfig {
+public enum PropsFlowConfig
+{
 
 	PATH("flowconfig.path"), NAME("flowconfig.name");
 
@@ -16,7 +17,8 @@ public enum PropsFlowConfig {
 		this.propName = propName;
 	}
 
-	public String getPropName() {
+	public String getPropName()
+	{
 		return propName;
 	}
 
