@@ -21,6 +21,7 @@
 
 	<properties>
 		<org.jodd.version>3.7</org.jodd.version>
+		<org.elasticsearch>5.2.1</org.elasticsearch>
 	</properties>
 
 	<dependencies>
@@ -37,12 +38,17 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>5.2.1</version>
+			<version>${org.elasticsearch}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>transport</artifactId>
-			<version>5.2.1</version>
+			<version>${org.elasticsearch}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.plugin</groupId>
+			<artifactId>transport-netty4-client</artifactId>
+			<version>${org.elasticsearch}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
