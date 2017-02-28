@@ -6,16 +6,20 @@ package de.ludwig.jodd;
  * @author daniel
  *
  */
-public enum PropsElasticsearchProps {
-	ELASTICSEARCH("elasticsearch",true), CONFIG(ELASTICSEARCH, "config"), INDEX(ELASTICSEARCH, "index");
+public enum PropsElasticsearchProps
+{
+	ELASTICSEARCH("elasticsearch", true), //
+	CONFIG(ELASTICSEARCH, "config"), //
+	INDEX(ELASTICSEARCH, "index"), //
+	;
 	private String propertyName;
 
 	private boolean section = false;
-	
+
 	private PropsElasticsearchProps(String propertyName) {
 		this.propertyName = propertyName;
 	}
-	
+
 	private PropsElasticsearchProps(String propertyName, boolean section) {
 		this.propertyName = propertyName;
 		this.section = section;
@@ -25,11 +29,13 @@ public enum PropsElasticsearchProps {
 		this.propertyName = prop.propertyName + "." + propertyName;
 	}
 
-	public String getPropertyName() {
+	public String getPropertyName()
+	{
 		return propertyName;
 	}
 
-	public boolean isSection() {
+	public boolean isSection()
+	{
 		return section;
 	}
 }

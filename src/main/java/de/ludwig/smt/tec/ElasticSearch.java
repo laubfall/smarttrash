@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,6 +22,9 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.io.stream.InputStreamStreamInput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeValidationException;
@@ -33,6 +38,7 @@ import de.ludwig.jodd.PropsElasticsearchProps;
 import de.ludwig.smt.SmartTrashException;
 import de.ludwig.smt.app.data.Hit;
 import jodd.petite.meta.PetiteBean;
+import jodd.util.StringUtil;
 
 /**
  * Provides low-level elasticsearch functionality.
@@ -52,7 +58,7 @@ public class ElasticSearch
 	 */
 	public final void startElasticsearch()
 	{
-		node = new Node(nodeBuilder());
+		node = new Node(loadSettings());
 		try {
 			node.start();
 		} catch (NodeValidationException e) {
@@ -190,15 +196,21 @@ public class ElasticSearch
 		return hitR;
 	}
 
-	private Settings nodeBuilder()
+	private Settings loadSettings()
 	{
-		try (StreamInput input = new InputStreamStreamInput(getClass().getResourceAsStream(
-				JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName())));) {
-			Settings preparedSettings = Settings.readSettingsFromStream(input);
-			return preparedSettings;
-		} catch (IOException e) {
-			throw new SmartTrashException("Unable to read elasticsearch settings", e);
-		}
+		Map<String,String> target = new HashMap<>();
+		JoddPowered.settings.extractSubProps(target, "elasticsearch.node.*");
+		final Map<String, String> res = new HashMap<>();
+		
+		target.entrySet().stream().forEach(entry -> res.put(StringUtil.remove(entry.getKey(), "elasticsearch.node."), entry.getValue()));
+		Settings build = Settings.builder().put(res).build();
+		return build;
+//		try (StreamInput input = new InputStreamStreamInput(getClass().getResourceAsStream(
+//				JoddPowered.settings.getValue(PropsElasticsearchProps.CONFIG.getPropertyName())));) {
+//			return Settings.readSettingsFromStream(input);
+//		} catch (IOException e) {
+//			throw new SmartTrashException("Unable to read elasticsearch settings", e);
+//		}
 	}
 
 	/**
@@ -220,7 +232,7 @@ public class ElasticSearch
 	{
 		String pathHome;
 		if (node == null) {
-			pathHome = nodeBuilder().get("path.home");
+			pathHome = loadSettings().get("path.home");
 		} else {
 			pathHome = node.client().settings().get("path.home");
 		}
