@@ -15,6 +15,9 @@ public class SmtVtor extends Vtor
 	 */
 	public final void useProfiles(VtorProfile ...profiles)
 	{
+		if(profiles == null) {
+			return;
+		}
 		for(VtorProfile vt : profiles) {
 			useProfile(vt.name());
 		}

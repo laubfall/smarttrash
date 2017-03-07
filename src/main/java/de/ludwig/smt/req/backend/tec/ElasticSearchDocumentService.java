@@ -142,7 +142,7 @@ public abstract class ElasticSearchDocumentService<D>
 
 	private boolean validateDocument(D document, Consumer<List<Violation>> onValidationErrors)
 	{
-		List<Violation> validateDocument = validateDocument(document, VtorProfile.PERSISTENCE);
+		List<Violation> validateDocument = validateDocument(document);
 		if (validateDocument != null && validateDocument.isEmpty() == false && onValidationErrors != null) {
 			onValidationErrors.accept(validateDocument);
 			return false;

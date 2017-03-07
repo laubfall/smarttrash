@@ -10,6 +10,12 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+/**
+ * Functionality to display the latest notes made.
+ * 
+ * @author Daniel
+ *
+ */
 @PetiteBean
 public class LatestNoteViewService
 {

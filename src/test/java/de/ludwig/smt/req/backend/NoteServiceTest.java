@@ -1,8 +1,10 @@
 package de.ludwig.smt.req.backend;
 
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.joda.time.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -12,6 +14,7 @@ import de.ludwig.smt.app.AbstractElasticSearchTest;
 import de.ludwig.smt.app.config.FlowId;
 import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.app.data.Note;
+import jodd.datetime.JDateTime;
 import jodd.vtor.Violation;
 
 /**
@@ -32,6 +35,7 @@ public class NoteServiceTest extends AbstractElasticSearchTest
 		Note document = new Note();
 		document.setFlow(new FlowId());
 		document.setContent("hurz");
+		document.setCreatedat(new Date());
 		String esDocId = noteService.saveDocument(document, null, vtorConsumer);
 
 		Mockito.verify(vtorConsumer, Mockito.never()).accept(Mockito.anyList());
@@ -58,10 +62,38 @@ public class NoteServiceTest extends AbstractElasticSearchTest
 
 		Note document = new Note();
 		document.setContent("hurz");
+		document.setCreatedat(new Date());
 		String esDocId = noteService.saveDocument(document, null, vtorConsumer);
 
+		// expect some validation errors
 		Mockito.verify(vtorConsumer, Mockito.times(1)).accept(Mockito.anyList());
 		Assert.assertNull(esDocId);
+	}
+
+	@Test
+	public void searchLatestNotes()
+	{
+		Note n = new Note();
+		n.setFlow(new FlowId());
+		n.setContent("1");
+		n.setCreatedat(new Date());
+		
+		noteService.saveDocument(n, null, validation -> {});
+		
+		
+		n = new Note();
+		n.setFlow(new FlowId());
+		n.setContent("2");
+		n.setCreatedat(new Date());
+		
+		noteService.saveDocument(n, null, validation -> {});
+		
+		List<Note> loadYoungestNotes = noteService.loadYoungestNotes();
+		Assert.assertNotNull(loadYoungestNotes);
+		Assert.assertFalse(loadYoungestNotes.isEmpty());
+		
+		Assert.assertEquals("2", loadYoungestNotes.get(0).getContent());
+		Assert.assertEquals("1", loadYoungestNotes.get(1).getContent());
 	}
 
 	@Override

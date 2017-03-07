@@ -1,5 +1,7 @@
 package de.ludwig.smt.app.data;
 
+import java.util.Date;
+
 import de.ludwig.smt.app.config.FlowId;
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
@@ -24,6 +26,9 @@ public class Note
 	@NotNull(message="note.flow.notnull")
 	private FlowId flow;
 
+	@NotNull(message="note.created.notnull")
+	private Date createdat;
+	
 	public String getContent()
 	{
 		return content;
@@ -44,6 +49,16 @@ public class Note
 		this.flow = flow;
 	}
 	
+	public Date getCreatedat()
+	{
+		return createdat;
+	}
+
+	public void setCreatedat(Date createdat)
+	{
+		this.createdat = createdat;
+	}
+
 	public static String toJson(final Note note)
 	{
 		JsonSerializer js = new JsonSerializer();

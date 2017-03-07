@@ -27,7 +27,7 @@ public abstract class AbstractElasticSearchTest extends JoddPoweredTest
 		ElasticSearch es = petite.getBean(ElasticSearch.class);
 		try {
 			String dataDir = settings.getValue(PropsElasticsearchProps.NODE_DATA.getPropertyName());
-			File fDataDir = new File(es.pathHome(), dataDir);
+			File fDataDir = new File(dataDir);
 			FileUtils.deleteDirectory(fDataDir);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception occured while deleting old ES Data Directory", e);

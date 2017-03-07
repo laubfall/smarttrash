@@ -17,6 +17,7 @@ import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRespon
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
 import org.elasticsearch.client.Client;
@@ -28,6 +29,7 @@ import org.elasticsearch.node.internal.InternalSettingsPreparer;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.transport.Netty4Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ public class ElasticSearch
 		// https://discuss.elastic.co/t/unsupported-http-type-netty3-when-trying-to-start-embedded-elasticsearch-node/69669/8
 		final List<Class<? extends Plugin>> plugins = new ArrayList<>();
 		plugins.add(Netty4Plugin.class);
-		node = new PluginConfigurableNode(loadSettings(),plugins);
+		node = new PluginConfigurableNode(loadSettings(), plugins);
 		try {
 			node.start();
 		} catch (NodeValidationException e) {
@@ -160,9 +162,20 @@ public class ElasticSearch
 	 */
 	public Collection<SearchHit> searchDocuments(String type, QueryBuilder queryBuilder)
 	{
-		SearchResponse searchResponse = node.client()
+		return searchDocuments(type, queryBuilder, null);
+	}
+
+	public Collection<SearchHit> searchDocuments(String type, QueryBuilder queryBuilder, SortBuilder<?> sort)
+	{
+		SearchRequestBuilder searchQuery = node.client()
 				.prepareSearch(JoddPowered.settings.getValue(PropsElasticsearchProps.INDEX.getPropertyName()))
-				.setQuery(queryBuilder).get();
+				.setQuery(queryBuilder);
+		
+		if(sort != null) {
+			searchQuery.addSort(sort);
+		}
+		
+		SearchResponse searchResponse = searchQuery.get();
 		SearchHits hits = searchResponse.getHits();
 
 		return Arrays.stream(hits.getHits()).collect(Collectors.toList());
@@ -237,6 +250,8 @@ public class ElasticSearch
 	}
 
 	/**
+	 * Used to start elasticsearch by the application.
+	 * 
 	 * https://discuss.elastic.co/t/unsupported-http-type-netty3-when-trying-to-start-embedded-elasticsearch-node/69669/8
 	 *
 	 */

@@ -1,12 +1,20 @@
 package de.ludwig.smt.req.backend;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.elasticsearch.index.query.MatchAllQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import de.ludwig.rdd.Requirement;
 import de.ludwig.rdd.RequirementMapping;
 import de.ludwig.smt.app.data.Hit;
-import de.ludwig.smt.app.data.LatestNotes;
 import de.ludwig.smt.app.data.Note;
 import de.ludwig.smt.req.backend.tec.ElasticSearchDocumentService;
 import de.ludwig.smt.req.backend.tec.LatestNotesService;
@@ -37,11 +45,13 @@ public class NoteService extends ElasticSearchDocumentService<Note>
 	@PetiteInject
 	protected LatestNotesService latestNotes;
 	
-	public List<Hit<Note>> loadYoungestNotes()
+	public List<Note> loadYoungestNotes()
 	{
-		final LatestNotes latestNotesDocument = latestNotes.loadCurrentLatestNotesDocument();
-//		latestNotesDocument.getLatest().stream()
-		return null;
+		final MatchAllQueryBuilder queryBuilder = new MatchAllQueryBuilder();
+		final FieldSortBuilder order = SortBuilders.fieldSort("createdat").order(SortOrder.DESC);
+		Collection<SearchHit> searchDocuments = es.searchDocuments(esNoteType, queryBuilder,order);
+		List<Note> collect = searchDocuments.stream().map(sh -> Note.fromJson(sh.getSourceAsString())).collect(Collectors.toList());
+		return collect;
 	}
 
 	@Override
