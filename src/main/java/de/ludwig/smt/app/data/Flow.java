@@ -33,7 +33,8 @@ public class Flow
 	/**
 	 * The flowid of a {@link FlowBase} as saved in the configuration.
 	 */
-	@NotNull(message="flow.id.notnull")
+	// TODO try to get rid of this construct. Maybe its possible to store the relationship inside es.
+//	@NotNull(message="flow.id.notnull")
 	private FlowId id;
 
 	private Date createdAt;

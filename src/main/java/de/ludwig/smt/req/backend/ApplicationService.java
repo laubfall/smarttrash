@@ -42,7 +42,7 @@ public class ApplicationService
 
 	@PetiteInject
 	protected EditCreateNoteViewService editCreateNote;
-	
+
 	@PetiteInject
 	protected LatestNoteViewService latestNoteView;
 
@@ -68,6 +68,9 @@ public class ApplicationService
 		Spark.get("/", (req, res) -> fOverview.showWelcomePage().apply(req, res), thymeLeafEngine);
 		Spark.get("/modal/:name", (req, res) -> modalService.openModal().apply(req, res), thymeLeafEngine);
 		Spark.get("/createLatestNotesView", (req, res) -> latestNoteView.createLatestNotesView().apply(req, res),
+				new AjaxTriggeredResponseTransformer());
+
+		Spark.get("/createFlowOverview", (req, res) -> fOverview.createFlowOverview().apply(req, res),
 				new AjaxTriggeredResponseTransformer());
 
 		// Form Handlers

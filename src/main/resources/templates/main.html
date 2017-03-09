@@ -27,13 +27,20 @@
 	crossorigin="anonymous"></script>
 	
 <script src="js/ajaxTriggeredResponse.js"></script>
-<script src="js/stModal.js"></script>	
+<script src="js/stModal.js"></script>
+<script src="js/stBusiness.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		createFlowOverview();
+	});
+</script>		
 </head>
 <body>
 
 	<div th:replace="header :: header"></div>
 
-	<div class="container" th:insert="${template} :: content"></div>
+<!-- 	<div class="container" th:insert="${template} :: content"></div> -->
+	<div id="flowOverview" class="container"></div>
 
 	<div th:replace="footer :: footer"></div>
 

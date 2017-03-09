@@ -105,7 +105,7 @@ public abstract class EditCreateDocumentService<D>
 		modalFormResult.setDocument((D) violations.iterator().next().getValidatedObject());
 
 		violations.stream().forEach(violation -> {
-			final String msgResolved = messageResolver().resolveMessage(violation.getName(), Locale.GERMAN); // TODO resolve the
+			final String msgResolved = messageResolver().resolveMessage(violation.getCheck().getMessage(), Locale.GERMAN); // TODO resolve the
 																								// chosen locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
 		});

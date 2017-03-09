@@ -1,28 +1,22 @@
 package de.ludwig.smt.req.frontend;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
-import de.ludwig.jodd.vtor.VtorProfile;
 import de.ludwig.rdd.Requirement;
 import de.ludwig.smt.app.data.Flow;
-import de.ludwig.smt.app.data.Hit;
 import de.ludwig.smt.req.backend.FlowService;
 import de.ludwig.smt.req.backend.tec.ElasticSearchDocumentService;
 import de.ludwig.smt.req.frontend.tec.EditCreateDocumentModelObject;
 import de.ludwig.smt.req.frontend.tec.EditCreateDocumentService;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse.Usage;
-import de.ludwig.smt.tec.frontend.FormMessage;
 import de.ludwig.smt.tec.frontend.ModalModelAndView;
 import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.ModalProvider;
 import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
-import jodd.util.StringUtil;
-import jodd.vtor.Violation;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -79,7 +73,7 @@ public class EditCreateFlowViewService extends EditCreateDocumentService<Flow> i
 	public AjaxTriggeredResponse respForSaveDocument()
 	{
 		AjaxTriggeredResponse resp = new AjaxTriggeredResponse();
-		resp.usage(Usage.JS_ONLY).evaluatableJS("closeModal()");
+		resp.usage(Usage.JS_ONLY).evaluatableJS("editCreateFlowAndUpdateView()");
 		return resp;
 	}
 
