@@ -5,12 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Base class for response results for ajax triggered form submits.
+ * Model Object class, providing some base functionality in case of submitted forms.
  * @author Daniel
  *
  */
-// TODO better name? Isn't that some kind of model?
-public abstract class AjaxFormSubmitResult implements Serializable
+public abstract class FormSubmitModelObject implements Serializable
 {
 	/**
 	 * The serial version uid.
@@ -27,7 +26,7 @@ public abstract class AjaxFormSubmitResult implements Serializable
 	 * @param message
 	 * @return
 	 */
-	public final AjaxFormSubmitResult addMessage(FormMessage message) {
+	public final FormSubmitModelObject addMessage(FormMessage message) {
 		messages.add(message);
 		return this;
 	}
