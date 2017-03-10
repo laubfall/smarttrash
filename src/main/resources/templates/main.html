@@ -32,6 +32,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		createFlowOverview();
+		createLatestNotesView();
 	});
 </script>		
 </head>
@@ -39,8 +40,9 @@
 
 	<div th:replace="header :: header"></div>
 
-<!-- 	<div class="container" th:insert="${template} :: content"></div> -->
 	<div id="flowOverview" class="container"></div>
+
+	<div id="latestNotes" class="container"></div>
 
 	<div th:replace="footer :: footer"></div>
 

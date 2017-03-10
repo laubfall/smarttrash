@@ -30,9 +30,9 @@ public class EditCreateDocumentModelObject<D> extends AjaxFormSubmitResult
 		return document;
 	}
 
-	public void setDocument(D flow)
+	public void setDocument(D document)
 	{
-		this.document = flow;
+		this.document = document;
 	}
 
 	public String getEsDocumentId()

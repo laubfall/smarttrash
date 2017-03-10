@@ -1,5 +1,6 @@
 package de.ludwig.smt.req.frontend;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
@@ -70,20 +71,23 @@ public class EditCreateNoteViewService extends EditCreateDocumentService<Note> i
 	public AjaxTriggeredResponse respForSaveDocument()
 	{
 		AjaxTriggeredResponse resp = new AjaxTriggeredResponse();
-		resp.usage(Usage.JS_ONLY).evaluatableJS("closeModal()");
+		resp.usage(Usage.JS_ONLY).evaluatableJS("editCreateNoteAndUpdateView()");
 		return resp;
 	}
 
 	@Override
 	public Note initiateDocument()
 	{
-		return new Note();
+		final Note note = new Note();
+		note.setCreatedat(new Date());
+		return note; 
 	}
 
 	@Override
 	public void copyFormValues(Request req, Note document)
 	{
 		document.setContent(req.queryMap("content").value());
+//		document.set
 	}
 
 	@Override

@@ -17,11 +17,18 @@ function editCreateFlowAndUpdateView() {
 	closeModal();
 }
 
+function editCreateNoteAndUpdateView() {
+	createLatestNotesView();
+	closeModal();
+}
+
 /**
  * 
  */
 function createLatestNotesView() {
-	
+	doRequestToEndpoint("createLatestNotesView", function(markup){
+		$("div#latestNotes").empty().append($(markup));
+	});
 }
 
 /**
