@@ -35,20 +35,20 @@ public abstract class EditCreateDocumentService<D>
 	/**
 	 * Factory-Method.
 	 * 
-	 * @return return the {@link ModelAndView} that shows the form for editing a document. To fill the form
-	 *         implement {@link #loadDocumentFillForm(Request, EditCreateDocumentModelObject)}. The {@link ModelAndView}
-	 *         is constructed by {@link #mavForShowEditCreateDocument()}.
+	 * @return return the {@link ModelAndView} that shows the form for editing a document. To fill the form implement
+	 *         {@link #loadDocumentFillForm(Request, EditCreateDocumentModelObject)}. The {@link ModelAndView} is
+	 *         constructed by {@link #mavForShowEditCreateDocument()}.
 	 */
 	public BiFunction<Request, Response, ModelAndView> showEditCreateDocument()
 	{
 		return (req, res) -> {
-			final EditCreateDocumentModelObject<D> modalFormResult = new EditCreateDocumentModelObject<>();
+			final EditCreateDocumentModelObject<D> modalFormResult = initiateModelObject();
 			loadDocumentFillForm(req, modalFormResult);
 			return mavForShowEditCreateDocument(modalFormResult);
 		};
 	}
 
-	protected D loadDocumentFillForm(Request req, EditCreateDocumentModelObject<D> modalFormResult)
+	protected void loadDocumentFillForm(Request req, EditCreateDocumentModelObject<D> modalFormResult)
 	{
 		D modelObject;
 		final String esDocumentId = esDocumentIdFromReq(req);
@@ -62,7 +62,15 @@ public abstract class EditCreateDocumentService<D>
 			modalFormResult.setEsDocumentId(hit.getDocumentId());
 		}
 		modalFormResult.setDocument(modelObject);
-		return modelObject;
+		
+		modalFormResult.consumRequestParameters(req);
+	}
+
+	
+	
+	protected EditCreateDocumentModelObject<D> initiateModelObject()
+	{
+		return new EditCreateDocumentModelObject<D>();
 	}
 
 	public BiFunction<Request, Response, AjaxTriggeredResponse> saveDocument()
@@ -85,7 +93,6 @@ public abstract class EditCreateDocumentService<D>
 				validateFlow.addAll(violations);
 			};
 
-			// documentService.saveFlow(convertValue, null, esDocumentId);
 			documentService.saveDocument(convertValue, esDocumentId, onValidationErrors);
 
 			if (validateFlow.isEmpty() == false) {
@@ -101,12 +108,13 @@ public abstract class EditCreateDocumentService<D>
 
 	public ModelAndView displayValidationMessage(List<Violation> violations)
 	{
-		final EditCreateDocumentModelObject<D> modalFormResult = new EditCreateDocumentModelObject<>();
+		final EditCreateDocumentModelObject<D> modalFormResult = initiateModelObject();
 		modalFormResult.setDocument((D) violations.iterator().next().getValidatedObject());
 
 		violations.stream().forEach(violation -> {
-			final String msgResolved = messageResolver().resolveMessage(violation.getCheck().getMessage(), Locale.GERMAN); // TODO resolve the
-																								// chosen locale.
+			final String msgResolved = messageResolver().resolveMessage(violation.getCheck().getMessage(),
+					Locale.GERMAN); // TODO resolve the
+			// chosen locale.
 			modalFormResult.addMessage(new FormMessage(msgResolved, 1)); // TODO adjust message level.
 		});
 		return mavForDisplayValidationMessage(modalFormResult);
@@ -121,6 +129,7 @@ public abstract class EditCreateDocumentService<D>
 
 	/**
 	 * Let the concrete implementation decide what the ModelAndView look like.
+	 * 
 	 * @param model provided by the standard mechanism that create the model object for the view.
 	 * @return ModalAndView as required.
 	 */
@@ -150,10 +159,11 @@ public abstract class EditCreateDocumentService<D>
 
 	/**
 	 * Matching Message-Reslover for the view.
+	 * 
 	 * @return a message resolver.
 	 */
 	public abstract StandaloneStandardMessageResolver messageResolver();
-	
+
 	/**
 	 * Converts form values and copy them into the pojo.
 	 * 
@@ -161,8 +171,9 @@ public abstract class EditCreateDocumentService<D>
 	 * @param document the pojo, the receiver of the form values.
 	 */
 	public abstract void copyFormValues(Request req, D document);
-	
-	private String esDocumentIdFromReq(Request req) {
+
+	private String esDocumentIdFromReq(Request req)
+	{
 		return req.queryMap("id").value();
 	}
 }

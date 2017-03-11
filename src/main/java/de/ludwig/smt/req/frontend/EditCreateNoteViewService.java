@@ -87,13 +87,19 @@ public class EditCreateNoteViewService extends EditCreateDocumentService<Note> i
 	public void copyFormValues(Request req, Note document)
 	{
 		document.setContent(req.queryMap("content").value());
-//		document.set
+//		document.setFlow(flow);
 	}
 
 	@Override
 	public StandaloneStandardMessageResolver messageResolver()
 	{
 		return I18N;
+	}
+
+	@Override
+	protected EditCreateDocumentModelObject<Note> initiateModelObject()
+	{
+		return new EditCreateNoteModelObject();
 	}
 
 }

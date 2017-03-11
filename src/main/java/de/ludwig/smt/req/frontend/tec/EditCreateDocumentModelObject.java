@@ -1,6 +1,7 @@
 package de.ludwig.smt.req.frontend.tec;
 
-import de.ludwig.smt.tec.frontend.AjaxFormSubmitResult;
+import de.ludwig.smt.tec.frontend.FormSubmitModelObject;
+import spark.Request;
 
 /**
  * Model object for the editCreateFlow Form.
@@ -8,13 +9,13 @@ import de.ludwig.smt.tec.frontend.AjaxFormSubmitResult;
  * @author Daniel
  *
  */
-public class EditCreateDocumentModelObject<D> extends AjaxFormSubmitResult
+public class EditCreateDocumentModelObject<D> extends FormSubmitModelObject
 {
 	/**
 	 * The serial version uid.
 	 */
 	private static final long serialVersionUID = 9064995216756266394L;
-	
+
 	/**
 	 * Flow to edit.
 	 */
@@ -24,7 +25,7 @@ public class EditCreateDocumentModelObject<D> extends AjaxFormSubmitResult
 	 * ES Document ID. If null we assume that this model does not represent a saved Flow.
 	 */
 	private String esDocumentId;
-	
+
 	public D getDocument()
 	{
 		return document;
@@ -43,5 +44,10 @@ public class EditCreateDocumentModelObject<D> extends AjaxFormSubmitResult
 	public void setEsDocumentId(String esDocumentId)
 	{
 		this.esDocumentId = esDocumentId;
+	}
+
+	public void consumRequestParameters(Request req)
+	{
+
 	}
 }

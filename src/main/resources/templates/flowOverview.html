@@ -13,7 +13,7 @@
 	<td th:text="${f.document.name}"></td>
 	<td th:text="${f.document.description}"></td>
 	<td><a href="#" th:onclick="|modal('editCreateFlow', {id : '${f.documentId}'})|">edit</a></td>
-	<td><a href="#" th:onclick="|modal('editCreateNote', {id : '${f.documentId}'})|">add note</a>
+	<td><a href="#" th:onclick="|modal('editCreateNote', {flowId : '${f.documentId}'})|">add note</a>
 </tr>
 </table>
 
