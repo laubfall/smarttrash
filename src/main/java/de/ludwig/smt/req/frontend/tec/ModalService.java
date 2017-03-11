@@ -43,7 +43,7 @@ public class ModalService
 
 	static {
 		modalProviders.put("editCreateFlow", EditCreateFlowViewService.class);
-		modalProviders.put("editCreateNote", EditCreateNoteViewService.class);
+		modalProviders.put("editCreateNoteKO", EditCreateNoteViewService.class);
 	}
 
 	public BiFunction<Request, Response, ModelAndView> openModal()

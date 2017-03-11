@@ -33,6 +33,13 @@ import spark.Response;
 @Requirement(mappings = { @RequirementMapping(name = "showEditCreateNote", target = "showEditCreateDocument") })
 public class EditCreateNoteViewService extends EditCreateDocumentService<Note> implements ModalProvider
 {
+	@Override
+	public BiFunction<Request, Response, ModelAndView> showEditCreateDocument()
+	{
+		// TODO Auto-generated method stub
+		return super.showEditCreateDocumentKO();
+	}
+
 	private static StandaloneStandardMessageResolver I18N = new StandaloneStandardMessageResolver("editCreateNote");
 	
 	@PetiteInject

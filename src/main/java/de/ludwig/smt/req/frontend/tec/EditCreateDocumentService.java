@@ -11,6 +11,9 @@ import de.ludwig.smt.req.backend.tec.ElasticSearchDocumentService;
 import de.ludwig.smt.tec.ElasticSearch;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponse;
 import de.ludwig.smt.tec.frontend.FormMessage;
+import de.ludwig.smt.tec.frontend.FormSubmitModelObject;
+import de.ludwig.smt.tec.frontend.ModalModelAndView;
+import de.ludwig.smt.tec.frontend.ModalModelObject;
 import de.ludwig.smt.tec.frontend.StandaloneStandardMessageResolver;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
@@ -47,6 +50,15 @@ public abstract class EditCreateDocumentService<D>
 			return mavForShowEditCreateDocument(modalFormResult);
 		};
 	}
+	
+	public BiFunction<Request, Response, ModelAndView> showEditCreateDocumentKO() {
+		return (req, res) -> {
+			final ModalModelObject mmo = new ModalModelObject();
+			mmo.modalContentName("editCreateNoteKO").formActionName("editCreateNote").modelObject(new FormSubmitModelObject());
+			return new ModalModelAndView(mmo);
+		};
+	}
+	
 
 	protected void loadDocumentFillForm(Request req, EditCreateDocumentModelObject<D> modalFormResult)
 	{

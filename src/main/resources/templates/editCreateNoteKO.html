@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="modalBody">
+		<div class="form-group">
+			<label for="content" data-bind="text: flowId"></label>
+			<textarea class="form-control" rows="3" id="content" name="content"></textarea>
+		</div>
+
+		<input type="hidden" name="id" data-bind="value: esDocumentId">
+		<input type="hidden" data-bind="value: flowId" />
+	</div>
+</body>
+</html>

@@ -81,6 +81,13 @@ public class ApplicationService
 				new AjaxTriggeredResponseTransformer());
 		// END Form Handlers.
 
+		
+		// KNOCKOUT Test
+//		Spark.get("/editCreateNoteKO", (req, res)->editCreateNote.showEditCreateDocumentKO().apply(req, res), thymeLeafEngine);
+		
+		// <-- KNOCKOUT Test
+		
+		
 		// handle exceptions that were not caught.
 		Spark.exception(Exception.class, (exception, req, resp) -> this.handleSparkRoutingException(exception));
 

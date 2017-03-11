@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Daniel
  *
  */
-public abstract class FormSubmitModelObject implements Serializable
+public class FormSubmitModelObject implements Serializable
 {
 	/**
 	 * The serial version uid.

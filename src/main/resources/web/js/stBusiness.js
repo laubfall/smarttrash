@@ -17,6 +17,11 @@ function editCreateFlowAndUpdateView() {
 	closeModal();
 }
 
+
+function showEditAndCreateNoteView(json) {
+	modal('editCreateNoteKO',json);
+}
+
 function editCreateNoteAndUpdateView() {
 	createLatestNotesView();
 	closeModal();
