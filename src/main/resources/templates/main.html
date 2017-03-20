@@ -26,33 +26,31 @@
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 
-<script src="js/knockout-3.4.2.js"></script>
+<!-- <script src="js/knockout-3.4.2.js"></script> -->
+<script src="http://knockoutjs.com/downloads/knockout-3.4.2.debug.js"></script>
 <script src="js/ajaxTriggeredResponse.js"></script>
+<script src="js/stKnockout.js"></script>		
 <script src="js/stModal.js"></script>
 <script src="js/stBusiness.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		createFlowOverview();
-		createLatestNotesView();
-		
-			function ViewModel() {
-				esDocumentId = "1234"
-				flowId = ko.observable("4321")
-			}
-		ko.applyBindings(new ViewModel());
-	});
-</script>		
 </head>
 <body>
-	<h1 data-bind="text:flowId"></h1>
 	<div th:replace="header :: header"></div>
 
-	<div id="flowOverview" class="container"></div>
+	<div data-bind="if : simpleFlowOverview" class="container">
+		<flow></flow>
+	</div>
 
+	<div class="container">
+	<div class="row">
+	<div class="col-xs-12">
+<!-- 	<a href="#" data-bind="click : addModal">add note</a> -->
+	</div>
+	</div>
+	</div>
+	
 	<div id="latestNotes" class="container"></div>
 
 	<div th:replace="footer :: footer"></div>
 
-	<div id="modal"></div>
 </body>
 </html>

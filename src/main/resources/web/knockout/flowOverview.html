@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+</head>
+<body>
+<div class="row">
+
+<table class="table">
+<tbody data-bind="foreach : flows">
+<tr>
+	<td data-bind="text : document.name"></td>
+<!-- 	<td th:text="${f.document.description}"></td> -->
+<!-- 	<td><a href="#" th:onclick="|modal('editCreateFlow', {id : '${f.documentId}'})|">edit</a></td> -->
+<!-- 	<td><a href="#" th:onclick="|showEditAndCreateNoteView({flowId : '${f.documentId}'})|">add note</a> -->
+</tr>
+</tbody>
+</table>
+
+</div>
+</body>
+</html>

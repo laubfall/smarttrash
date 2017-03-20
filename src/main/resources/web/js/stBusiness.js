@@ -7,9 +7,11 @@
  * 
  */
 function createFlowOverview() {
-	doRequestToEndpoint("createFlowOverview",function(markup){
-		$("div#flowOverview").empty().append($(markup));
-	})
+	viewModel.simpleFlowOverview(true);
+
+	// doRequestToEndpoint("createFlowOverview",function(markup){
+	// $("div#flowOverview").empty().append($(markup));
+	// })
 }
 
 function editCreateFlowAndUpdateView() {
@@ -17,9 +19,8 @@ function editCreateFlowAndUpdateView() {
 	closeModal();
 }
 
-
 function showEditAndCreateNoteView(json) {
-	modal('editCreateNoteKO',json);
+	modal('editCreateNoteKO', json);
 }
 
 function editCreateNoteAndUpdateView() {
@@ -31,7 +32,7 @@ function editCreateNoteAndUpdateView() {
  * 
  */
 function createLatestNotesView() {
-	doRequestToEndpoint("createLatestNotesView", function(markup){
+	doRequestToEndpoint("createLatestNotesView", function(markup) {
 		$("div#latestNotes").empty().append($(markup));
 	});
 }
@@ -40,8 +41,15 @@ function createLatestNotesView() {
  * Technical function.
  * 
  */
-function doRequestToEndpoint(endpoint, markupAction,jsAction){
-	 $.get(endpoint, function(response){
-		 evaluateATResponse(response, markupAction,jsAction)
-      },'html');
+function doRequestToEndpoint(endpoint, markupAction, jsAction) {
+	$.get(endpoint, function(response) {
+		evaluateATResponse(response, markupAction, jsAction)
+	}, 'html');
 }
+
+$(document).ready(function() {
+	init();
+	createFlowOverview();
+	
+	// createLatestNotesView();
+})

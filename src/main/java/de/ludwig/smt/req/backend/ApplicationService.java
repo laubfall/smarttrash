@@ -10,8 +10,10 @@ import de.ludwig.smt.req.frontend.EditCreateNoteViewService;
 import de.ludwig.smt.req.frontend.LatestNoteViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
+import de.ludwig.smt.req.frontend.tec.knockout.FlowOverviewResponse;
 import de.ludwig.smt.tec.ElasticSearch;
 import de.ludwig.smt.tec.frontend.AjaxTriggeredResponseTransformer;
+import de.ludwig.smt.tec.frontend.JsonResponseTransformer;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import spark.Spark;
@@ -46,6 +48,9 @@ public class ApplicationService
 	@PetiteInject
 	protected LatestNoteViewService latestNoteView;
 
+	@PetiteInject
+	protected FlowService flowService;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ApplicationService.class);
 
 	public void startApplication()
@@ -83,7 +88,8 @@ public class ApplicationService
 
 		
 		// KNOCKOUT Test
-//		Spark.get("/editCreateNoteKO", (req, res)->editCreateNote.showEditCreateDocumentKO().apply(req, res), thymeLeafEngine);
+		// TODO route depends on the wanted view model.
+		Spark.get("/data/:viewModel", "application/json", (req, res) -> new FlowOverviewResponse(flowService.loadFlows()), new JsonResponseTransformer());
 		
 		// <-- KNOCKOUT Test
 		

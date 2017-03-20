@@ -10,11 +10,12 @@ import spark.ResponseTransformer;
  */
 public class JsonResponseTransformer implements ResponseTransformer
 {
-	private JsonSerializer ser = new JsonSerializer();
+	private JsonSerializer ser = new JsonSerializer().deep(true);
 	
 	@Override
 	public String render(Object model) throws Exception
 	{
+		ser.deep(true);
 		return ser.serialize(model);
 	}
 
