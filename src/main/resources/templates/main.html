@@ -39,16 +39,17 @@
 	<div data-bind="if : simpleFlowOverview" class="container">
 		<flow></flow>
 	</div>
-
-	<div class="container">
-	<div class="row">
-	<div class="col-xs-12">
-<!-- 	<a href="#" data-bind="click : addModal">add note</a> -->
-	</div>
-	</div>
-	</div>
 	
 	<div id="latestNotes" class="container"></div>
+
+<!-- 	<div data-bind="if : editCreateFlow"> -->
+		<editcreateflowmodal params="value : flowId"></editcreateflowmodal>
+<!-- 	</div> -->
+
+	<div data-bind="foreach : modals">
+		<div id="modal" data-bind="component : modal"></div>
+	</div>
+
 
 	<div th:replace="footer :: footer"></div>
 

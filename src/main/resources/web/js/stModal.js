@@ -31,3 +31,7 @@ function modal(name, reqData) {
 function closeModal() {
 	$('#stModal').modal('hide');
 }
+
+function modalKO() {
+	$('#stModal').modal('show');
+}

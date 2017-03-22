@@ -1,6 +1,3 @@
-// namespace definition
-var stko = {}
-
 templateFromUrlLoader = {
 	loadTemplate : function(name, templateConfig, callback) {
 		if (templateConfig.fromUrl) {
@@ -44,7 +41,7 @@ ko.components.loaders.unshift(templateFromUrlLoader);
 ko.components.loaders.unshift(viewModelCustomLoader);
 
 registerModalTemplate = function() {
-	ko.components.register('fade', {
+	ko.components.register('modal', {
 		viewModel : function(params) {
 			this.flowId = "1234";
 			this.esDocumentId = "lkldsf";
@@ -55,17 +52,21 @@ registerModalTemplate = function() {
 	});
 };
 
+registerEditFlowTemplate = function() {
+	ko.components.register('editcreateflowmodal', {
+		viewModel : function(params) {
+			this.esDocumentId = params.flowId;
+		},
+		template : {
+			fromUrl : '/modal/editCreateFlow'
+		}
+	});
+};
+
 registerKoComponent = function() {
 	ko.components.register('flow', {
 		viewModel : {
 			viaLoader : function(params) {
-				var res;
-//				var prom = $.ajax({
-//					url : "/data/TODO"
-//				});
-//				prom.done(function(data) {
-//					res = JSON.parse(data);
-//				});
 				return "";
 			}
 		},
@@ -76,12 +77,21 @@ registerKoComponent = function() {
 };
 
 KoViewModel = function KoViewModel() {
+	var self = this;
 	this.modals = ko.observableArray();
+	this.editCreateFlow = ko.observable(false);
 	this.simpleFlowOverview = ko.observable(false);
-}
-
-KoViewModel.prototype.addModal = function() {
-	this.modals.push("TODO")
+	this.flowId = ko.observable("");
+	
+	this.showEditCreateFlowModal = function(data) {
+		self.editCreateFlow(true);
+		self.flowId=data.documentId;
+		modalKO();
+	}
+	
+	this.addModal = function() {
+		this.modals.push("TODO")
+	}
 }
 
 var viewModel = new KoViewModel();
@@ -89,5 +99,6 @@ var viewModel = new KoViewModel();
 init = function() {
 	registerKoComponent();
 	registerModalTemplate();
+	registerEditFlowTemplate();
 	ko.applyBindings(viewModel);
 };
