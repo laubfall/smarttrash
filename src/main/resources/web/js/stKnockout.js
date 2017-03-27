@@ -40,6 +40,31 @@ viewModelCustomLoader = {
 ko.components.loaders.unshift(templateFromUrlLoader);
 ko.components.loaders.unshift(viewModelCustomLoader);
 
+
+// Custom Bindings
+ko.bindingHandlers.modal = {
+	    init: function (element, valueAccessor) {
+	        $(element).modal({
+	            show: false
+	        });
+	        
+	        var value = valueAccessor();
+	        if (typeof value === 'function') {
+	            $(element).on('hide.bs.modal', function() {
+	               value(false);
+	            });
+	        }
+	    },
+	    update: function (element, valueAccessor) {
+	        var value = valueAccessor();
+	        if (ko.utils.unwrapObservable(value)) {
+	            $(element).modal('show');
+	        } else {
+	            $(element).modal('hide');
+	        }
+	    }
+	}
+
 registerModalTemplate = function() {
 	ko.components.register('modal', {
 		viewModel : function(params) {
@@ -86,7 +111,6 @@ KoViewModel = function KoViewModel() {
 	this.showEditCreateFlowModal = function(data) {
 		self.editCreateFlow(true);
 		self.flowId=data.documentId;
-		modalKO();
 	}
 	
 	this.addModal = function() {

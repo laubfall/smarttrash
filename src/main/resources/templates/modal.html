@@ -1,12 +1,12 @@
 <div class="modal fade" id="stModal" tabindex="-1" role="dialog"
-	aria-labelledby="stModalLabel">
+	aria-labelledby="stModalLabel" data-bind="modal:$root.editCreateFlow">
 	<div class="modal-dialog" role="document">
 		<form th:action="${action}" method="post" id="stModalForm"
 			th:object="${model}">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close"
+						aria-label="Close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h4 class="modal-title" id="myModalLabel" th:text="${title}">Modal title</h4>
