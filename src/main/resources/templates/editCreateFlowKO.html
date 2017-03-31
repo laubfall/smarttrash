@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="modalBody">
+  <div th:class="'form-group ' + ${input_name_state}">
+    <label for="name" th:text="#{input.name}"></label>
+    <input type="text" class="form-control" id="name" name="name" th:value="*{document.name}" th:placeholder="#{input.name}">
+  </div>
+  <div class="form-group">
+    <label for="description" th:text="#{input.description}"></label>
+    <textarea class="form-control" rows="3" id="description" name="description" th:text="*{document.description}"></textarea>
+  </div>
+  
+  <input type="hidden" name="id" th:value="*{esDocumentId}">
+  
+</div>
+</body>
+</html>

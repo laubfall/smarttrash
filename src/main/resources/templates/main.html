@@ -26,8 +26,8 @@
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 
-<script src="js/knockout-3.4.2.js"></script>
-<!-- <script src="http://knockoutjs.com/downloads/knockout-3.4.2.debug.js"></script> -->
+<!-- <script src="js/knockout-3.4.2.js"></script> -->
+<script src="http://knockoutjs.com/downloads/knockout-3.4.2.debug.js"></script>
 <script src="js/ajaxTriggeredResponse.js"></script>
 <script src="js/stKnockout.js"></script>		
 <script src="js/stModal.js"></script>
@@ -43,7 +43,7 @@
 	<div id="latestNotes" class="container"></div>
 
 	<div data-bind="if : editCreateFlow">
-		<editcreateflowmodal params="value : flowId"></editcreateflowmodal>
+		<editcreateflowmodal params="value : flowToEdit"></editcreateflowmodal>
 	</div>
 
 	<div data-bind="foreach : modals">

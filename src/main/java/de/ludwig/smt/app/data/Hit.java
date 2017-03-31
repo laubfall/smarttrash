@@ -1,5 +1,7 @@
 package de.ludwig.smt.app.data;
 
+import java.io.Serializable;
+
 /**
  * Representing an elasticsearch Hit, with basic information like document id
  * and the document itself. A document is a smarttrash object like a flow or a
@@ -8,7 +10,12 @@ package de.ludwig.smt.app.data;
  * @author daniel
  *
  */
-public class Hit<S> {
+public class Hit<S> implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3041429106084980828L;
+
 	private String documentId;
 
 	private S document;

@@ -9,6 +9,7 @@ import de.ludwig.smt.req.frontend.EditCreateFlowViewService;
 import de.ludwig.smt.req.frontend.EditCreateNoteViewService;
 import de.ludwig.smt.req.frontend.LatestNoteViewService;
 import de.ludwig.smt.req.frontend.OverviewService;
+import de.ludwig.smt.req.frontend.tec.JsonDataService;
 import de.ludwig.smt.req.frontend.tec.ModalService;
 import de.ludwig.smt.req.frontend.tec.knockout.FlowOverviewResponse;
 import de.ludwig.smt.tec.ElasticSearch;
@@ -88,8 +89,9 @@ public class ApplicationService
 
 		
 		// KNOCKOUT Test
-		// TODO route depends on the wanted view model.
-		Spark.get("/data/:viewModel", "application/json", (req, res) -> new FlowOverviewResponse(flowService.loadFlows()), new JsonResponseTransformer());
+		JsonDataService.registerProvider("flowOverview", (param) -> new FlowOverviewResponse(flowService.loadFlows()));
+		JsonDataService.registerProvider("editCreateFlow", param -> flowService.getFlow(param));
+		Spark.get("/data/:viewModel/:param", "application/json", JsonDataService::provideData, new JsonResponseTransformer());
 		
 		// <-- KNOCKOUT Test
 		

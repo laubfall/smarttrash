@@ -42,7 +42,7 @@ public class ModalService
 	private static Map<String, Class<? extends ModalProvider>> modalProviders = new HashMap<>();
 
 	static {
-		modalProviders.put("editCreateFlow", EditCreateFlowViewService.class);
+		modalProviders.put("editCreateFlowKO", EditCreateFlowViewService.class);
 		modalProviders.put("editCreateNoteKO", EditCreateNoteViewService.class);
 	}
 

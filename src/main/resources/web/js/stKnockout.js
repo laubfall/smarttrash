@@ -22,7 +22,7 @@ viewModelCustomLoader = {
 		if (viewModelConfig.viaLoader) {
 			
 			var prom = $.ajax({
-				url : "/data/TODO"
+				url : "/data/" + viewModelConfig.viewModelName + "/" + viewModelConfig.param
 			});
 			prom.done(function(data) {
 				ko.components.defaultLoader.loadViewModel(name,
@@ -79,11 +79,17 @@ registerModalTemplate = function() {
 
 registerEditFlowTemplate = function() {
 	ko.components.register('editcreateflowmodal', {
-		viewModel : function(params) {
-			this.esDocumentId = params.flowId;
+		viewModel : {
+			createViewModel : function(params, componentInfo) {
+				return {
+				param : params.flowId,
+				viaLoader : true,
+				viewModelName : "editCreateFlow"
+				}
+			}
 		},
 		template : {
-			fromUrl : '/modal/editCreateFlow'
+			fromUrl : '/modal/editCreateFlowKO'
 		}
 	});
 };
@@ -91,9 +97,9 @@ registerEditFlowTemplate = function() {
 registerKoComponent = function() {
 	ko.components.register('flow', {
 		viewModel : {
-			viaLoader : function(params) {
-				return "";
-			}
+			viaLoader : true,
+			viewModelName : "flowOverview",
+			param : "unused"
 		},
 		template : {
 			fromUrl : '/knockout/flowOverview.html'
@@ -106,11 +112,11 @@ KoViewModel = function KoViewModel() {
 	this.modals = ko.observableArray();
 	this.editCreateFlow = ko.observable(false);
 	this.simpleFlowOverview = ko.observable(false);
-	this.flowId = ko.observable("");
+	this.flowToEdit = ko.observable("");
 	
 	this.showEditCreateFlowModal = function(data) {
 		self.editCreateFlow(true);
-		self.flowId=data.documentId;
+		self.flowToEdit(data);
 	}
 	
 	this.addModal = function() {
