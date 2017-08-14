@@ -19,7 +19,9 @@ templateFromUrlLoader = {
 
 viewModelCustomLoader = {
 	loadViewModel : function(name, viewModelConfig, callback) {
-		if (viewModelConfig.viaLoader) {
+		if(viewModelConfig.createViewModel) {
+			callback(viewModelConfig.createViewModel)
+		} else if (viewModelConfig.viaLoader) {
 			
 			var prom = $.ajax({
 				url : "/data/" + viewModelConfig.viewModelName + "/" + viewModelConfig.param
@@ -81,11 +83,21 @@ registerEditFlowTemplate = function() {
 	ko.components.register('editcreateflowmodal', {
 		viewModel : {
 			createViewModel : function(params, componentInfo) {
-				return {
-				param : params.flowId,
-				viaLoader : true,
-				viewModelName : "editCreateFlow"
-				}
+				var docId = params.value().documentId;
+				var prom = $.ajax({
+					url : "/data/editCreateFlow/" + docId
+				});
+				
+				var dataResult;
+				prom.done(function(data) {
+					dataResult = data;
+				});
+				
+				return dataResult;
+//				return {
+//				param : params.flowId
+//				viewModelName : "editCreateFlow"
+//				}
 			}
 		},
 		template : {
