@@ -1,16 +1,16 @@
 package smt.app;
 
-import static smt.jodd.JoddPowered.petite;
-import static smt.jodd.JoddPowered.settings;
+import static smt.app.jodd.JoddPowered.petite;
+import static smt.app.jodd.JoddPowered.settings;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import smt.jodd.JoddPoweredTest;
-import smt.jodd.PropsElasticsearchProps;
-import smt.tec.ElasticSearch;
+import smt.app.jodd.JoddPoweredTest;
+import smt.app.jodd.PropsElasticsearchProps;
+import smt.repo.es.ElasticSearch;
 
 /**
  * Base test functionality for tests that requires Elasticsearch Support. This class starts an ES node once if the class

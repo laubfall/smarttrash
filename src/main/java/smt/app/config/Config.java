@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import jodd.petite.meta.PetiteBean;
-import smt.rdd.Requirement;
+import smt.app.rdd.Requirement;
 
 /**
  * Some kind of root configuration element. Containing information about the created flows and their childs.

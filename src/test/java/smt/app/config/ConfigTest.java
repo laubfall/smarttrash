@@ -11,8 +11,8 @@ import smt.app.config.ConfiguredFlow;
 import smt.app.config.FlowId;
 import smt.app.config.SubFlow;
 import smt.app.config.SubFlowPath;
-import smt.jodd.JoddPowered;
-import smt.jodd.JoddPoweredTest;
+import smt.app.jodd.JoddPowered;
+import smt.app.jodd.JoddPoweredTest;
 
 /**
  * Config test, testing adding Flows, SubFlow, finding Flows and SubFlows.
