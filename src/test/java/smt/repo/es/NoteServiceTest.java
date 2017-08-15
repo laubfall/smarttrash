@@ -14,9 +14,9 @@ import jodd.vtor.Violation;
 import smt.app.AbstractElasticSearchTest;
 import smt.app.config.FlowId;
 import smt.app.jodd.JoddPowered;
-import smt.model.Hit;
-import smt.model.Note;
-import smt.repo.es.NoteService;
+import smt.domain.model.Hit;
+import smt.domain.model.Note;
+import smt.persistence.es.NoteService;
 
 /**
  * Tests the {@link NoteService}.

@@ -1,4 +1,4 @@
-package smt.repo.es;
+package smt.persistence.es;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import jodd.util.StringUtil;
 import smt.app.SmartTrashException;
 import smt.app.jodd.JoddPowered;
 import smt.app.jodd.PropsElasticsearchProps;
-import smt.model.Hit;
+import smt.domain.model.Hit;
 
 /**
  * Provides low-level elasticsearch functionality.

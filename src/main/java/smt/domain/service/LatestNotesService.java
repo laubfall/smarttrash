@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.function.Function;
 
@@ -7,10 +7,10 @@ import org.elasticsearch.index.query.TypeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 
 import jodd.petite.meta.PetiteBean;
-import smt.model.Hit;
-import smt.model.LatestNotes;
-import smt.model.Note;
-import smt.repo.es.ElasticSearchDocumentService;
+import smt.domain.model.Hit;
+import smt.domain.model.LatestNotes;
+import smt.domain.model.Note;
+import smt.persistence.es.ElasticSearchDocumentService;
 
 @PetiteBean
 public class LatestNotesService extends ElasticSearchDocumentService<LatestNotes>

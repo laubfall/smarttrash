@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 
 import smt.app.jodd.JoddPoweredTest;
 import smt.app.jodd.PropsElasticsearchProps;
-import smt.repo.es.ElasticSearch;
+import smt.persistence.es.ElasticSearch;
 
 /**
  * Base test functionality for tests that requires Elasticsearch Support. This class starts an ES node once if the class

@@ -1,4 +1,4 @@
-package smt.repo.es;
+package smt.persistence.es;
 
 import java.util.function.Consumer;
 

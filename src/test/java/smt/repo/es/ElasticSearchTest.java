@@ -16,10 +16,10 @@ import org.mockito.Mockito;
 import smt.app.AbstractElasticSearchTest;
 import smt.app.jodd.JoddPowered;
 import smt.app.jodd.PropsElasticsearchProps;
-import smt.model.Flow;
-import smt.model.Note;
-import smt.repo.es.ElasticSearch;
-import smt.repo.es.ElasticSearchResponse;
+import smt.domain.model.Flow;
+import smt.domain.model.Note;
+import smt.persistence.es.ElasticSearch;
+import smt.persistence.es.ElasticSearchResponse;
 
 /**
  * Testing basic elasticsearch functionality.

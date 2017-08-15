@@ -1,4 +1,4 @@
-package smt.repo;
+package smt.domain.repo;
 
 public class FlowRepository
 {

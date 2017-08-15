@@ -2,7 +2,7 @@ package smt.app.frontend;
 
 import java.util.HashMap;
 
-import smt.service.ModalService;
+import smt.domain.service.ModalService;
 
 /**
  * Model object for the smarttrash modal, that provides some convienience Methods to fill standard Modal Object values.

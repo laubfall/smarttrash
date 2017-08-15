@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -12,9 +12,9 @@ import smt.app.frontend.ModalProvider;
 import smt.app.frontend.StandaloneStandardMessageResolver;
 import smt.app.frontend.AjaxTriggeredResponse.Usage;
 import smt.app.rdd.Requirement;
-import smt.model.Flow;
-import smt.repo.es.ElasticSearchDocumentService;
-import smt.repo.es.FlowService;
+import smt.domain.model.Flow;
+import smt.persistence.es.ElasticSearchDocumentService;
+import smt.persistence.es.FlowService;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

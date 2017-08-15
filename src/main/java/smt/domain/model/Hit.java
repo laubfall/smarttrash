@@ -1,4 +1,4 @@
-package smt.model;
+package smt.domain.model;
 
 import java.io.Serializable;
 

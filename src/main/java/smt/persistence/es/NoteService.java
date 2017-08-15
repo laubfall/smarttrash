@@ -1,4 +1,4 @@
-package smt.repo.es;
+package smt.persistence.es;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,9 +16,9 @@ import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import smt.app.rdd.Requirement;
 import smt.app.rdd.RequirementMapping;
-import smt.model.Hit;
-import smt.model.Note;
-import smt.service.LatestNotesService;
+import smt.domain.model.Hit;
+import smt.domain.model.Note;
+import smt.domain.service.LatestNotesService;
 
 /**
  * Methods to interact with notes inside the ES.

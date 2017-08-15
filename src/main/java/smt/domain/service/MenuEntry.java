@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.io.Serializable;
 

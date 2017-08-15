@@ -1,4 +1,4 @@
-package smt.repo.es;
+package smt.persistence.es;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import smt.app.jodd.JoddPowered;
 import smt.app.jodd.PropsElasticsearchProps;
 import smt.app.jodd.vtor.SmtVtor;
 import smt.app.jodd.vtor.VtorProfile;
-import smt.model.Hit;
+import smt.domain.model.Hit;
 import spark.utils.StringUtils;
 
 /**

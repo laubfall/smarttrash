@@ -1,4 +1,4 @@
-package smt.repo.es;
+package smt.persistence.es;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import smt.app.jodd.PropsElasticsearchProps;
 import smt.app.rdd.Requirement;
 import smt.app.rdd.RequirementMapping;
 import smt.app.service.FlowConfigService;
-import smt.model.Flow;
-import smt.model.Hit;
+import smt.domain.model.Flow;
+import smt.domain.model.Hit;
 
 /**
  * Business requirements flows placed in the backend.

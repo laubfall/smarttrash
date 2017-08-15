@@ -19,7 +19,7 @@ import smt.app.config.SubFlowPath;
 import smt.app.jodd.JoddPowered;
 import smt.app.jodd.PropsFlowConfig;
 import smt.app.rdd.Requirement;
-import smt.model.Flow;
+import smt.domain.model.Flow;
 
 /**
  * Provides operations on a flow configuration.

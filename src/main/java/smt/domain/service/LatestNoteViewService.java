@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.function.BiFunction;
 import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import smt.app.frontend.AjaxTriggeredResponse;
-import smt.model.Note;
-import smt.repo.es.NoteService;
+import smt.domain.model.Note;
+import smt.persistence.es.NoteService;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

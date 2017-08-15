@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.Date;
 import java.util.Locale;
@@ -14,9 +14,9 @@ import smt.app.frontend.StandaloneStandardMessageResolver;
 import smt.app.frontend.AjaxTriggeredResponse.Usage;
 import smt.app.rdd.Requirement;
 import smt.app.rdd.RequirementMapping;
-import smt.model.Note;
-import smt.repo.es.ElasticSearchDocumentService;
-import smt.repo.es.NoteService;
+import smt.domain.model.Note;
+import smt.persistence.es.ElasticSearchDocumentService;
+import smt.persistence.es.NoteService;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

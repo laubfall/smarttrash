@@ -1,10 +1,10 @@
-package smt.service;
+package smt.domain.service;
 
 import java.io.Serializable;
 import java.util.List;
 
-import smt.model.Flow;
-import smt.model.Hit;
+import smt.domain.model.Flow;
+import smt.domain.model.Hit;
 
 public class FlowOverviewResponse implements Serializable
 {

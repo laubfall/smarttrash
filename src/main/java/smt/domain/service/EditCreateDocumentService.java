@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import smt.app.frontend.FormSubmitModelObject;
 import smt.app.frontend.ModalModelAndView;
 import smt.app.frontend.ModalModelObject;
 import smt.app.frontend.StandaloneStandardMessageResolver;
-import smt.model.Hit;
-import smt.repo.es.ElasticSearch;
-import smt.repo.es.ElasticSearchDocumentService;
+import smt.domain.model.Hit;
+import smt.persistence.es.ElasticSearch;
+import smt.persistence.es.ElasticSearchDocumentService;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

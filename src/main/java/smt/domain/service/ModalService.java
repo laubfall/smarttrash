@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import smt.app.frontend.FormSubmitModelObject;
 import spark.Request;

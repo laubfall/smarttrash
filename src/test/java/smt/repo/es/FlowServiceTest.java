@@ -9,9 +9,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import smt.app.AbstractElasticSearchTest;
-import smt.model.Flow;
-import smt.model.Hit;
-import smt.repo.es.FlowService;
+import smt.domain.model.Flow;
+import smt.domain.model.Hit;
+import smt.persistence.es.FlowService;
 
 /**
  * Testing flow service functionality.

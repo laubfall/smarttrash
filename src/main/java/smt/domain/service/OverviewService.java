@@ -1,4 +1,4 @@
-package smt.service;
+package smt.domain.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +9,9 @@ import jodd.petite.meta.PetiteBean;
 import jodd.petite.meta.PetiteInject;
 import smt.app.frontend.AjaxTriggeredResponse;
 import smt.app.rdd.Requirement;
-import smt.model.Flow;
-import smt.model.Hit;
-import smt.repo.es.FlowService;
+import smt.domain.model.Flow;
+import smt.domain.model.Hit;
+import smt.persistence.es.FlowService;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

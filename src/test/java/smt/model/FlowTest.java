@@ -3,7 +3,7 @@ package smt.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import smt.model.Flow;
+import smt.domain.model.Flow;
 
 /**
  * 

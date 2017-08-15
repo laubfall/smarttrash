@@ -1,6 +1,6 @@
-package smt.service;
+package smt.domain.service;
 
-import smt.model.Note;
+import smt.domain.model.Note;
 import spark.Request;
 
 public class EditCreateNoteModelObject extends EditCreateDocumentModelObject<Note>
